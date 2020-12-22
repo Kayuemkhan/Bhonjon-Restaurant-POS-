@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Bhojon Restaurant POS</string>
+    <array name="name">
+        <item>Walking</item>
+        <item>Shuvo</item>
+        <item>Arefin</item>
+    </array>
+</resources>

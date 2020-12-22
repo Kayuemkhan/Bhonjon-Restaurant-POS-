@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_2sdp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            android:layout_margin="@dimen/_2sdp"
+            android:id="@+id/catergoryImageId"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_50sdp"
+            android:elevation="3dp"
+            android:padding="@dimen/_3sdp"
+            android:scaleType="fitXY"
+            android:src="@drawable/platefood"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:textColor="@color/overlay_dark"
+            android:textAlignment="center"
+            android:background="#EEE"
+            android:id="@+id/catergoryNameId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:text="Chicken pizza "
+            android:textSize="@dimen/_8sdp" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
