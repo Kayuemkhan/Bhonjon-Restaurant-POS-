@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,7 +13,7 @@
 
   <ImageView
       android:layout_width="match_parent"
-      android:layout_height="@dimen/_160sdp"
+      android:layout_height="@dimen/_100sdp"
       android:layout_gravity="center"
       android:padding="@dimen/_10sdp"
       android:src="@drawable/logo" />
@@ -27,7 +28,7 @@
     <EditText
         android:id="@+id/emailId"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_50sdp"
+        android:layout_height="@dimen/_30sdp"
         android:layout_marginBottom="@dimen/_20sdp"
         android:background="@drawable/border_black"
         android:drawableEnd="@drawable/ic_baseline_email_24"
@@ -39,7 +40,7 @@
     <EditText
         android:id="@+id/passwordId"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_50sdp"
+        android:layout_height="@dimen/_30sdp"
         android:layout_marginBottom="@dimen/_20sdp"
         android:background="@drawable/border_black"
         android:drawableEnd="@drawable/ic_baseline_vpn_key_24"
@@ -51,9 +52,9 @@
     <Button
         android:id="@+id/signInBtnId"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_50sdp"
+        android:layout_height="@dimen/_30sdp"
         android:layout_gravity="center"
-        android:background="@drawable/button_red_background_login"
+        android:background="#82c446"
         android:text="Login"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
@@ -78,7 +79,7 @@
         android:text="Click Here"
         android:id="@+id/reset"
         android:gravity="center"
-        android:textColor="@color/colorAccent"
+
         android:textSize="17sp"/>
   </LinearLayout>
 </LinearLayout>
