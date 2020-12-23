@@ -50,14 +50,14 @@ public class LoginActivity extends AppCompatActivity {
             SharedPref.write("BASEURL", "");
             //startActivity(new Intent(LoginActivity.this, QrCodeActivity.class));
         });
-        Log.d("sfadfsd", "onCreate: "+SharedPref.read("BASEURL",""));
-        if (SharedPref.read("BASEURL", "").isEmpty()){
+        Log.d("sfadfsd", "onCreate: " + SharedPref.read("BASEURL", ""));
+        if (SharedPref.read("BASEURL", "").isEmpty()) {
             SharedPref.write("BASEURL", BuildConfig.BASE_URL);
         }
-        try{
+        try {
             waitersService = AppConfig.getRetrofit().create(WaiterService.class);
             initAll();
-            Log.d("qwewer", "onCreate: "+SharedPref.read("BASEURL",""));
+            Log.d("qwewer", "onCreate: " + SharedPref.read("BASEURL", ""));
             signInBtn.setOnClickListener(v -> {
                 Log.d("sfadfsd", "onCreate: ");
                 progressDialog.show();
@@ -65,8 +65,8 @@ public class LoginActivity extends AppCompatActivity {
 
             });
 
-            SharedPref.write("PP", "pp");}
-        catch (Exception e){
+            SharedPref.write("PP", "pp");
+        } catch (Exception e) {
             warning();
         }
 
@@ -74,8 +74,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signIN() {
-        Log.d("poi", "signIN: "+SharedPref.read("keytoken",""));
-        waitersService.doSignIn(emailET.getText().toString(), passwordET.getText().toString(),SharedPref.read("keytoken",""))
+        Log.d("poi", "signIN: " + SharedPref.read("keytoken", ""));
+        waitersService.doSignIn(emailET.getText().toString(), passwordET.getText().toString(), SharedPref.read("keytoken", ""))
                 .enqueue(new Callback<LoginResponse>() {
                     @Override
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                                 progressDialog.dismiss();
                             }
                         } catch (Exception e) {
-                            Log.d("poi", "onResponse: "+e.getLocalizedMessage());
+                            Log.d("poi", "onResponse: " + e.getLocalizedMessage());
                         }
                     }
 

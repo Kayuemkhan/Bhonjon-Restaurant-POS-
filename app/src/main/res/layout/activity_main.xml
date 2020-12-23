@@ -4,21 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MainActivity"
-    >
+    tools:context=".activities.MainActivity">
+
     <LinearLayout
         android:id="@+id/upperlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="2"
         android:layout_alignParentTop="true"
-        >
+        android:weightSum="2">
+
         <LinearLayout
-            android:layout_weight=".9"
             android:id="@+id/headerdesign"
             android:layout_width="0dp"
             android:layout_height="50dp"
+            android:layout_weight=".9"
             android:background="#161616"
+            android:orientation="horizontal"
             android:weightSum="5">
 
             <ImageView
@@ -41,11 +42,12 @@
                 android:textColorHint="@color/white" />
 
         </LinearLayout>
+
         <LinearLayout
-            android:layout_weight="1.1"
             android:id="@+id/buttonUpperdesign"
             android:layout_width="0dp"
             android:layout_height="50dp"
+            android:layout_weight="1.1"
             android:background="#2c2c2c"
             android:orientation="horizontal"
             android:weightSum="5">
@@ -106,18 +108,19 @@
         </LinearLayout>
 
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/lowerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:weightSum="2"
-        >
+        android:weightSum="2">
+
         <LinearLayout
-            android:layout_weight="1"
             android:id="@+id/footer"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_32sdp"
+            android:layout_weight="1"
             android:orientation="horizontal"
             android:weightSum="3">
 
@@ -170,24 +173,25 @@
 
 
         </LinearLayout>
+
         <LinearLayout
-            android:layout_weight="1"
             android:id="@+id/bottombuttonDesign"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_32sdp"
             android:layout_alignParentBottom="true"
+            android:layout_weight="1"
             android:background="#161616"
             android:weightSum="4">
 
             <ImageView
-                android:layout_margin="@dimen/_5sdp"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_margin="@dimen/_5sdp"
                 android:layout_weight="1"
-                android:textSize="12sp"
                 android:background="#016AF2"
                 android:src="@drawable/ic_baseline_calculate_24"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="12sp" />
 
             <Button
                 android:layout_width="0dp"
@@ -195,8 +199,8 @@
                 android:layout_margin="@dimen/_5sdp"
                 android:layout_weight="1"
                 android:background="#E5343A"
-                android:paddingLeft="@dimen/_10sdp"
                 android:drawableLeft="@drawable/deletewhite"
+                android:paddingLeft="@dimen/_10sdp"
                 android:text="cancel"
                 android:textColor="@color/white" />
 
@@ -228,22 +232,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/upperlayout"
         android:layout_above="@+id/lowerLayout"
-        android:weightSum="2"
-        >
+        android:layout_below="@+id/upperlayout"
+        android:weightSum="2">
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.2"
-            android:orientation="vertical"
-            >
-            <ListView
-                android:layout_width="match_parent"
-                android:id="@+id/list_item_categories"
-                android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-                />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/subcategoryName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/designsubcategorylistnamessingleitem" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/itemRecylerview"
                 android:layout_width="wrap_content"
@@ -254,12 +258,13 @@
                 tools:listitem="@layout/singleitem" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight=".8"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
+
             <LinearLayout
                 android:id="@+id/rightDesign"
                 android:layout_width="match_parent"
@@ -286,20 +291,21 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:weightSum="2"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:weightSum="2">
 
                         <include
                             layout="@layout/spinner"
                             android:layout_width="0dp"
-                            android:layout_weight="1.6"
-                            android:layout_height="@dimen/_20sdp" />
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_weight="1.6" />
+
                         <ImageView
                             android:layout_width="0dp"
-                            android:layout_weight=".4"
                             android:layout_height="match_parent"
                             android:layout_gravity="bottom"
                             android:layout_margin="@dimen/_2sdp"
+                            android:layout_weight=".4"
                             android:background="#008711"
                             android:src="@drawable/ic_baseline_add_24" />
 
@@ -388,55 +394,56 @@
                 </LinearLayout>
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="5"
                 android:background="#EEE"
                 android:orientation="horizontal"
-                >
+                android:weightSum="5">
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Item"
                     android:gravity="center"
                     android:padding="@dimen/_5sdp"
-                    />
+                    android:text="Item" />
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Varient Name"
                     android:gravity="center"
                     android:padding="@dimen/_5sdp"
-                    />
+                    android:text="Varient Name" />
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Price"
                     android:gravity="center"
                     android:padding="@dimen/_5sdp"
-                    />
+                    android:text="Price" />
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Qty"
                     android:gravity="center"
                     android:padding="@dimen/_5sdp"
-                    />
+                    android:text="Qty" />
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Action"
                     android:gravity="center"
                     android:padding="@dimen/_5sdp"
-                    />
+                    android:text="Action" />
 
             </LinearLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

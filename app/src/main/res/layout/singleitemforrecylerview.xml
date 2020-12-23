@@ -1,88 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    android:padding="@dimen/_10sdp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
-    app:cardCornerRadius="@dimen/_2sdp"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_20sdp"
     android:layout_margin="@dimen/_2sdp"
-    android:layout_height="@dimen/_20sdp">
+    android:orientation="horizontal"
+    android:padding="@dimen/_10sdp"
+    app:cardCornerRadius="@dimen/_2sdp">
+
     <LinearLayout
-        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="5"
-        >
+        android:layout_gravity="center"
+        android:weightSum="5">
+
         <TextView
-            android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="Sicilon Pizza"
-            android:textColor="@color/overlay_dark"
-            />
+            android:textColor="@color/overlay_dark" />
+
         <TextView
-            android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="(Hot/ Cold)"
-            android:textColor="@color/overlay_dark"
-            />
+            android:textColor="@color/overlay_dark" />
+
         <TextView
-            android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="100"
-            android:textColor="@color/overlay_dark"
-            />
+            android:textColor="@color/overlay_dark" />
 
         <LinearLayout
-            android:weightSum="3"
-            android:background="@drawable/edit_text_red_background"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/edit_text_red_background"
             android:gravity="center"
             android:orientation="horizontal"
-            >
+            android:weightSum="3">
+
             <ImageView
-                android:layout_weight="1"
-                android:background="@color/white"
-                android:layout_margin="1dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_add_green"
-                />
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:src="@drawable/ic_baseline_add_green" />
+
             <TextView
-                android:layout_weight="1"
-                android:layout_margin="1dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
                 android:text="2"
-                android:textColor="@color/overlay_dark"
-                />
+                android:textColor="@color/overlay_dark" />
+
             <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
                 android:layout_weight="1"
                 android:background="@color/white"
-                android:layout_margin="1dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_horizontal_rule_24"
-                />
+                android:src="@drawable/ic_baseline_horizontal_rule_24" />
 
         </LinearLayout>
+
         <ImageView
-            android:src="@drawable/ic_baseline_delete_24"
-            android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
+            android:src="@drawable/ic_baseline_delete_24"
 
-            android:textColor="@color/overlay_dark"
-            />
+            android:textColor="@color/overlay_dark" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
