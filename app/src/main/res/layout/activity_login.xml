@@ -5,81 +5,105 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="@dimen/_30sdp"
-    android:layout_marginRight="@dimen/_30sdp"
-    android:gravity="center"
-    android:orientation="vertical"
+
+    android:orientation="horizontal"
+    android:weightSum="2"
     tools:context=".activities.LoginActivity">
 
-  <ImageView
-      android:layout_width="match_parent"
-      android:layout_height="@dimen/_100sdp"
-      android:layout_gravity="center"
-      android:padding="@dimen/_10sdp"
-      android:src="@drawable/logo" />
 
 
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="vertical"
-      android:layout_marginBottom="@dimen/_40sdp">
-
-    <EditText
-        android:id="@+id/emailId"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_30sdp"
-        android:layout_marginBottom="@dimen/_20sdp"
-        android:background="@drawable/border_black"
-        android:drawableEnd="@drawable/ic_baseline_email_24"
-        android:hint="Email"
-        android:text="harper@email.com"
-        android:inputType="textEmailAddress"
-        android:padding="@dimen/_10sdp" />
-
-    <EditText
-        android:id="@+id/passwordId"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_30sdp"
-        android:layout_marginBottom="@dimen/_20sdp"
-        android:background="@drawable/border_black"
-        android:drawableEnd="@drawable/ic_baseline_vpn_key_24"
-        android:hint="Password"
-        android:text="123456"
-        android:inputType="textPassword"
-        android:padding="@dimen/_10sdp" />
-
-    <Button
-        android:id="@+id/signInBtnId"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_30sdp"
-        android:layout_gravity="center"
-        android:background="#82c446"
-        android:text="Login"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="15sp"
-        android:textStyle="bold" />
-
-  </LinearLayout>
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:gravity="center"
-      android:layout_marginTop="@dimen/_5sdp"
-      android:layout_marginBottom="@dimen/_10sdp">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Do you want to reset QR Code "
-        android:textColor="@android:color/black"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Click Here"
-        android:id="@+id/reset"
+    <LinearLayout
         android:gravity="center"
+        android:layout_weight="1"
+        android:layout_below="@+id/logo"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:src="@drawable/bhojonlogo"
+            android:layout_marginRight="@dimen/_30sdp"
+            android:layout_marginLeft="@dimen/_20sdp"
+              />
+        <EditText
+            android:layout_marginRight="@dimen/_30sdp"
+            android:layout_marginLeft="@dimen/_30sdp"
+            android:id="@+id/emailId"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:background="@drawable/border_black"
+            android:drawableEnd="@drawable/ic_baseline_email_24"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:padding="@dimen/_10sdp"
+            android:text="harper@email.com" />
 
-        android:textSize="17sp"/>
-  </LinearLayout>
+        <EditText
+            android:layout_marginRight="@dimen/_30sdp"
+            android:layout_marginLeft="@dimen/_30sdp"
+            android:id="@+id/passwordId"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:background="@drawable/border_black"
+            android:drawableEnd="@drawable/ic_baseline_vpn_key_24"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:padding="@dimen/_10sdp"
+            android:text="123456" />
+
+        <Button
+            android:layout_marginRight="@dimen/_30sdp"
+            android:layout_marginLeft="@dimen/_30sdp"
+            android:id="@+id/signInBtnId"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_gravity="center"
+            android:background="#45C203"
+            android:text="Login"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/_5sdp"
+          android:layout_marginBottom="@dimen/_10sdp"
+          android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Do you want to reset QR Code "
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Click Here"
+
+            android:textSize="17sp" />
+      </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+      android:layout_weight="1"
+      >
+      <ImageView
+          android:scaleType="fitXY"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:src="@drawable/rightBackground"
+          />
+    </LinearLayout>
+
 </LinearLayout>

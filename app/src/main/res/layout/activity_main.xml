@@ -236,8 +236,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.2"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             >
+            <ListView
+                android:layout_width="match_parent"
+                android:id="@+id/list_item_categories"
+                android:layout_height="wrap_content"
+
+                />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/itemRecylerview"
                 android:layout_width="wrap_content"
