@@ -1,6 +1,7 @@
 package com.bdtask.bhojonrestaurantpos.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.LinearLayout;
 
 import com.bdtask.bhojonrestaurantpos.activities.retrofit.WaiterService;
@@ -11,8 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bdtask.bhojonrestaurantpos.R;
+import com.bdtask.bhojonrestaurantpos.modelClass.Category.CategoryData;
 import com.bdtask.bhojonrestaurantpos.modelClass.Category.CategoryResponse;
 import com.bdtask.bhojonrestaurantpos.retrofit.AppConfig;
+import com.bdtask.bhojonrestaurantpos.utils.SharedPref;
+import com.google.gson.Gson;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SharedPref.init(MainActivity.this);
         subcategoryName = findViewById(R.id.subcategoryName);
         subcategoryName.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayout.HORIZONTAL, false));
         getSubCategoryName();
@@ -38,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
         waiterService.getAllCategories(id).enqueue(new Callback<CategoryResponse>() {
             @Override
             public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
+                Log.d("Response","Onresponse"+new Gson().toJson(response.body()));
+                List<CategoryData> categorieslist = response.body().getData();
+                subcategoryName.setAdapter(new CateroiesListNameAdapter(getApplicationContext(),categorieslist));
 
             }
 
