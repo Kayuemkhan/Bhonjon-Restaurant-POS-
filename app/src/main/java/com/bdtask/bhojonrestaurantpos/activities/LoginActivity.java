@@ -94,6 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                                 SharedPref.write("SC", loginResponse.getData().getServicecharge());
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 finish();
+
                             } else {
                                 Toast.makeText(LoginActivity.this, "Wrong email or Password", Toast.LENGTH_SHORT).show();
                                 progressDialog.dismiss();

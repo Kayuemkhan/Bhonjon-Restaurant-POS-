@@ -183,15 +183,19 @@
             android:background="#161616"
             android:weightSum="4">
 
-            <ImageView
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/_5sdp"
                 android:layout_weight="1"
                 android:background="#016AF2"
-                android:src="@drawable/ic_baseline_calculate_24"
+                android:drawableLeft="@drawable/ic_baseline_calculate_24"
+                android:gravity="center"
+                android:paddingLeft="@dimen/_5sdp"
+                android:scaleType="center"
+                android:text="Calculator"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="18sp" />
 
             <Button
                 android:layout_width="0dp"

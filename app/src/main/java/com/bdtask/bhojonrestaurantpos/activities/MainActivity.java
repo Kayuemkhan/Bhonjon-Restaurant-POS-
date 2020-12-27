@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bdtask.bhojonrestaurantpos.R;
+import com.bdtask.bhojonrestaurantpos.adapters.CateroiesListNameAdapter;
 import com.bdtask.bhojonrestaurantpos.modelClass.Category.CategoryData;
 import com.bdtask.bhojonrestaurantpos.modelClass.Category.CategoryResponse;
 import com.bdtask.bhojonrestaurantpos.retrofit.AppConfig;
@@ -36,18 +37,20 @@ public class MainActivity extends AppCompatActivity {
         SharedPref.init(MainActivity.this);
         subcategoryName = findViewById(R.id.subcategoryName);
         subcategoryName.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayout.HORIZONTAL, false));
-        getSubCategoryName();
+
         waiterService = AppConfig.getRetrofit().create(WaiterService.class);
         id = SharedPref.read("ID", "");
+        Log.wtf("chekID", "ID" + id);
+        getSubCategoryName();
     }
 
     public void getSubCategoryName() {
         waiterService.getAllCategories(id).enqueue(new Callback<CategoryResponse>() {
             @Override
             public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
-                Log.d("Response","Onresponse"+new Gson().toJson(response.body()));
+                Log.d("Response", "Onresponse" + new Gson().toJson(response.body()));
                 List<CategoryData> categorieslist = response.body().getData();
-                subcategoryName.setAdapter(new CateroiesListNameAdapter(getApplicationContext(),categorieslist));
+                subcategoryName.setAdapter(new CateroiesListNameAdapter(getApplicationContext(), categorieslist));
 
             }
 
