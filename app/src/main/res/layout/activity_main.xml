@@ -38,6 +38,7 @@
                 android:drawableRight="@drawable/ic_baseline_search_24"
                 android:hint="Search Something"
                 android:paddingLeft="10dp"
+                android:paddingRight="@dimen/_5sdp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white" />
 
@@ -257,8 +258,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/categoriesdesign"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="5"
                 tools:listitem="@layout/singleitem" />
 
         </LinearLayout>

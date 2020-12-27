@@ -18,11 +18,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bdtask.bhojonrestaurantpos.BuildConfig;
-import com.bdtask.bhojonrestaurantpos.activities.retrofit.WaiterService;
+
 
 import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.modelClass.loginModel.LoginResponse;
 import com.bdtask.bhojonrestaurantpos.retrofit.AppConfig;
+import com.bdtask.bhojonrestaurantpos.retrofit.WaiterService;
 import com.bdtask.bhojonrestaurantpos.utils.SharedPref;
 import com.google.gson.Gson;
 
@@ -33,7 +34,7 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
     Button signInBtn;
     EditText emailET, passwordET;
-    private com.bdtask.bhojonrestaurantpos.activities.retrofit.WaiterService waitersService;
+    private WaiterService waitersService;
     ProgressDialog progressDialog;
 
     @Override
