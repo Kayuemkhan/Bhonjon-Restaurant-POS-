@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Bhojon Restaurant POS</string>
+    <string name="dialog_fire_missiles">ga</string>
+    <string name="fire">gaaaa</string>
+    <string name="cancel" />
     <array name="name">
         <item>Walking</item>
         <item>Shuvo</item>
