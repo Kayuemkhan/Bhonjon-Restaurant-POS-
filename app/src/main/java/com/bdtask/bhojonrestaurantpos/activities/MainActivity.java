@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,6 +32,7 @@ import com.bdtask.bhojonrestaurantpos.adapters.AddonsDetailsAdapter;
 import com.bdtask.bhojonrestaurantpos.adapters.AllCategoriesInfo;
 import com.bdtask.bhojonrestaurantpos.adapters.CateroiesListNameAdapter;
 import com.bdtask.bhojonrestaurantpos.adapters.FoodListAdapater;
+import com.bdtask.bhojonrestaurantpos.adapters.ItemDetailsAdapter;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.Addonsinfo;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.AllCategoriesData;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.AllCategoryResponse;
@@ -39,6 +41,7 @@ import com.bdtask.bhojonrestaurantpos.modelClass.Category.CategoryData;
 import com.bdtask.bhojonrestaurantpos.modelClass.Category.CategoryResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodinfoFoodList;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodlistResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.datamodel.ListClassData;
 import com.bdtask.bhojonrestaurantpos.retrofit.AppConfig;
 import com.bdtask.bhojonrestaurantpos.retrofit.WaiterService;
 import com.bdtask.bhojonrestaurantpos.utils.SharedPref;
@@ -59,8 +62,13 @@ public class MainActivity extends AppCompatActivity {
     private String getCategoryId;
     private TextView iteminformation, itemsize, itemprice;
     private ImageView close;
-    private EditText editextquantity;
+    private TextView editextquantity;
     private RecyclerView addonsrecylerView;
+    private ImageView plusbuttonaddons, minusbuttonaddons;
+    private int addonsnumber = 0;
+    private Button addcartfromaddons;
+    private int now;
+    private RecyclerView itemshowRecylerview;
 
     @SuppressLint("WrongConstant")
     @Override
@@ -68,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SharedPref.init(MainActivity.this);
+        itemshowRecylerview = findViewById(R.id.itemshowRecylerview);
+        itemshowRecylerview.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         subcategoryName = findViewById(R.id.subcategoryName);
         subcategoryName.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayout.HORIZONTAL, false));
         itemRecylerview = findViewById(R.id.itemRecylerview);
@@ -137,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void AddonsChecking(String productname, String price, String size, List<Addonsinfo> addonsinfoList) {
-
+        Log.d("Addons List Check", "" + new Gson().toJson(addonsinfoList));
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view2 = getLayoutInflater().inflate(R.layout.design_aleartdialog, null);
         close = view2.findViewById(R.id.closebtnaddons);
@@ -145,16 +155,47 @@ public class MainActivity extends AppCompatActivity {
         itemsize = view2.findViewById(R.id.itemsize);
         editextquantity = view2.findViewById(R.id.itemquantity);
         itemprice = view2.findViewById(R.id.itemprice);
-        addonsrecylerView = findViewById(R.id.addonsrecylerView);
-        addonsrecylerView.setLayoutManager(new LinearLayoutManager(MainActivity.this,LinearLayoutManager.VERTICAL,false));
-        addonsrecylerView.setAdapter(new AddonsDetailsAdapter(getApplicationContext(),addonsinfoList));
+        addonsrecylerView = view2.findViewById(R.id.addonsrecylerView);
+        addonsrecylerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        addonsrecylerView.setAdapter(new AddonsDetailsAdapter(MainActivity.this, addonsinfoList));
         itemprice.setText(price);
         itemsize.setText(size);
         iteminformation.setText(productname);
+        plusbuttonaddons = view2.findViewById(R.id.plusbuttonaddons);
+        minusbuttonaddons = view2.findViewById(R.id.minusbuttonaddons);
+        addcartfromaddons = view2.findViewById(R.id.addcartfromaddons);
+        addcartfromaddons.setOnClickListener(v -> {
+            String t = SharedPref.read("priceaddons", "");
+            List<ListClassData> listClassData = new ArrayList<>();
+            ListClassData listClassData1 = new ListClassData(productname, price, size, t);
+            listClassData.add(listClassData1);
+            now = Integer.parseInt(editextquantity.getText().toString());
+            Log.d("Datacheck",""+new Gson().toJson(listClassData));
+           itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData,now));
+        });
+        plusbuttonaddons.setOnClickListener(v -> {
+            // Updating the addons Number
+            addonsnumber += 1;
+            now = Integer.parseInt(editextquantity.getText().toString());
+            addonsnumber += now;
+            editextquantity.setText(String.valueOf(addonsnumber));
+            addonsnumber = 0;
+        });
+        minusbuttonaddons.setOnClickListener(v -> {
 
+            now = Integer.parseInt(editextquantity.getText().toString());
+            // If the number is zero then it can't be minimized
+            if (now != 0) {
+                now -= 1;
+                editextquantity.setText(String.valueOf(now));
+                addonsnumber = 0;
+            }
+        });
         builder.setView(view2);
         AlertDialog alert = builder.create();
         close.setOnClickListener(view -> alert.dismiss());
         alert.show();
     }
+
+
 }

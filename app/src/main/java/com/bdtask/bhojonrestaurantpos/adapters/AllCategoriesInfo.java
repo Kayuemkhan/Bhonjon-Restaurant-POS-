@@ -9,18 +9,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.activities.MainActivity;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.Addonsinfo;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.Foodinfo;
 import com.bumptech.glide.Glide;
-
+import com.google.gson.Gson;
 import java.util.List;
 
 public class AllCategoriesInfo extends RecyclerView.Adapter<AllCategoriesInfo.ViewHolder> {
@@ -36,7 +34,6 @@ public class AllCategoriesInfo extends RecyclerView.Adapter<AllCategoriesInfo.Vi
         this.list = categoriesData;
         this.mainActivity = mainActivity2;
     }
-
 
     @NonNull
     @Override
@@ -55,14 +52,13 @@ public class AllCategoriesInfo extends RecyclerView.Adapter<AllCategoriesInfo.Vi
             @Override
             public void onClick(View v) {
                 addonsinfoList = list.get(position).getAddonsinfo();
+                Log.d("Addons Info", "" + new Gson().toJson(addonsinfoList));
                 addonsStatus = list.get(position).getAddons().toString();
-                if(addonsStatus.contains("1")){
-                    mainActivity.AddonsChecking(String.valueOf(list.get(position).getProductName()),list.get(position).getPrice(),list.get(position).getVariantName(),addonsinfoList);
+                if (addonsStatus.contains("1")) {
+                    mainActivity.AddonsChecking(String.valueOf(list.get(position).getProductName()), list.get(position).getPrice(), list.get(position).getVariantName(), addonsinfoList);
                 }
-
             }
         });
-
     }
 
     @Override

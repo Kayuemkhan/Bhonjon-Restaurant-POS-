@@ -4,22 +4,27 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.Addonsinfo;
+import com.bdtask.bhojonrestaurantpos.utils.SharedPref;
 
 import java.util.List;
 
 public class AddonsDetailsAdapter extends RecyclerView.Adapter<AddonsDetailsAdapter.ViewHolder> {
     private Context context;
     private List<Addonsinfo> list;
+    private int prizenow1,prizenow2;
 
     public AddonsDetailsAdapter(Context applicationContext, List<Addonsinfo> addonsinfoList) {
         this.context = applicationContext;
         this.list = addonsinfoList;
+        SharedPref.init(context);
     }
 
     @NonNull
@@ -30,7 +35,14 @@ public class AddonsDetailsAdapter extends RecyclerView.Adapter<AddonsDetailsAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AddonsDetailsAdapter.ViewHolder holder, int position) {
+            holder.itempriceaddons.setText(list.get(position).getAddonsprice());
+            holder.itemsizeaddons.setText(list.get(position).getAddOnName());
+            if(holder.iteminformationaddons.isChecked()){
+                String priceaddons=  list.get(position).getAddonsprice();
+                prizenow1 = Integer.parseInt(priceaddons);
+                SharedPref.write("priceAddons",priceaddons);
+            }
 
     }
 
@@ -40,9 +52,14 @@ public class AddonsDetailsAdapter extends RecyclerView.Adapter<AddonsDetailsAdap
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
+        private CheckBox iteminformationaddons;
+        private TextView itemsizeaddons, itemquantityaddons,itempriceaddons;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            iteminformationaddons = itemView.findViewById(R.id.iteminformationaddons);
+            itemsizeaddons = itemView.findViewById(R.id.itemsizeaddons);
+            itemquantityaddons = itemView.findViewById(R.id.itemquantityaddons);
+            itempriceaddons = itemView.findViewById(R.id.itempriceaddons);
         }
     }
 }

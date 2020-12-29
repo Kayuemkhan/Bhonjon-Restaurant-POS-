@@ -57,7 +57,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".5"
+            android:layout_weight=".7"
             android:background="@drawable/button_red_border_backgroundnopadding"
             android:gravity="center"
             android:padding="10dp"
@@ -67,7 +67,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.8"
             android:background="@drawable/button_red_border_backgroundnopadding"
             android:gravity="center"
             android:padding="10dp"
@@ -108,18 +108,32 @@
        <LinearLayout
            android:layout_width="0dp"
            android:layout_height="match_parent"
-           android:layout_weight=".5"
+           android:layout_weight=".7"
            android:gravity="center"
            android:padding="5dp"
+           android:orientation="horizontal"
+           android:weightSum="3"
            android:background="@drawable/button_red_border_backgroundnopadding"
            >
-           <EditText
+           <ImageView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:src="@drawable/ic_baseline_add_green"
+               android:id="@+id/plusbuttonaddons"
+               />
+           <TextView
+               android:layout_margin="5dp"
                android:text="1"
                android:gravity="center"
                android:id="@+id/itemquantity"
-               android:layout_width="match_parent"
+               android:layout_width="wrap_content"
                android:layout_height="match_parent"
-               android:background="@drawable/button_red_border_backgroundnopadding"
+               />
+           <ImageView
+               android:id="@+id/minusbuttonaddons"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:src="@drawable/ic_baseline_indeterminate_check_box_24"
                />
 
        </LinearLayout>
@@ -128,7 +142,7 @@
             android:id="@+id/itemprice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight=".8"
             android:background="@drawable/button_red_border_backgroundnopadding"
             android:gravity="center"
             android:padding="10dp"
@@ -189,14 +203,17 @@
         android:id="@+id/addonsrecylerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        tools:listitem="@layout/addonssinglelayout" />
+        tools:listitem="@layout/addonssinglelayout"
+        android:layout_marginBottom="10dp"
+        />
     <Button
+        android:id="@+id/addcartfromaddons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add to Cart"
         android:background="#45C203"
-        android:padding="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:textColor="@color/white"
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="20dp"
