@@ -27,9 +27,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.SpacingItemDecoration;
 import com.bdtask.bhojonrestaurantpos.Tools;
+import com.bdtask.bhojonrestaurantpos.adapters.AddonsDetailsAdapter;
 import com.bdtask.bhojonrestaurantpos.adapters.AllCategoriesInfo;
 import com.bdtask.bhojonrestaurantpos.adapters.CateroiesListNameAdapter;
 import com.bdtask.bhojonrestaurantpos.adapters.FoodListAdapater;
+import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.Addonsinfo;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.AllCategoriesData;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.AllCategoryResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.Foodinfo;
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView iteminformation, itemsize, itemprice;
     private ImageView close;
     private EditText editextquantity;
+    private RecyclerView addonsrecylerView;
 
     @SuppressLint("WrongConstant")
     @Override
@@ -68,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
         subcategoryName = findViewById(R.id.subcategoryName);
         subcategoryName.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayout.HORIZONTAL, false));
         itemRecylerview = findViewById(R.id.itemRecylerview);
-
         itemRecylerview.setLayoutManager(new GridLayoutManager(MainActivity.this, 5));
         itemRecylerview.addItemDecoration(new SpacingItemDecoration(3, Tools.dpToPx(this, 2), true));
         waiterService = AppConfig.getRetrofit().create(WaiterService.class);
@@ -134,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void AddonsChecking(String productname, String price, String size) {
+    public void AddonsChecking(String productname, String price, String size, List<Addonsinfo> addonsinfoList) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view2 = getLayoutInflater().inflate(R.layout.design_aleartdialog, null);
@@ -143,9 +145,13 @@ public class MainActivity extends AppCompatActivity {
         itemsize = view2.findViewById(R.id.itemsize);
         editextquantity = view2.findViewById(R.id.itemquantity);
         itemprice = view2.findViewById(R.id.itemprice);
+        addonsrecylerView = findViewById(R.id.addonsrecylerView);
+        addonsrecylerView.setLayoutManager(new LinearLayoutManager(MainActivity.this,LinearLayoutManager.VERTICAL,false));
+        addonsrecylerView.setAdapter(new AddonsDetailsAdapter(getApplicationContext(),addonsinfoList));
         itemprice.setText(price);
         itemsize.setText(size);
         iteminformation.setText(productname);
+
         builder.setView(view2);
         AlertDialog alert = builder.create();
         close.setOnClickListener(view -> alert.dismiss());
