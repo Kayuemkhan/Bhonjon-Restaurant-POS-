@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="#EEE"
+        android:layout_height="30dp"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <ImageView
+                android:id="@+id/closebtnaddons"
+                android:layout_margin="5dp"
+                android:layout_alignParentEnd="true"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_baseline_close_24"
+                />
+        </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.8"
+            android:background="@drawable/button_red_border_backgroundnopadding"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Item Information"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7"
+            android:background="@drawable/button_red_border_backgroundnopadding"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:background="@drawable/button_red_border_backgroundnopadding"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="QTY. "
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/button_red_border_backgroundnopadding"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Price "
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <TextView
+            android:id="@+id/iteminformation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.8"
+            android:background="@drawable/button_red_border_backgroundnopadding"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Item Information" />
+
+        <TextView
+            android:id="@+id/itemsize"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7"
+            android:background="@drawable/button_red_border_backgroundnopadding"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Size" />
+
+       <LinearLayout
+           android:layout_width="0dp"
+           android:layout_height="match_parent"
+           android:layout_weight=".5"
+           android:gravity="center"
+           android:padding="5dp"
+           android:background="@drawable/button_red_border_backgroundnopadding"
+           >
+           <EditText
+               android:text="1"
+               android:gravity="center"
+               android:id="@+id/itemquantity"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:background="@drawable/button_red_border_backgroundnopadding"
+               />
+
+       </LinearLayout>
+
+        <TextView
+            android:id="@+id/itemprice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/button_red_border_backgroundnopadding"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Price " />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <TextView
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/button_red_border_backgroundnopadding"
+            android:gravity="center"
+            android:padding="10dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/button_red_border_backgroundnopadding"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Add-Ons name"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/button_red_border_backgroundnopadding"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Add-Ons QTY. "
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/button_red_border_backgroundnopadding"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Price "
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/addonsrecylerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        tools:listitem="@layout/addonssinglelayout" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add to Cart"
+        android:background="#45C203"
+        android:padding="20dp"
+        android:textColor="@color/white"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp"
+        />
+
+</LinearLayout>
