@@ -28,19 +28,33 @@
                 android:layout_weight="1"
                 android:padding="8dp"
                 android:src="@drawable/ic_menu" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="7dp"
+            <androidx.appcompat.widget.SearchView
                 android:layout_weight="3.8"
                 android:background="#2c2c2c"
-                android:drawableRight="@drawable/ic_baseline_search_24"
-                android:hint="Search Something"
-                android:paddingLeft="10dp"
-                android:paddingRight="@dimen/_5sdp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white" />
+                android:id="@+id/searchviewId"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/_2sdp"
+                android:layout_marginRight="@dimen/_2sdp"
+                android:focusable="false"
+                app:iconifiedByDefault="false"
+                app:queryHint="Search Food Category"
+                android:layout_margin="7dp"
+                android:theme="@style/ThemeOverlay.SearchView"
+                app:searchIcon="@drawable/ic_baseline_search_24" />
+<!--            <EditText-->
+<!--                android:id="@+id/searchviewinmain"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_margin="7dp"-->
+<!--                android:layout_weight="3.8"-->
+<!--                android:background="#2c2c2c"-->
+<!--                android:drawableRight="@drawable/ic_baseline_search_24"-->
+<!--                android:hint="Search Something"-->
+<!--                android:paddingLeft="10dp"-->
+<!--                android:paddingRight="@dimen/_5sdp"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textColorHint="@color/white" />-->
 
         </LinearLayout>
 

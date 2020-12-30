@@ -2,6 +2,7 @@ package com.bdtask.bhojonrestaurantpos.activities;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -69,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
     private Button addcartfromaddons;
     private int now;
     private RecyclerView itemshowRecylerview;
+    private SearchView searchView;
+    List<CategoryData> categorieslist;
 
     @SuppressLint("WrongConstant")
     @Override
@@ -78,6 +82,26 @@ public class MainActivity extends AppCompatActivity {
         SharedPref.init(MainActivity.this);
         itemshowRecylerview = findViewById(R.id.itemshowRecylerview);
         itemshowRecylerview.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = findViewById(R.id.searchviewId);
+        searchView.setSearchableInfo(searchManager
+                .getSearchableInfo(getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if(categorieslist.contains(query)){
+
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+
+                return false;
+            }
+        });
         subcategoryName = findViewById(R.id.subcategoryName);
         subcategoryName.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayout.HORIZONTAL, false));
         itemRecylerview = findViewById(R.id.itemRecylerview);
@@ -94,23 +118,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
                 Log.d("Response", "Onresponse" + new Gson().toJson(response.body()));
-                List<CategoryData> categorieslist = new ArrayList<>();
+                categorieslist = new ArrayList<>();
                 categorieslist.add(new CategoryData("0", "All Categories"));
                 categorieslist.addAll(response.body().getData());
                 subcategoryName.setAdapter(new CateroiesListNameAdapter(getApplicationContext(), categorieslist, MainActivity.this));
-
             }
-
             @Override
             public void onFailure(Call<CategoryResponse> call, Throwable t) {
-
             }
         });
     }
 
     public void getCategoriesItem(String position, String s) {
         getPosition = position;
-
         if (getPosition.contains("0")) {
             itemRecylerview.setVisibility(View.VISIBLE);
             waiterService.allcategoryResponse(id).enqueue(new Callback<AllCategoryResponse>() {
@@ -170,8 +190,8 @@ public class MainActivity extends AppCompatActivity {
             ListClassData listClassData1 = new ListClassData(productname, price, size, t);
             listClassData.add(listClassData1);
             now = Integer.parseInt(editextquantity.getText().toString());
-            Log.d("Datacheck",""+new Gson().toJson(listClassData));
-           itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData,now));
+            Log.d("Datacheck", "" + new Gson().toJson(listClassData));
+            itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData, now));
         });
         plusbuttonaddons.setOnClickListener(v -> {
             // Updating the addons Number

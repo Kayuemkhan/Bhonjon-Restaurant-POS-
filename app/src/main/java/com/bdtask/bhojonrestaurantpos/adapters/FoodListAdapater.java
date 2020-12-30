@@ -4,19 +4,18 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodinfoFoodList;
 import com.bumptech.glide.Glide;
-
 import java.util.List;
 
-public class FoodListAdapater extends RecyclerView.Adapter<FoodListAdapater.ViewHolder> {
+public class FoodListAdapater extends RecyclerView.Adapter<FoodListAdapater.ViewHolder> implements Filterable {
     Context context;
     List<FoodinfoFoodList> lists;
 
@@ -28,7 +27,7 @@ public class FoodListAdapater extends RecyclerView.Adapter<FoodListAdapater.View
     @NonNull
     @Override
     public FoodListAdapater.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.singleitem,viewGroup,false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.singleitem, viewGroup, false);
         return new FoodListAdapater.ViewHolder(view);
     }
 
@@ -43,9 +42,15 @@ public class FoodListAdapater extends RecyclerView.Adapter<FoodListAdapater.View
         return lists.size();
     }
 
+    @Override
+    public Filter getFilter() {
+        return null;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView itemname;
         ImageView fgoodimageView;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemname = itemView.findViewById(R.id.catergoryNameId);
