@@ -52,7 +52,6 @@ public class CateroiesListNameAdapter extends RecyclerView.Adapter<CateroiesList
         });
         if (rowId == position) {
             holder.tvId.setVisibility(View.VISIBLE);
-            //((MainActivity)context).getCategoriesItem("0");
             mainActivity.getCategoriesItem(String.valueOf(position), String.valueOf(list.get(position).getCategoryID()));
         } else {
             holder.tvId.setVisibility(View.GONE);

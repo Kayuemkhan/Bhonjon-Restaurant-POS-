@@ -74,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
     private SearchView searchView;
     List<CategoryData> categorieslist;
 
+    List<ListClassData> listClassData = new ArrayList<>();
+
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPref.init(MainActivity.this);
         itemshowRecylerview = findViewById(R.id.itemshowRecylerview);
         itemshowRecylerview.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        itemshowRecylerview.setHasFixedSize(true);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = findViewById(R.id.searchviewId);
         searchView.setSearchableInfo(searchManager
@@ -102,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+        // The categories List
         subcategoryName = findViewById(R.id.subcategoryName);
         subcategoryName.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayout.HORIZONTAL, false));
         itemRecylerview = findViewById(R.id.itemRecylerview);
@@ -112,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         Log.wtf("chekID", "ID" + id);
         getSubCategoryName();
     }
-
+    // All the categories name will be shown here
     public void getSubCategoryName() {
         waiterService.getAllCategories(id).enqueue(new Callback<CategoryResponse>() {
             @Override
@@ -131,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void getCategoriesItem(String position, String s) {
         getPosition = position;
+        // All Categories List
         if (getPosition.contains("0")) {
             itemRecylerview.setVisibility(View.VISIBLE);
             waiterService.allcategoryResponse(id).enqueue(new Callback<AllCategoryResponse>() {
@@ -146,7 +151,9 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-        } else {
+        }
+        // The other List
+        else {
             getCategoryId = s;
             waiterService.foodListResponse(id, getCategoryId).enqueue(new Callback<FoodlistResponse>() {
                 @Override
@@ -184,15 +191,7 @@ public class MainActivity extends AppCompatActivity {
         plusbuttonaddons = view2.findViewById(R.id.plusbuttonaddons);
         minusbuttonaddons = view2.findViewById(R.id.minusbuttonaddons);
         addcartfromaddons = view2.findViewById(R.id.addcartfromaddons);
-        addcartfromaddons.setOnClickListener(v -> {
-            String t = SharedPref.read("priceaddons", "");
-            List<ListClassData> listClassData = new ArrayList<>();
-            ListClassData listClassData1 = new ListClassData(productname, price, size, t);
-            listClassData.add(listClassData1);
-            now = Integer.parseInt(editextquantity.getText().toString());
-            Log.d("Datacheck", "" + new Gson().toJson(listClassData));
-            itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData, now));
-        });
+
         plusbuttonaddons.setOnClickListener(v -> {
             // Updating the addons Number
             addonsnumber += 1;
@@ -214,6 +213,16 @@ public class MainActivity extends AppCompatActivity {
         builder.setView(view2);
         AlertDialog alert = builder.create();
         close.setOnClickListener(view -> alert.dismiss());
+        addcartfromaddons.setOnClickListener(v -> {
+            String t = SharedPref.read("priceaddons", "");
+
+            ListClassData listClassData1 = new ListClassData(productname, price, size, t);
+            listClassData.add(listClassData1);
+            now = Integer.parseInt(editextquantity.getText().toString());
+            Log.d("Datacheck", "" + new Gson().toJson(listClassData));
+            itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData, now));
+            alert.dismiss();
+        });
         alert.show();
     }
 

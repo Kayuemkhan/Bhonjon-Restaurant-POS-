@@ -21,6 +21,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     private Context context;
     private List<ListClassData> listClassData;
     int now;
+    private RecyclerView itemshowRecylerview;
 
     public ItemDetailsAdapter(MainActivity mainActivity, List<ListClassData> listClassData, int now) {
         this.context = mainActivity;
@@ -32,7 +33,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.singleitemforrecylerview, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.singleitemforrecylerview, parent,false);
         return new ItemDetailsAdapter.ViewHolder(view);
     }
 

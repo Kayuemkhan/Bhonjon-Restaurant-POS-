@@ -54,8 +54,13 @@ public class AllCategoriesInfo extends RecyclerView.Adapter<AllCategoriesInfo.Vi
                 addonsinfoList = list.get(position).getAddonsinfo();
                 Log.d("Addons Info", "" + new Gson().toJson(addonsinfoList));
                 addonsStatus = list.get(position).getAddons().toString();
+                // When the addons are available
                 if (addonsStatus.contains("1")) {
                     mainActivity.AddonsChecking(String.valueOf(list.get(position).getProductName()), list.get(position).getPrice(), list.get(position).getVariantName(), addonsinfoList);
+                }
+                // When the addons are not available
+                else {
+
                 }
             }
         });
