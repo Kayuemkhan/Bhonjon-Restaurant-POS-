@@ -16,10 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bdtask.bhojonrestaurantpos.BuildConfig;
-
-
 import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.modelClass.loginModel.LoginResponse;
 import com.bdtask.bhojonrestaurantpos.retrofit.AppConfig;

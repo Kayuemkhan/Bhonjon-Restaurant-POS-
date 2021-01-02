@@ -56,7 +56,7 @@ public class AllCategoriesInfo extends RecyclerView.Adapter<AllCategoriesInfo.Vi
                 addonsStatus = list.get(position).getAddons().toString();
                 // When the addons are available
                 if (addonsStatus.contains("1")) {
-                    mainActivity.AddonsChecking(String.valueOf(list.get(position).getProductName()), list.get(position).getPrice(), list.get(position).getVariantName(), addonsinfoList);
+                    mainActivity.AddonsChecking(String.valueOf(list.get(position).getProductName()), list.get(position).getPrice(), list.get(position).getVariantName(), list.get(position).getProductsID(), addonsinfoList);
                 }
                 // When the addons are not available
                 else {

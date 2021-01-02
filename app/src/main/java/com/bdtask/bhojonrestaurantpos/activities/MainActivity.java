@@ -73,8 +73,10 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView itemshowRecylerview;
     private SearchView searchView;
     List<CategoryData> categorieslist;
-
+    private String productsId;
     List<ListClassData> listClassData = new ArrayList<>();
+
+    boolean haveToInsert = false;
 
     @SuppressLint("WrongConstant")
     @Override
@@ -86,25 +88,25 @@ public class MainActivity extends AppCompatActivity {
         itemshowRecylerview.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         itemshowRecylerview.setHasFixedSize(true);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = findViewById(R.id.searchviewId);
-        searchView.setSearchableInfo(searchManager
-                .getSearchableInfo(getComponentName()));
-        searchView.setMaxWidth(Integer.MAX_VALUE);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                if(categorieslist.contains(query)){
-
-                }
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String query) {
-
-                return false;
-            }
-        });
+//        searchView = findViewById(R.id.searchviewId);
+//        searchView.setSearchableInfo(searchManager
+//                .getSearchableInfo(getComponentName()));
+//        searchView.setMaxWidth(Integer.MAX_VALUE);
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                if(categorieslist.contains(query)){
+//
+//                }
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String query) {
+//
+//                return false;
+//            }
+//        });
         // The categories List
         subcategoryName = findViewById(R.id.subcategoryName);
         subcategoryName.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayout.HORIZONTAL, false));
@@ -116,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
         Log.wtf("chekID", "ID" + id);
         getSubCategoryName();
     }
+
     // All the categories name will be shown here
     public void getSubCategoryName() {
         waiterService.getAllCategories(id).enqueue(new Callback<CategoryResponse>() {
@@ -127,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 categorieslist.addAll(response.body().getData());
                 subcategoryName.setAdapter(new CateroiesListNameAdapter(getApplicationContext(), categorieslist, MainActivity.this));
             }
+
             @Override
             public void onFailure(Call<CategoryResponse> call, Throwable t) {
             }
@@ -160,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(Call<FoodlistResponse> call, Response<FoodlistResponse> response) {
                     Log.d("Response Food List", "" + new Gson().toJson(response.body()));
                     List<FoodinfoFoodList> foodinfoFoodLists = response.body().getData().getFoodinfo();
-                    itemRecylerview.setAdapter(new FoodListAdapater(getApplicationContext(), foodinfoFoodLists));
+                    itemRecylerview.setAdapter(new FoodListAdapater(getApplicationContext(), foodinfoFoodLists, MainActivity.this));
                 }
 
                 @Override
@@ -173,8 +177,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void AddonsChecking(String productname, String price, String size, List<Addonsinfo> addonsinfoList) {
-        Log.d("Addons List Check", "" + new Gson().toJson(addonsinfoList));
+    public void AddonsChecking(String productname, String price, String size, String productsID, List<Addonsinfo> addonsinfoList1) {
+        Log.d("Addons List Check", "" + new Gson().toJson(addonsinfoList1));
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view2 = getLayoutInflater().inflate(R.layout.design_aleartdialog, null);
         close = view2.findViewById(R.id.closebtnaddons);
@@ -184,16 +188,19 @@ public class MainActivity extends AppCompatActivity {
         itemprice = view2.findViewById(R.id.itemprice);
         addonsrecylerView = view2.findViewById(R.id.addonsrecylerView);
         addonsrecylerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-        addonsrecylerView.setAdapter(new AddonsDetailsAdapter(MainActivity.this, addonsinfoList));
+        addonsrecylerView.setAdapter(new AddonsDetailsAdapter(MainActivity.this, addonsinfoList1));
         itemprice.setText(price);
         itemsize.setText(size);
         iteminformation.setText(productname);
         plusbuttonaddons = view2.findViewById(R.id.plusbuttonaddons);
         minusbuttonaddons = view2.findViewById(R.id.minusbuttonaddons);
         addcartfromaddons = view2.findViewById(R.id.addcartfromaddons);
-
+        productsId = productsID;
+        now = Integer.parseInt(editextquantity.getText().toString());
+        Log.d("addonsCheck", "" + now);
         plusbuttonaddons.setOnClickListener(v -> {
             // Updating the addons Number
+
             addonsnumber += 1;
             now = Integer.parseInt(editextquantity.getText().toString());
             addonsnumber += now;
@@ -201,7 +208,6 @@ public class MainActivity extends AppCompatActivity {
             addonsnumber = 0;
         });
         minusbuttonaddons.setOnClickListener(v -> {
-
             now = Integer.parseInt(editextquantity.getText().toString());
             // If the number is zero then it can't be minimized
             if (now != 0) {
@@ -213,18 +219,98 @@ public class MainActivity extends AppCompatActivity {
         builder.setView(view2);
         AlertDialog alert = builder.create();
         close.setOnClickListener(view -> alert.dismiss());
+
+
         addcartfromaddons.setOnClickListener(v -> {
             String t = SharedPref.read("priceaddons", "");
-
-            ListClassData listClassData1 = new ListClassData(productname, price, size, t);
-            listClassData.add(listClassData1);
             now = Integer.parseInt(editextquantity.getText().toString());
-            Log.d("Datacheck", "" + new Gson().toJson(listClassData));
-            itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData, now));
+            ListClassData listClassData1 = new ListClassData(productname, price, size, t, productsID, now);
+
+            if (listClassData.size() == 0){
+                listClassData.add(listClassData1);
+            }else {
+                haveToInsert = false;
+                for (int i=0;i<listClassData.size();i++){
+                    if (productsID.equals(listClassData.get(i).getProductsID())){
+                        listClassData.get(i).setQuantity(now + listClassData.get(i).getQuantity());
+                        haveToInsert = false;
+                        break;
+                    }else {
+                        haveToInsert = true;
+                    }
+                }
+
+                if (haveToInsert){
+                    haveToInsert = false;
+                    listClassData.add(listClassData1);
+
+                }
+            }
+
+
+            Log.wtf("Datacheck", "" + new Gson().toJson(listClassData));
+            Log.wtf("Datacheck22", "" + productsID);
+             ItemDetailsAdapter itemDetailsAdapter = new ItemDetailsAdapter(MainActivity.this, listClassData);
+            itemshowRecylerview.setAdapter(itemDetailsAdapter);
+            itemDetailsAdapter.notifyDataSetChanged();
+
             alert.dismiss();
         });
         alert.show();
     }
 
+
+//    public void AddonsCheckingForAllCategories(String productname, String price, String size, List<com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.Addonsinfo> addonsinfoList) {
+//        Log.d("Addons List Check", "" + new Gson().toJson(addonsinfoList));
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        View view2 = getLayoutInflater().inflate(R.layout.design_aleartdialog, null);
+//
+//        close = view2.findViewById(R.id.closebtnaddons);
+//        iteminformation = view2.findViewById(R.id.iteminformation);
+//        itemsize = view2.findViewById(R.id.itemsize);
+//        editextquantity = view2.findViewById(R.id.itemquantity);
+//        itemprice = view2.findViewById(R.id.itemprice);
+//        addonsrecylerView = view2.findViewById(R.id.addonsrecylerView);
+//        addonsrecylerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+//        addonsrecylerView.setAdapter(new AddonsDetailsAdapter(MainActivity.this, addonsinfoList));
+//        itemprice.setText(price);
+//        itemsize.setText(size);
+//        iteminformation.setText(productname);
+//        plusbuttonaddons = view2.findViewById(R.id.plusbuttonaddons);
+//        minusbuttonaddons = view2.findViewById(R.id.minusbuttonaddons);
+//        addcartfromaddons = view2.findViewById(R.id.addcartfromaddons);
+//
+//        plusbuttonaddons.setOnClickListener(v -> {
+//            // Updating the addons Number
+//            addonsnumber += 1;
+//            now = Integer.parseInt(editextquantity.getText().toString());
+//            addonsnumber += now;
+//            editextquantity.setText(String.valueOf(addonsnumber));
+//            addonsnumber = 0;
+//        });
+//        minusbuttonaddons.setOnClickListener(v -> {
+//
+//            now = Integer.parseInt(editextquantity.getText().toString());
+//            // If the number is zero then it can't be minimized
+//            if (now != 0) {
+//                now -= 1;
+//                editextquantity.setText(String.valueOf(now));
+//                addonsnumber = 0;
+//            }
+//        });
+//        builder.setView(view2);
+//        AlertDialog alert = builder.create();
+//        close.setOnClickListener(view -> alert.dismiss());
+//        addcartfromaddons.setOnClickListener(v -> {
+//            String t = SharedPref.read("priceaddons", "");
+//            now = Integer.parseInt(editextquantity.getText().toString());
+//            ListClassData listClassData1 = new ListClassData(productname, price, size, t,productsId,now);
+//            listClassData.add(listClassData1);
+//            Log.d("Datacheck", "" + new Gson().toJson(listClassData));
+//            itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData));
+//            alert.dismiss();
+//        });
+//        alert.show();
+//    }
 
 }

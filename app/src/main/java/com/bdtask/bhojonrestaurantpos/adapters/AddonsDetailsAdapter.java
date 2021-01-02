@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bdtask.bhojonrestaurantpos.R;
+import com.bdtask.bhojonrestaurantpos.activities.MainActivity;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.Addonsinfo;
 import com.bdtask.bhojonrestaurantpos.utils.SharedPref;
 
@@ -19,13 +20,24 @@ import java.util.List;
 public class AddonsDetailsAdapter extends RecyclerView.Adapter<AddonsDetailsAdapter.ViewHolder> {
     private Context context;
     private List<Addonsinfo> list;
+    private List<com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.Addonsinfo> list2;
+    private Boolean s = false;
+
     private int prizenow1,prizenow2;
 
-    public AddonsDetailsAdapter(Context applicationContext, List<Addonsinfo> addonsinfoList) {
+    public AddonsDetailsAdapter(Context applicationContext, List<Addonsinfo> addonsinfoList1) {
         this.context = applicationContext;
-        this.list = addonsinfoList;
+        this.list = addonsinfoList1;
         SharedPref.init(context);
+        s = true;
     }
+
+    public AddonsDetailsAdapter(MainActivity applicationContext, List<com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.Addonsinfo> addonsinfoList) {
+        this.context = applicationContext;
+        this.list2 = addonsinfoList;
+
+    }
+
 
     @NonNull
     @Override
@@ -36,19 +48,35 @@ public class AddonsDetailsAdapter extends RecyclerView.Adapter<AddonsDetailsAdap
 
     @Override
     public void onBindViewHolder(@NonNull AddonsDetailsAdapter.ViewHolder holder, int position) {
-            holder.itempriceaddons.setText(list.get(position).getAddonsprice());
-            holder.itemsizeaddons.setText(list.get(position).getAddOnName());
-            if(holder.iteminformationaddons.isChecked()){
-                String priceaddons=  list.get(position).getAddonsprice();
-                prizenow1 = Integer.parseInt(priceaddons);
-                SharedPref.write("priceAddons",priceaddons);
+            if (s == true){
+                holder.itempriceaddons.setText(list.get(position).getAddonsprice());
+                holder.itemsizeaddons.setText(list.get(position).getAddOnName());
+                if(holder.iteminformationaddons.isChecked()){
+                    String priceaddons=  list.get(position).getAddonsprice();
+                    prizenow1 = Integer.parseInt(priceaddons);
+                    SharedPref.write("priceAddons",priceaddons);
+                }
+            }
+            else {
+                holder.itempriceaddons.setText(list2.get(position).getAddonsprice());
+                holder.itemsizeaddons.setText(list2.get(position).getAddOnName());
+                if(holder.iteminformationaddons.isChecked()){
+                    String priceaddons=  list2.get(position).getAddonsprice();
+                    prizenow1 = Integer.parseInt(priceaddons);
+                    SharedPref.write("priceAddons",priceaddons);
+                }
             }
 
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        if(s == true){
+            return list.size();
+        }
+        else {
+            return list2.size();
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

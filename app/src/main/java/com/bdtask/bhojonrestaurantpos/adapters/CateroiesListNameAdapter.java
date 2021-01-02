@@ -50,6 +50,7 @@ public class CateroiesListNameAdapter extends RecyclerView.Adapter<CateroiesList
                 //holder.tvId.setVisibility(View.VISIBLE);
             }
         });
+
         if (rowId == position) {
             holder.tvId.setVisibility(View.VISIBLE);
             mainActivity.getCategoriesItem(String.valueOf(position), String.valueOf(list.get(position).getCategoryID()));
@@ -66,7 +67,7 @@ public class CateroiesListNameAdapter extends RecyclerView.Adapter<CateroiesList
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView subcatergoryNameId, tvId;
         LinearLayout itemView;
-
+        View view;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             subcatergoryNameId = itemView.findViewById(R.id.subcatergoryNameId);

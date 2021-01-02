@@ -20,13 +20,13 @@ import java.util.List;
 public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.ViewHolder> {
     private Context context;
     private List<ListClassData> listClassData;
-    int now;
+    String quantity;
     private RecyclerView itemshowRecylerview;
 
-    public ItemDetailsAdapter(MainActivity mainActivity, List<ListClassData> listClassData, int now) {
+    public ItemDetailsAdapter(MainActivity mainActivity, List<ListClassData> listClassData) {
         this.context = mainActivity;
         this.listClassData = listClassData;
-        this.now = now;
+
     }
 
 
@@ -42,7 +42,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
         holder.itemname.setText(listClassData.get(position).getProductname());
         holder.variantname.setText(listClassData.get(position).getSize());
         holder.priceid.setText(listClassData.get(position).getPrice());
-        holder.itemquantityinitemview.setText(String.valueOf(now));
+        holder.itemquantityinitemview.setText(String.valueOf(listClassData.get(position).getQuantity()));
     }
 
     @Override
