@@ -29,6 +29,10 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
 
     }
 
+    public ItemDetailsAdapter(Context context, List<ListClassData> listClassData) {
+
+    }
+
 
     @NonNull
     @Override

@@ -54,14 +54,9 @@ public class FoodListAdapater extends RecyclerView.Adapter<FoodListAdapater.View
                 addonsinfoList = lists.get(position).getAddonsinfo();
                 Log.d("Addons Info", "" + new Gson().toJson(addonsinfoList));
                 addonsStatus = lists.get(position).getAddons().toString();
-                // When the addons are available
-                if (addonsStatus.contains("1")) {
-                    //mainActivity.AddonsCheckingForAllCategories(String.valueOf(lists.get(position).getProductName()), lists.get(position).getPrice(), lists.get(position).getVariantName(), addonsinfoList);
-                }
-                // When the addons are not available
-                else {
 
-                }
+                    mainActivity.AddonsCheckingForAllCategories(addonsStatus,String.valueOf(lists.get(position).getProductName()), lists.get(position).getPrice(), lists.get(position).getVariantName(),lists.get(position).getProductsID(), addonsinfoList);
+
             }
         });
     }

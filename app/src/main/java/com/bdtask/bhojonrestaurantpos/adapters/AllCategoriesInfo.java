@@ -17,17 +17,24 @@ import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.activities.MainActivity;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.Addonsinfo;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.Foodinfo;
+import com.bdtask.bhojonrestaurantpos.modelClass.datamodel.ListClassData;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class AllCategoriesInfo extends RecyclerView.Adapter<AllCategoriesInfo.ViewHolder> {
-    Context context;
-    List<Foodinfo> list;
-    MainActivity mainActivity;
-    int listPosition = 0;
-    String addonsStatus;
-    List<Addonsinfo> addonsinfoList;
+    private Context context;
+    private List<Foodinfo> list;
+    private MainActivity mainActivity;
+    private int listPosition = 0;
+    private String addonsStatus;
+    private List<Addonsinfo> addonsinfoList;
+    private List<ListClassData> listClassData = new ArrayList<>();
+    private boolean haveToInsert = false;
+    private String productname , size, t, price, productsID;
+    private int now;
 
     public AllCategoriesInfo(Context applicationContext, List<Foodinfo> categoriesData, MainActivity mainActivity2) {
         this.context = applicationContext;
@@ -54,14 +61,7 @@ public class AllCategoriesInfo extends RecyclerView.Adapter<AllCategoriesInfo.Vi
                 addonsinfoList = list.get(position).getAddonsinfo();
                 Log.d("Addons Info", "" + new Gson().toJson(addonsinfoList));
                 addonsStatus = list.get(position).getAddons().toString();
-                // When the addons are available
-                if (addonsStatus.contains("1")) {
-                    mainActivity.AddonsChecking(String.valueOf(list.get(position).getProductName()), list.get(position).getPrice(), list.get(position).getVariantName(), list.get(position).getProductsID(), addonsinfoList);
-                }
-                // When the addons are not available
-                else {
-
-                }
+                    mainActivity.AddonsChecking(addonsStatus,String.valueOf(list.get(position).getProductName()), list.get(position).getPrice(), list.get(position).getVariantName(), list.get(position).getProductsID(), addonsinfoList);
             }
         });
     }
