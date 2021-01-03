@@ -10,9 +10,11 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.activities.MainActivity;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.Foodinfo;
@@ -54,8 +56,7 @@ public class FoodListAdapater extends RecyclerView.Adapter<FoodListAdapater.View
                 addonsinfoList = lists.get(position).getAddonsinfo();
                 Log.d("Addons Info", "" + new Gson().toJson(addonsinfoList));
                 addonsStatus = lists.get(position).getAddons().toString();
-
-                    mainActivity.AddonsCheckingForAllCategories(addonsStatus,String.valueOf(lists.get(position).getProductName()), lists.get(position).getPrice(), lists.get(position).getVariantName(),lists.get(position).getProductsID(), addonsinfoList);
+                mainActivity.AddonsCheckingForAllCategories(addonsStatus, String.valueOf(lists.get(position).getProductName()), lists.get(position).getPrice(), lists.get(position).getVariantName(), lists.get(position).getProductsID(), addonsinfoList);
 
             }
         });

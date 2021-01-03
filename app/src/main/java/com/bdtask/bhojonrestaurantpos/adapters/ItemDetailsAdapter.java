@@ -15,6 +15,7 @@ import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.activities.MainActivity;
 import com.bdtask.bhojonrestaurantpos.modelClass.datamodel.ListClassData;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.ViewHolder> {
@@ -26,18 +27,11 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     public ItemDetailsAdapter(MainActivity mainActivity, List<ListClassData> listClassData) {
         this.context = mainActivity;
         this.listClassData = listClassData;
-
     }
-
-    public ItemDetailsAdapter(Context context, List<ListClassData> listClassData) {
-
-    }
-
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.singleitemforrecylerview, parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.singleitemforrecylerview, parent, false);
         return new ItemDetailsAdapter.ViewHolder(view);
     }
 
@@ -45,8 +39,19 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.itemname.setText(listClassData.get(position).getProductname());
         holder.variantname.setText(listClassData.get(position).getSize());
-        holder.priceid.setText(listClassData.get(position).getPrice());
         holder.itemquantityinitemview.setText(String.valueOf(listClassData.get(position).getQuantity()));
+        double d= Double.parseDouble(listClassData.get(position).getPrice()) * listClassData.get(position).getQuantity();
+        holder.priceid.setText(String.valueOf(d));
+        holder.plusbutton.setOnClickListener(v -> {
+            int p= Integer.parseInt(holder.itemquantityinitemview.getText().toString());
+            p++;
+
+            holder.itemquantityinitemview.setText(String.valueOf( p));
+            double e= Double.parseDouble(listClassData.get(position).getPrice()) * listClassData.get(position).getQuantity();
+            holder.priceid.setText(String.valueOf(e));
+
+
+        });
     }
 
     @Override
@@ -55,8 +60,9 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView itemname,variantname,priceid,itemquantityinitemview;
-        private ImageView plusbutton,minusbutton,deletebutton;
+        private TextView itemname, variantname, priceid, itemquantityinitemview;
+        private ImageView plusbutton, minusbutton, deletebutton;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemname = itemView.findViewById(R.id.itemname);

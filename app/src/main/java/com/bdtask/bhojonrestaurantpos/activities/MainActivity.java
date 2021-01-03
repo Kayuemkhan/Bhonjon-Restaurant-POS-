@@ -69,13 +69,16 @@ public class MainActivity extends AppCompatActivity {
     private ImageView plusbuttonaddons, minusbuttonaddons;
     private int addonsnumber = 0;
     private Button addcartfromaddons;
-    private int now;
+    private int now = 1;
+    private double n;
     private RecyclerView itemshowRecylerview;
     private SearchView searchView;
     List<CategoryData> categorieslist;
     private String productsId;
     List<ListClassData> listClassData = new ArrayList<>();
     private boolean haveToInsert = false;
+
+    Double z =0.0;
 
     @SuppressLint("WrongConstant")
     @Override
@@ -178,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void AddonsChecking(String addonsStatus, String productname, String price, String size, String productsID, List<Addonsinfo> addonsinfoList1) {
         // When Addons are available...
-        if(addonsStatus.contains("1")){
+        if (addonsStatus.contains("1")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             View view2 = getLayoutInflater().inflate(R.layout.design_aleartdialog, null);
             close = view2.findViewById(R.id.closebtnaddons);
@@ -264,6 +267,7 @@ public class MainActivity extends AppCompatActivity {
                 haveToInsert = false;
                 for (int i = 0; i < listClassData.size(); i++) {
                     if (productsID.equals(listClassData.get(i).getProductsID())) {
+                        n=0;
                         listClassData.get(i).setQuantity(now + listClassData.get(i).getQuantity());
                         haveToInsert = false;
                         break;
@@ -287,8 +291,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void AddonsCheckingForAllCategories(String addonsStatus, String productname, String price, String size, String productsID, List<com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.Addonsinfo> addonsinfoList) {
-       // When Addons are available
-        if(addonsStatus.contains("1")){
+
+        // When Addons are available
+        if (addonsStatus.contains("1")) {
             Log.d("Addons List Check", "" + new Gson().toJson(addonsinfoList));
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             View view2 = getLayoutInflater().inflate(R.layout.design_aleartdialog, null);
@@ -330,9 +335,10 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog alert = builder.create();
             close.setOnClickListener(view -> alert.dismiss());
             addcartfromaddons.setOnClickListener(v -> {
+
                 String t = SharedPref.read("priceaddons", "");
                 now = Integer.parseInt(editextquantity.getText().toString());
-                ListClassData listClassData1 = new ListClassData(productname, price, size, t, productsId, now);
+                ListClassData listClassData1 = new ListClassData(productname, price, size, t, productsID, now);
                 if (listClassData.size() == 0) {
                     listClassData.add(listClassData1);
                 } else {
@@ -362,18 +368,21 @@ public class MainActivity extends AppCompatActivity {
             });
             alert.show();
         }
+
+
         // When Addons are not available
         else {
+
             String t = SharedPref.read("priceaddons", "");
-            now = 1;
-            ListClassData listClassData1 = new ListClassData(productname, price, size, t, productsId, now);
+            ListClassData listClassData1 = new ListClassData(productname, price, size, t, productsID, now);
             if (listClassData.size() == 0) {
                 listClassData.add(listClassData1);
             } else {
                 haveToInsert = false;
                 for (int i = 0; i < listClassData.size(); i++) {
                     if (productsID.equals(listClassData.get(i).getProductsID())) {
-                        listClassData.get(i).setQuantity(now + listClassData.get(i).getQuantity());
+                        listClassData.get(i).setPrice(listClassData.get(i).getPrice());
+                        listClassData.get(i).setQuantity(1 + listClassData.get(i).getQuantity());
                         haveToInsert = false;
                         break;
                     } else {

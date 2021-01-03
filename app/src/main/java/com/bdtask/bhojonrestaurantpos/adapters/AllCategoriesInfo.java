@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.activities.MainActivity;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.Addonsinfo;
@@ -33,7 +35,7 @@ public class AllCategoriesInfo extends RecyclerView.Adapter<AllCategoriesInfo.Vi
     private List<Addonsinfo> addonsinfoList;
     private List<ListClassData> listClassData = new ArrayList<>();
     private boolean haveToInsert = false;
-    private String productname , size, t, price, productsID;
+    private String productname, size, t, price, productsID;
     private int now;
 
     public AllCategoriesInfo(Context applicationContext, List<Foodinfo> categoriesData, MainActivity mainActivity2) {
@@ -61,7 +63,7 @@ public class AllCategoriesInfo extends RecyclerView.Adapter<AllCategoriesInfo.Vi
                 addonsinfoList = list.get(position).getAddonsinfo();
                 Log.d("Addons Info", "" + new Gson().toJson(addonsinfoList));
                 addonsStatus = list.get(position).getAddons().toString();
-                    mainActivity.AddonsChecking(addonsStatus,String.valueOf(list.get(position).getProductName()), list.get(position).getPrice(), list.get(position).getVariantName(), list.get(position).getProductsID(), addonsinfoList);
+                mainActivity.AddonsChecking(addonsStatus, String.valueOf(list.get(position).getProductName()), list.get(position).getPrice(), list.get(position).getVariantName(), list.get(position).getProductsID(), addonsinfoList);
             }
         });
     }
