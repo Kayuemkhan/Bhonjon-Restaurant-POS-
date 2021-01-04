@@ -39,6 +39,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         SharedPref.init(this);
+        if (SharedPref.read("LOGGEDIN","") != null){
+            startActivity(new Intent(LoginActivity.this,MainActivity.class));
+            finish();
+        }
         progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setTitle("Login Account");
         progressDialog.setMessage("Please Wait, While we are checking the credentials");
@@ -90,6 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                                 SharedPref.write("POWERBY", loginResponse.getData().getPowerBy());
                                 SharedPref.write("CURRENCY", loginResponse.getData().getCurrencysign());
                                 SharedPref.write("SC", loginResponse.getData().getServicecharge());
+
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 finish();
 
