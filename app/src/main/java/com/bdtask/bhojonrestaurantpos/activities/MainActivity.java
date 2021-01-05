@@ -77,8 +77,15 @@ public class MainActivity extends AppCompatActivity {
     private String productsId;
     List<ListClassData> listClassData = new ArrayList<>();
     private boolean haveToInsert = false;
+    private TextView buttoncalculator;
+    private Button buttoncancel, buttonquickorder, placeorder;
+    private double in1 = 0, i2 = 0;
+    private TextView edittext1;
+    private boolean Add, Sub, Multiply, Divide, Remainder, deci;
+    private Button button_0, button_1, button_2, button_3, button_4, button_5, button_6, button_7, button_8, button_9, button_Add, button_Sub,
+            button_Mul, button_Div, button_Equ, button_Del, button_Dot, button_Remainder;
 
-    Double z =0.0;
+    private Double z = 0.0;
 
     @SuppressLint("WrongConstant")
     @Override
@@ -90,26 +97,17 @@ public class MainActivity extends AppCompatActivity {
         itemshowRecylerview.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         itemshowRecylerview.setHasFixedSize(true);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-//        searchView = findViewById(R.id.searchviewId);
-//        searchView.setSearchableInfo(searchManager
-//                .getSearchableInfo(getComponentName()));
-//        searchView.setMaxWidth(Integer.MAX_VALUE);
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                if(categorieslist.contains(query)){
-//
-//                }
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String query) {
-//
-//                return false;
-//            }
-//        });
-        // The categories List
+        buttoncalculator = findViewById(R.id.buttoncalculator);
+        buttoncancel = findViewById(R.id.buttoncancel);
+        buttonquickorder = findViewById(R.id.buttonquickorder);
+        placeorder = findViewById(R.id.placeorder);
+
+        buttoncalculator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculate();
+            }
+        });
         subcategoryName = findViewById(R.id.subcategoryName);
         subcategoryName.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayout.HORIZONTAL, false));
         itemRecylerview = findViewById(R.id.itemRecylerview);
@@ -120,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
         Log.wtf("chekID", "ID" + id);
         getSubCategoryName();
     }
+
 
     // All the categories name will be shown here
     public void getSubCategoryName() {
@@ -267,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
                 haveToInsert = false;
                 for (int i = 0; i < listClassData.size(); i++) {
                     if (productsID.equals(listClassData.get(i).getProductsID())) {
-                        n=0;
+                        n = 0;
                         listClassData.get(i).setQuantity(now + listClassData.get(i).getQuantity());
                         haveToInsert = false;
                         break;
@@ -402,5 +401,216 @@ public class MainActivity extends AppCompatActivity {
             itemDetailsAdapter.notifyDataSetChanged();
         }
     }
+
+    private void calculate() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view2 = getLayoutInflater().inflate(R.layout.aleartdialog_calculator, null);
+        button_0 = view2.findViewById(R.id.b0);
+        button_1 = view2.findViewById(R.id.b1);
+        button_2 = view2.findViewById(R.id.b2);
+        button_3 = view2.findViewById(R.id.b3);
+        button_4 = view2.findViewById(R.id.b4);
+        button_5 = view2.findViewById(R.id.b5);
+        button_6 = view2.findViewById(R.id.b6);
+        button_7 = view2.findViewById(R.id.b7);
+        button_8 = view2.findViewById(R.id.b8);
+        button_9 = view2.findViewById(R.id.b9);
+        button_Dot = view2.findViewById(R.id.bDot);
+        button_Add = view2.findViewById(R.id.badd);
+        button_Sub = view2.findViewById(R.id.bsub);
+        button_Mul = view2.findViewById(R.id.bmul);
+        button_Div = view2.findViewById(R.id.biv);
+        button_Remainder = view2.findViewById(R.id.BRemain);
+        button_Del = view2.findViewById(R.id.buttonDel);
+        button_Equ = view2.findViewById(R.id.buttoneql);
+        edittext1 = view2.findViewById(R.id.display);
+        button_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edittext1.setText(edittext1.getText() + "1");
+            }
+        });
+
+        button_2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edittext1.setText(edittext1.getText() + "2");
+            }
+        });
+
+        button_3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edittext1.setText(edittext1.getText() + "3");
+            }
+        });
+
+        button_4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edittext1.setText(edittext1.getText() + "4");
+            }
+        });
+
+        button_5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edittext1.setText(edittext1.getText() + "5");
+            }
+        });
+
+        button_6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edittext1.setText(edittext1.getText() + "6");
+            }
+        });
+
+        button_7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edittext1.setText(edittext1.getText() + "7");
+            }
+        });
+
+        button_8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edittext1.setText(edittext1.getText() + "8");
+            }
+        });
+
+        button_9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edittext1.setText(edittext1.getText() + "9");
+            }
+        });
+
+        button_0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edittext1.setText(edittext1.getText() + "0");
+            }
+        });
+
+        button_Add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edittext1.getText().length() != 0) {
+                    in1 = Float.parseFloat(edittext1.getText() + "");
+                    Add = true;
+                    deci = false;
+                    edittext1.setText(null);
+                }
+            }
+        });
+
+        button_Sub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edittext1.getText().length() != 0) {
+                    in1 = Float.parseFloat(edittext1.getText() + "");
+                    Sub = true;
+                    deci = false;
+                    edittext1.setText(null);
+                }
+            }
+        });
+
+        button_Mul.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edittext1.getText().length() != 0) {
+                    in1 = Float.parseFloat(edittext1.getText() + "");
+                    Multiply = true;
+                    deci = false;
+                    edittext1.setText(null);
+                }
+            }
+        });
+
+        button_Div.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edittext1.getText().length() != 0) {
+                    in1 = Float.parseFloat(edittext1.getText() + "");
+                    Divide = true;
+                    deci = false;
+                    edittext1.setText(null);
+                }
+            }
+        });
+
+        button_Remainder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edittext1.getText().length() != 0) {
+                    in1 = Float.parseFloat(edittext1.getText() + "");
+                    Remainder = true;
+                    deci = false;
+                    edittext1.setText(null);
+                }
+            }
+        });
+
+        button_Equ.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Add || Sub || Multiply || Divide || Remainder) {
+                    i2 = Float.parseFloat(edittext1.getText() + "");
+                }
+
+                if (Add) {
+
+                    edittext1.setText(in1 + i2 + "");
+                    Add = false;
+                }
+
+                if (Sub) {
+
+                    edittext1.setText(in1 - i2 + "");
+                    Sub = false;
+                }
+
+                if (Multiply) {
+                    edittext1.setText(in1 * i2 + "");
+                    Multiply = false;
+                }
+
+                if (Divide) {
+                    edittext1.setText(in1 / i2 + "");
+                    Divide = false;
+                }
+                if (Remainder) {
+                    edittext1.setText(in1 % i2 + "");
+                    Remainder = false;
+                }
+            }
+        });
+
+        button_Del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edittext1.setText("");
+                in1 = 0.0;
+                i2 = 0.0;
+            }
+        });
+
+        button_Dot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (deci) {
+                    //do nothing or you can show the error
+                } else {
+                    edittext1.setText(edittext1.getText() + ".");
+                    deci = true;
+                }
+
+            }
+        });
+    }
+
 
 }

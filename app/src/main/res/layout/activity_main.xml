@@ -186,6 +186,7 @@
             android:weightSum="4">
 
             <TextView
+                android:id="@+id/buttoncalculator"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/_5sdp"
@@ -200,6 +201,7 @@
                 android:textSize="18sp" />
 
             <Button
+                android:id="@+id/buttoncancel"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/_5sdp"
@@ -211,6 +213,7 @@
                 android:textColor="@color/white" />
 
             <Button
+                android:id="@+id/buttonquickorder"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/_5sdp"
@@ -222,6 +225,7 @@
                 />
 
             <Button
+                android:id="@+id/placeorder"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/_5sdp"
