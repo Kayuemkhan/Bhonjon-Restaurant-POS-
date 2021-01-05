@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -102,6 +103,12 @@ public class MainActivity extends AppCompatActivity {
         buttonquickorder = findViewById(R.id.buttonquickorder);
         placeorder = findViewById(R.id.placeorder);
 
+        buttoncancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buttoncancelopearations();
+            }
+        });
         buttoncalculator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,6 +124,12 @@ public class MainActivity extends AppCompatActivity {
         id = SharedPref.read("ID", "");
         Log.wtf("chekID", "ID" + id);
         getSubCategoryName();
+    }
+
+    private void buttoncancelopearations() {
+        listClassData.clear();
+        itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData));
+
     }
 
 
@@ -602,7 +615,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (deci) {
-                    //do nothing or you can show the error
+
                 } else {
                     edittext1.setText(edittext1.getText() + ".");
                     deci = true;
@@ -610,6 +623,11 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        builder.setView(view2);
+        AlertDialog alert = builder.create();
+        alert.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        alert.show();
+
     }
 
 

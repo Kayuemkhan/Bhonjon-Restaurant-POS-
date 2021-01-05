@@ -111,360 +111,365 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/lowerLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:weightSum="2">
-
-        <LinearLayout
-            android:id="@+id/footer"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_32sdp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="3">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight=".5"
-                    android:background="#E5343E"
-                    android:padding="8dp"
-                    android:text="CGT/TAX:"
-                    android:textAlignment="center"
-                    android:textColor="@color/white" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight=".5"
-                    android:background="#418BCA"
-                    android:padding="8dp"
-                    android:text="Discount:"
-                    android:textAlignment="center"
-                    android:textColor="@color/white" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/overlay_dark"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="Grand Total : 1250.00"
-                    android:textColor="#F7CD2D"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-
-                    />
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/bottombuttonDesign"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_32sdp"
-            android:layout_alignParentBottom="true"
-            android:layout_weight="1"
-            android:background="#161616"
-            android:weightSum="4">
-
-            <TextView
-                android:id="@+id/buttoncalculator"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/_5sdp"
-                android:layout_weight="1"
-                android:background="#016AF2"
-                android:drawableLeft="@drawable/ic_baseline_calculate_24"
-                android:gravity="center"
-                android:paddingLeft="@dimen/_5sdp"
-                android:scaleType="center"
-                android:text="Calculator"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
-
-            <Button
-                android:id="@+id/buttoncancel"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/_5sdp"
-                android:layout_weight="1"
-                android:background="#E5343A"
-                android:drawableLeft="@drawable/deletewhite"
-                android:paddingLeft="@dimen/_10sdp"
-                android:text="cancel"
-                android:textColor="@color/white" />
-
-            <Button
-                android:id="@+id/buttonquickorder"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/_5sdp"
-                android:layout_weight="1"
-                android:background="#FF6600"
-                android:text="Qucik Order"
-                android:textColor="@color/white"
-
-                />
-
-            <Button
-                android:id="@+id/placeorder"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/_5sdp"
-                android:layout_weight="1"
-                android:background="#379F00"
-                android:text="Place Order"
-                android:textColor="@color/white"
-
-                />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/lowerLayout"
-        android:layout_below="@+id/upperlayout"
-        android:weightSum="2">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.2"
-            android:orientation="vertical">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/subcategoryName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:listitem="@layout/designsubcategorylistnamessingleitem" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/itemRecylerview"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/categoriesdesign"
-                tools:listitem="@layout/singleitem" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".8"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/rightDesign"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/buttonUpperdesign"
-                android:layout_margin="@dimen/_5sdp"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/_10sdp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="Customer Name*"
-                        android:textColor="@color/overlay_dark"
-                        android:textStyle="bold" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <include
-                            layout="@layout/spinner"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_20sdp"
-                            android:layout_weight="1.6" />
-
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="bottom"
-                            android:layout_margin="@dimen/_2sdp"
-                            android:layout_weight=".4"
-                            android:background="#008711"
-                            android:src="@drawable/ic_baseline_add_24" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="Waiter*"
-                        android:textColor="@color/overlay_dark"
-                        android:textStyle="bold" />
-
-                    <include
-                        layout="@layout/spinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_20sdp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.1"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Customer Type*"
-                                android:textColor="@color/overlay_dark"
-                                android:textStyle="bold" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-
-                                <include
-                                    layout="@layout/spinner"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="@dimen/_20sdp" />
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Table*"
-                                    android:textColor="@color/overlay_dark"
-                                    android:textStyle="bold" />
-
-                                <include
-                                    layout="@layout/spinner"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="@dimen/_20sdp" />
-                            </LinearLayout>
-
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#EEE"
-                android:orientation="horizontal"
-                android:weightSum="5">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="@dimen/_5sdp"
-                    android:text="Item" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="@dimen/_5sdp"
-                    android:text="Varient Name" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="@dimen/_5sdp"
-                    android:text="Price" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="@dimen/_5sdp"
-                    android:text="Qty" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="@dimen/_5sdp"
-                    android:text="Action" />
-
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:visibility="visible"
-                android:id="@+id/itemshowRecylerview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:listitem="@layout/singleitemforrecylerview" />
-
-
-
-
-        </LinearLayout>
-
-    </LinearLayout>
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_below="@+id/upperlayout"
+       >
+       <LinearLayout
+           android:id="@+id/lowerLayout"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_alignParentBottom="true"
+           android:weightSum="2">
+
+           <LinearLayout
+               android:id="@+id/footer"
+               android:layout_width="match_parent"
+               android:layout_height="@dimen/_32sdp"
+               android:layout_weight="1"
+               android:orientation="horizontal"
+               android:weightSum="3">
+
+               <LinearLayout
+                   android:layout_width="0dp"
+                   android:layout_height="match_parent"
+                   android:layout_weight="1"
+                   android:orientation="vertical">
+
+                   <TextView
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:layout_weight=".5"
+                       android:background="#E5343E"
+                       android:padding="8dp"
+                       android:text="CGT/TAX:"
+                       android:textAlignment="center"
+                       android:textColor="@color/white" />
+
+                   <TextView
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:layout_weight=".5"
+                       android:background="#418BCA"
+                       android:padding="8dp"
+                       android:text="Discount:"
+                       android:textAlignment="center"
+                       android:textColor="@color/white" />
+
+               </LinearLayout>
+
+               <LinearLayout
+                   android:layout_width="0dp"
+                   android:layout_height="match_parent"
+                   android:layout_weight="2">
+
+                   <TextView
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:background="@color/overlay_dark"
+                       android:gravity="center"
+                       android:padding="8dp"
+                       android:text="Grand Total : 1250.00"
+                       android:textColor="#F7CD2D"
+                       android:textSize="20sp"
+                       android:textStyle="bold"
+
+                       />
+               </LinearLayout>
+
+
+           </LinearLayout>
+
+           <LinearLayout
+               android:id="@+id/bottombuttonDesign"
+               android:layout_width="match_parent"
+               android:layout_height="@dimen/_32sdp"
+               android:layout_alignParentBottom="true"
+               android:layout_weight="1"
+               android:background="#161616"
+               android:weightSum="4">
+
+               <TextView
+                   android:id="@+id/buttoncalculator"
+                   android:layout_width="0dp"
+                   android:layout_height="match_parent"
+                   android:layout_margin="@dimen/_5sdp"
+                   android:layout_weight="1"
+                   android:background="#016AF2"
+                   android:drawableLeft="@drawable/ic_baseline_calculate_24"
+                   android:gravity="center"
+                   android:paddingLeft="@dimen/_5sdp"
+                   android:scaleType="center"
+                   android:text="Calculator"
+                   android:textColor="@color/white"
+                   android:textSize="18sp" />
+
+               <Button
+                   android:id="@+id/buttoncancel"
+                   android:layout_width="0dp"
+                   android:layout_height="match_parent"
+                   android:layout_margin="@dimen/_5sdp"
+                   android:layout_weight="1"
+                   android:background="#E5343A"
+                   android:drawableLeft="@drawable/deletewhite"
+                   android:paddingLeft="@dimen/_10sdp"
+                   android:text="cancel"
+                   android:textColor="@color/white" />
+
+               <Button
+                   android:id="@+id/buttonquickorder"
+                   android:layout_width="0dp"
+                   android:layout_height="match_parent"
+                   android:layout_margin="@dimen/_5sdp"
+                   android:layout_weight="1"
+                   android:background="#FF6600"
+                   android:text="Qucik Order"
+                   android:textColor="@color/white"
+
+                   />
+
+               <Button
+                   android:id="@+id/placeorder"
+                   android:layout_width="0dp"
+                   android:layout_height="match_parent"
+                   android:layout_margin="@dimen/_5sdp"
+                   android:layout_weight="1"
+                   android:background="#379F00"
+                   android:text="Place Order"
+                   android:textColor="@color/white"
+
+                   />
+           </LinearLayout>
+
+       </LinearLayout>
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_above="@+id/lowerLayout"
+           android:weightSum="2">
+
+           <LinearLayout
+               android:layout_width="0dp"
+               android:layout_height="wrap_content"
+               android:layout_weight="1.2"
+               android:orientation="vertical">
+
+               <androidx.recyclerview.widget.RecyclerView
+                   android:id="@+id/subcategoryName"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   tools:listitem="@layout/designsubcategorylistnamessingleitem" />
+
+               <androidx.recyclerview.widget.RecyclerView
+                   android:id="@+id/itemRecylerview"
+                   android:layout_width="wrap_content"
+                   android:layout_height="match_parent"
+                   android:layout_below="@+id/categoriesdesign"
+                   tools:listitem="@layout/singleitem" />
+
+           </LinearLayout>
+
+           <LinearLayout
+               android:layout_width="0dp"
+               android:layout_height="match_parent"
+               android:layout_weight=".8"
+               android:orientation="vertical">
+
+               <LinearLayout
+                   android:id="@+id/rightDesign"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_below="@+id/buttonUpperdesign"
+                   android:layout_margin="@dimen/_5sdp"
+                   android:orientation="horizontal"
+                   android:weightSum="2">
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:layout_marginRight="@dimen/_10sdp"
+                       android:layout_weight="1"
+                       android:orientation="vertical">
+
+                       <TextView
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:text="Customer Name*"
+                           android:textColor="@color/overlay_dark"
+                           android:textStyle="bold" />
+
+                       <LinearLayout
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:orientation="horizontal"
+                           android:weightSum="2">
+
+                           <include
+                               layout="@layout/spinner"
+                               android:layout_width="0dp"
+                               android:layout_height="@dimen/_20sdp"
+                               android:layout_weight="1.6" />
+
+                           <ImageView
+                               android:layout_width="0dp"
+                               android:layout_height="match_parent"
+                               android:layout_gravity="bottom"
+                               android:layout_margin="@dimen/_2sdp"
+                               android:layout_weight=".4"
+                               android:background="#008711"
+                               android:src="@drawable/ic_baseline_add_24" />
+
+                       </LinearLayout>
+
+                       <TextView
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:text="Waiter*"
+                           android:textColor="@color/overlay_dark"
+                           android:textStyle="bold" />
+
+                       <include
+                           layout="@layout/spinner"
+                           android:layout_width="match_parent"
+                           android:layout_height="@dimen/_20sdp" />
+
+                   </LinearLayout>
+
+                   <LinearLayout
+
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:layout_weight="1.1"
+                       android:orientation="vertical">
+
+                       <LinearLayout
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:orientation="vertical">
+
+                           <LinearLayout
+                               android:layout_width="match_parent"
+                               android:layout_height="wrap_content"
+                               android:orientation="vertical">
+
+                               <TextView
+                                   android:layout_width="match_parent"
+                                   android:layout_height="wrap_content"
+                                   android:text="Customer Type*"
+                                   android:textColor="@color/overlay_dark"
+                                   android:textStyle="bold" />
+
+                               <LinearLayout
+                                   android:layout_width="wrap_content"
+                                   android:layout_height="wrap_content"
+                                   android:orientation="horizontal">
+
+
+                                   <include
+                                       layout="@layout/spinner"
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="@dimen/_20sdp" />
+
+                               </LinearLayout>
+
+                           </LinearLayout>
+
+                           <LinearLayout
+                               android:layout_width="match_parent"
+                               android:layout_height="match_parent"
+                               android:orientation="horizontal">
+
+                               <LinearLayout
+                                   android:layout_width="wrap_content"
+                                   android:layout_height="wrap_content"
+                                   android:orientation="vertical">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:text="Table*"
+                                       android:textColor="@color/overlay_dark"
+                                       android:textStyle="bold" />
+
+                                   <include
+                                       layout="@layout/spinner"
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="@dimen/_20sdp" />
+                               </LinearLayout>
+
+
+                           </LinearLayout>
+
+                       </LinearLayout>
+                   </LinearLayout>
+
+               </LinearLayout>
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:background="#EEE"
+                   android:orientation="horizontal"
+                   android:weightSum="5">
+
+                   <TextView
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="1"
+                       android:gravity="center"
+                       android:padding="@dimen/_5sdp"
+                       android:text="Item" />
+
+                   <TextView
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="1"
+                       android:gravity="center"
+                       android:padding="@dimen/_5sdp"
+                       android:text="Varient Name" />
+
+                   <TextView
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="1"
+                       android:gravity="center"
+                       android:padding="@dimen/_5sdp"
+                       android:text="Price" />
+
+                   <TextView
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="1"
+                       android:gravity="center"
+                       android:padding="@dimen/_5sdp"
+                       android:text="Qty" />
+
+                   <TextView
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="1"
+                       android:gravity="center"
+                       android:padding="@dimen/_5sdp"
+                       android:text="Action" />
+
+               </LinearLayout>
+
+               <androidx.recyclerview.widget.RecyclerView
+                   android:visibility="visible"
+                   android:id="@+id/itemshowRecylerview"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   tools:listitem="@layout/singleitemforrecylerview" />
+
+
+
+
+           </LinearLayout>
+
+       </LinearLayout>
+   </RelativeLayout>
 
 
 </RelativeLayout>

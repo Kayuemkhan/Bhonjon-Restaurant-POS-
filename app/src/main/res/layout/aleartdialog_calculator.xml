@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="10dp">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#1b1a18"
-        >
+        android:background="#FFF"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
+            android:layout_weight="0.7"
             android:orientation="horizontal">
 
             <TextView
+
                 android:id="@+id/display"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#ecf0f1"
+                android:background="#45C203"
+                android:padding="30dp"
+                android:textAlignment="textEnd"
+                android:textColor="@color/white"
                 android:textSize="30sp" />
         </LinearLayout>
 
@@ -35,24 +39,46 @@
                 android:id="@+id/buttonDel"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_margin="15dp"
+                android:layout_weight="0.25"
+                android:background="@drawable/buttonback"
+                android:text="Del"
+                android:textColor="@color/buttonbackcalculator"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/buttoneql"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="15dp"
+                android:layout_weight="0.25"
+                android:background="@drawable/buttonback"
+                android:padding="10dp"
+                android:text="="
+                android:textColor="@color/buttonbackcalculator"
+                android:textSize="30sp" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_margin="5dp"
                 android:layout_weight="0.25"
                 android:background="@drawable/buttonback"
                 android:text="Del"
                 android:textColor="#ecf0f1"
-
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:visibility="invisible" />
 
             <Button
-                android:id="@+id/buttoneql"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="1dp"
                 android:layout_weight="0.25"
-                android:background="@drawable/button"
+                android:background="@drawable/buttonback"
                 android:text="Answer"
                 android:textColor="#ecf0f1"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:visibility="invisible" />
 
         </LinearLayout>
 
@@ -64,47 +90,48 @@
 
             <Button
                 android:id="@+id/b1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="1dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
                 android:layout_weight="0.25"
-                android:background="@drawable/selector"
+                android:background="@drawable/buttonback"
                 android:text="1"
-                android:textColor="#ecf0f1"
-                android:textSize="20sp" />
+                android:textColor="@color/buttonbackcalculator"
+                android:textSize="@dimen/buttontextsizecal" />
 
             <Button
                 android:id="@+id/b2"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="1dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
                 android:layout_weight="0.25"
-                android:background="@drawable/selector"
+                android:background="@drawable/buttonback"
                 android:text="2"
-                android:textColor="#ecf0f1"
-                android:textSize="20sp" />
+                android:textColor="@color/buttonbackcalculator"
+                android:textSize="@dimen/buttontextsizecal" />
 
             <Button
                 android:id="@+id/b3"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="1dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
                 android:layout_weight="0.25"
-                android:background="@drawable/selector"
+                android:background="@drawable/buttonback"
                 android:text="3"
-                android:textColor="#ecf0f1"
-                android:textSize="20sp" />
+                android:textColor="@color/buttonbackcalculator"
+                android:textSize="@dimen/buttontextsizecal" />
 
             <Button
-                android:id="@+id/biv"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="1dp"
+                android:id="@+id/BRemain"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
                 android:layout_weight="0.25"
-                android:background="@drawable/operator_buttons"
-                android:text="/"
-                android:textColor="#ecf0f1"
-                android:textSize="30sp" />
+                android:background="@drawable/buttonback"
+                android:text="%"
+                android:textColor="@color/buttonbackcalculator"
+                android:textSize="@dimen/buttontextsizecal" />
+
 
         </LinearLayout>
 
@@ -116,47 +143,47 @@
 
             <Button
                 android:id="@+id/b4"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="1dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
                 android:layout_weight="0.25"
-                android:background="@drawable/selector"
+                android:background="@drawable/buttonback"
                 android:text="4"
-                android:textColor="#ecf0f1"
-                android:textSize="20sp" />
+                android:textColor="@color/buttonbackcalculator"
+                android:textSize="@dimen/buttontextsizecal" />
 
             <Button
                 android:id="@+id/b5"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="1dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
                 android:layout_weight="0.25"
-                android:background="@drawable/selector"
+                android:background="@drawable/buttonback"
                 android:text="5"
-                android:textColor="#ecf0f1"
-                android:textSize="20sp" />
+                android:textColor="@color/buttonbackcalculator"
+                android:textSize="@dimen/buttontextsizecal" />
 
             <Button
                 android:id="@+id/b6"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="1dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
                 android:layout_weight="0.25"
-                android:background="@drawable/selector"
+                android:background="@drawable/buttonback"
                 android:text="6"
-                android:textColor="#ecf0f1"
-                android:textSize="20sp" />
+                android:textColor="@color/buttonbackcalculator"
+                android:textSize="@dimen/buttontextsizecal" />
 
             <Button
                 android:id="@+id/bsub"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="1dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
                 android:layout_weight="0.25"
-                android:background="@drawable/operator_buttons"
+                android:background="@drawable/buttonback"
                 android:text="-"
-                android:textColor="#ecf0f1"
-                android:textSize="30sp" />
+                android:textColor="@color/buttonbackcalculator"
+                android:textSize="@dimen/buttontextsizecal" />
 
         </LinearLayout>
 
@@ -168,47 +195,47 @@
 
             <Button
                 android:id="@+id/b7"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="1dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
                 android:layout_weight="0.25"
-                android:background="@drawable/selector"
+                android:background="@drawable/buttonback"
                 android:text="7"
-                android:textColor="#ecf0f1"
-                android:textSize="20sp" />
+                android:textColor="@color/buttonbackcalculator"
+                android:textSize="@dimen/buttontextsizecal" />
 
             <Button
                 android:id="@+id/b8"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="1dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
                 android:layout_weight="0.25"
-                android:background="@drawable/selector"
+                android:background="@drawable/buttonback"
                 android:text="8"
-                android:textColor="#ecf0f1"
-                android:textSize="20sp" />
+                android:textColor="@color/buttonbackcalculator"
+                android:textSize="@dimen/buttontextsizecal" />
 
             <Button
                 android:id="@+id/b9"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="1dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
                 android:layout_weight="0.25"
-                android:background="@drawable/selector"
+                android:background="@drawable/buttonback"
                 android:text="9"
-                android:textColor="#ecf0f1"
-                android:textSize="20sp" />
+                android:textColor="@color/buttonbackcalculator"
+                android:textSize="@dimen/buttontextsizecal" />
 
             <Button
                 android:id="@+id/bmul"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="1dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
                 android:layout_weight="0.25"
-                android:background="@drawable/operator_buttons"
+                android:background="@drawable/buttonback"
                 android:text="x"
-                android:textColor="#ecf0f1"
-                android:textSize="30sp" />
+                android:textColor="@color/buttonbackcalculator"
+                android:textSize="@dimen/buttontextsizecal" />
 
         </LinearLayout>
 
@@ -219,55 +246,54 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/bDot"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="1dp"
-                android:layout_weight="0.25"
-                android:background="@drawable/selector"
-                android:text="."
-                android:textColor="#ecf0f1"
-                android:textSize="20sp" />
-
-            <Button
                 android:id="@+id/b0"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_margin="1dp"
-                android:layout_weight="0.25"
-                android:background="@drawable/selector"
+                android:layout_margin="15dp"
+                android:layout_weight="1"
+                android:background="@drawable/buttonback"
                 android:text="0"
-                android:textColor="#ecf0f1"
-                android:textSize="20sp" />
+                android:textColor="@color/buttonbackcalculator"
+                android:textSize="@dimen/buttontextsizecal" />
 
             <Button
-                android:id="@+id/BRemain"
-                android:layout_width="wrap_content"
+                android:id="@+id/bDot"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_margin="1dp"
-                android:layout_weight="0.25"
-                android:background="@drawable/operator_buttons"
-                android:text="%"
-                android:textColor="#ecf0f1"
+                android:layout_margin="15dp"
+                android:layout_weight="1"
+                android:background="@drawable/buttonback"
+                android:text="."
+                android:textColor="@color/buttonbackcalculator"
+                android:textSize="50sp" />
+
+
+            <Button
+                android:id="@+id/biv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="15dp"
+                android:layout_weight="1"
+                android:background="@drawable/buttonback"
+                android:text="/"
+                android:textColor="@color/buttonbackcalculator"
                 android:textSize="30sp" />
 
             <Button
                 android:id="@+id/badd"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_margin="1dp"
-                android:layout_weight="0.25"
-                android:background="@drawable/operator_buttons"
+                android:layout_margin="15dp"
+                android:layout_weight="1"
+                android:background="@drawable/buttonback"
                 android:onClick="onClick"
                 android:text="+"
-                android:textColor="#ecf0f1"
-                android:textSize="30sp" />
+                android:textColor="@color/buttonbackcalculator"
+                android:textSize="50sp" />
 
         </LinearLayout>
 
     </LinearLayout>
-
-
 
 
 </androidx.cardview.widget.CardView>

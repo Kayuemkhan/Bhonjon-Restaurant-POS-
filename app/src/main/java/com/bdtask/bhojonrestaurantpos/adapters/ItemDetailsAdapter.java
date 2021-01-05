@@ -28,6 +28,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
         this.context = mainActivity;
         this.listClassData = listClassData;
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -40,13 +41,13 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
         holder.itemname.setText(listClassData.get(position).getProductname());
         holder.variantname.setText(listClassData.get(position).getSize());
         holder.itemquantityinitemview.setText(String.valueOf(listClassData.get(position).getQuantity()));
-        double d= Double.parseDouble(listClassData.get(position).getPrice()) * listClassData.get(position).getQuantity();
+        double d = Double.parseDouble(listClassData.get(position).getPrice()) * listClassData.get(position).getQuantity();
         holder.priceid.setText(String.valueOf(d));
         holder.plusbutton.setOnClickListener(v -> {
-            int p= Integer.parseInt(holder.itemquantityinitemview.getText().toString());
+            int p = Integer.parseInt(holder.itemquantityinitemview.getText().toString());
             p++;
-            holder.itemquantityinitemview.setText(String.valueOf( p));
-            double e=0;
+            holder.itemquantityinitemview.setText(String.valueOf(p));
+            double e = 0;
             e = Double.parseDouble(String.valueOf(Double.parseDouble(String.valueOf(Double.parseDouble(listClassData.get(position).getPrice()) * Double.parseDouble(holder.itemquantityinitemview.getText().toString())))));
             holder.priceid.setText(String.valueOf(e));
 
@@ -57,9 +58,9 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
             public void onClick(View v) {
                 int q = Integer.parseInt(holder.itemquantityinitemview.getText().toString());
                 q--;
-                if(q != 0){
+                if (q != 0) {
                     holder.itemquantityinitemview.setText(String.valueOf(q));
-                    double e=0;
+                    double e = 0;
                     e = Double.parseDouble(String.valueOf(Double.parseDouble(String.valueOf(Double.parseDouble(listClassData.get(position).getPrice()) * Double.parseDouble(holder.itemquantityinitemview.getText().toString())))));
                     holder.priceid.setText(String.valueOf(e));
                 }
@@ -74,7 +75,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                     listClassData.remove(actualPosition);
                     notifyItemRemoved(actualPosition);
                     notifyItemRangeChanged(actualPosition, listClassData.size());
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
