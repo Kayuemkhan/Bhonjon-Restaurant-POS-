@@ -55,6 +55,7 @@
             android:weightSum="5">
 
             <Button
+                android:id="@+id/newOrder"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="7dp"
@@ -66,6 +67,7 @@
                 android:textStyle="bold" />
 
             <Button
+                android:id="@+id/ongoingOrder"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="7dp"
@@ -77,6 +79,7 @@
                 android:textSize="10sp" />
 
             <Button
+                android:id="@+id/kitchenStatus"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="7dp"
@@ -89,6 +92,7 @@
                 />
 
             <Button
+                android:id="@+id/qrOrder"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="7dp"
@@ -99,6 +103,7 @@
                 android:textSize="10sp" />
 
             <Button
+                android:id="@+id/onlineOrder"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="7dp"
@@ -112,6 +117,7 @@
     </LinearLayout>
 
    <RelativeLayout
+       android:id="@+id/view_layout"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:layout_below="@+id/upperlayout"
@@ -471,5 +477,13 @@
        </LinearLayout>
    </RelativeLayout>
 
+    <FrameLayout
+        android:id="@+id/framelayout_ongoing_order"
 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/upperlayout"
+        >
+
+    </FrameLayout>
 </RelativeLayout>

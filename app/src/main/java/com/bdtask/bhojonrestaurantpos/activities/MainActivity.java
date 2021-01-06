@@ -16,14 +16,17 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,6 +39,7 @@ import com.bdtask.bhojonrestaurantpos.adapters.AllCategoriesInfo;
 import com.bdtask.bhojonrestaurantpos.adapters.CateroiesListNameAdapter;
 import com.bdtask.bhojonrestaurantpos.adapters.FoodListAdapater;
 import com.bdtask.bhojonrestaurantpos.adapters.ItemDetailsAdapter;
+import com.bdtask.bhojonrestaurantpos.fragments.OngoingOrderFragment;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.Addonsinfo;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.AllCategoriesData;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.AllCategoryResponse;
@@ -83,10 +87,14 @@ public class MainActivity extends AppCompatActivity {
     private double in1 = 0, i2 = 0;
     private TextView edittext1;
     private boolean Add, Sub, Multiply, Divide, Remainder, deci;
-    private Button button_0, button_1, button_2, button_3, button_4, button_5, button_6, button_7, button_8, button_9, button_Add, button_Sub,
-            button_Mul, button_Div, button_Equ, button_Del, button_Dot, button_Remainder;
+    private Button button_0, button_1, button_2, button_3, button_4, button_5, button_6, button_7,
+            button_8, button_9, button_Add, button_Sub,
+            button_Mul, button_Div, button_Equ, button_Del, button_Dot, button_Remainder,
+            newOrder, ongoingOrder, kitchenStatus, qrOrder, onlineOrder;
 
     private Double z = 0.0;
+    private RelativeLayout view_layout;
+    private FrameLayout framelayout_ongoing_order;
 
     @SuppressLint("WrongConstant")
     @Override
@@ -94,42 +102,53 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SharedPref.init(MainActivity.this);
-        itemshowRecylerview = findViewById(R.id.itemshowRecylerview);
+        init();
         itemshowRecylerview.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         itemshowRecylerview.setHasFixedSize(true);
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        buttoncalculator = findViewById(R.id.buttoncalculator);
-        buttoncancel = findViewById(R.id.buttoncancel);
-        buttonquickorder = findViewById(R.id.buttonquickorder);
-        placeorder = findViewById(R.id.placeorder);
-
-        buttoncancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                buttoncancelopearations();
-            }
-        });
-        buttoncalculator.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                calculate();
-            }
-        });
-        subcategoryName = findViewById(R.id.subcategoryName);
+        buttoncancel.setOnClickListener(v -> buttoncancelopearations());
+        buttoncalculator.setOnClickListener(v -> calculate());
         subcategoryName.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayout.HORIZONTAL, false));
-        itemRecylerview = findViewById(R.id.itemRecylerview);
         itemRecylerview.setLayoutManager(new GridLayoutManager(MainActivity.this, 5));
         itemRecylerview.addItemDecoration(new SpacingItemDecoration(3, Tools.dpToPx(this, 2), true));
         waiterService = AppConfig.getRetrofit().create(WaiterService.class);
         id = SharedPref.read("ID", "");
         Log.wtf("chekID", "ID" + id);
         getSubCategoryName();
+        ongoingOrder.setOnClickListener(v -> {
+            view_layout.setVisibility(View.GONE);
+            framelayout_ongoing_order.setVisibility(View.VISIBLE);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.framelayout_ongoing_order, new OngoingOrderFragment());
+            ft.commit();
+
+        });
+        newOrder.setOnClickListener(v -> {
+            view_layout.setVisibility(View.VISIBLE);
+            framelayout_ongoing_order.setVisibility(View.GONE);
+        });
+
+    }
+
+    private void init() {
+        framelayout_ongoing_order = findViewById(R.id.framelayout_ongoing_order);
+        newOrder = findViewById(R.id.newOrder);
+        ongoingOrder = findViewById(R.id.ongoingOrder);
+        kitchenStatus = findViewById(R.id.kitchenStatus);
+        qrOrder = findViewById(R.id.qrOrder);
+        onlineOrder = findViewById(R.id.onlineOrder);
+        itemRecylerview = findViewById(R.id.itemRecylerview);
+        subcategoryName = findViewById(R.id.subcategoryName);
+        itemshowRecylerview = findViewById(R.id.itemshowRecylerview);
+        buttoncalculator = findViewById(R.id.buttoncalculator);
+        buttoncancel = findViewById(R.id.buttoncancel);
+        buttonquickorder = findViewById(R.id.buttonquickorder);
+        placeorder = findViewById(R.id.placeorder);
+        view_layout = findViewById(R.id.view_layout);
     }
 
     private void buttoncancelopearations() {
         listClassData.clear();
         itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData));
-
     }
 
 

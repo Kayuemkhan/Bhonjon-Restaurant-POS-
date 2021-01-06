@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.OngoingOrderFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <androidx.recyclerview.widget.RecyclerView
+            tools:itemCount="100"
+            android:id="@+id/tableListRecylerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="4"
+            tools:listitem="@layout/singletablepage"
+            android:layout_alignTop="@+id/lowerpartOfOngoingLayout"
+            />
+        <LinearLayout
+            android:layout_below="@+id/tableListRecylerview"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lowerpartOfOngoingLayout"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hey"
+                android:textSize="200sp"
+                />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</FrameLayout>
