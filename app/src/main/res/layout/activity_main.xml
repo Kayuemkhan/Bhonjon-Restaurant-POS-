@@ -418,7 +418,7 @@
                    android:layout_height="wrap_content"
                    android:background="#EEE"
                    android:orientation="horizontal"
-                   android:weightSum="5">
+                   android:weightSum="6">
 
                    <TextView
                        android:layout_width="0dp"
@@ -443,6 +443,13 @@
                        android:gravity="center"
                        android:padding="@dimen/_5sdp"
                        android:text="Price" />
+                   <TextView
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="1"
+                       android:gravity="center"
+                       android:padding="@dimen/_5sdp"
+                       android:text="Total Price" />
 
                    <TextView
                        android:layout_width="0dp"
@@ -467,7 +474,8 @@
                    android:id="@+id/itemshowRecylerview"
                    android:layout_width="match_parent"
                    android:layout_height="match_parent"
-                   tools:listitem="@layout/singleitemforrecylerview" />
+                   tools:listitem="@layout/singleitemforrecylerview"
+                   />
            </LinearLayout>
 
        </LinearLayout>

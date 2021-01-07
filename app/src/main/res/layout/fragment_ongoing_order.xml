@@ -40,88 +40,87 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/buttongreenback"
-                android:layout_gravity="center"
-                android:padding="15dp"
-                android:layout_marginRight="10dp"
-                >
+                android:orientation="horizontal"
+                android:padding="15dp">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Complete"
-                    android:textSize="20sp"
-                    android:textColor="@color/white"
                     android:textAlignment="center"
-                    />
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
 
             </LinearLayout>
+
             <LinearLayout
-                android:layout_marginRight="10dp"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="#115FC9"
-                android:layout_gravity="center"
-                android:padding="15dp"
-                >
+                android:orientation="horizontal"
+                android:padding="15dp">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/spliticon"
-                    />
+                    android:src="@drawable/spliticon" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Spilit"
-                    android:textSize="25sp"
-                    android:textColor="@color/white"
                     android:paddingLeft="5dp"
-                    />
+                    android:text="Spilit"
+                    android:textColor="@color/white"
+                    android:textSize="25sp" />
 
             </LinearLayout>
+
             <LinearLayout
-                android:layout_marginRight="10dp"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="#1BA392"
-                android:layout_gravity="center"
-                android:padding="15dp"
-                >
+                android:orientation="horizontal"
+                android:padding="15dp">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/mergeicon"
-                    />
+                    android:src="@drawable/mergeicon" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Marge"
-                    android:textSize="20sp"
-                    android:textColor="@color/white"
                     android:paddingLeft="5dp"
-                    />
+                    android:text="Marge"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
 
             </LinearLayout>
+
             <LinearLayout
-                android:layout_marginRight="10dp"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/buttongreenback"
-                android:layout_gravity="center"
-                android:padding="15dp"
-                >
+                android:orientation="horizontal"
+                android:padding="15dp">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/editicon"
-                    />
+                    android:src="@drawable/editicon" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -132,21 +131,21 @@
                     android:textSize="20sp" />
 
             </LinearLayout>
+
             <LinearLayout
-                android:layout_marginRight="10dp"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="#0B6240"
-                android:layout_gravity="center"
-                android:padding="15dp"
-                >
+                android:orientation="horizontal"
+                android:padding="15dp">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/creditcard"
-                    />
+                    android:src="@drawable/creditcard" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -157,21 +156,21 @@
                     android:textSize="20sp" />
 
             </LinearLayout>
+
             <LinearLayout
-                android:layout_marginRight="10dp"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/buttongreenback"
-                android:layout_gravity="center"
-                android:padding="15dp"
-                >
+                android:orientation="horizontal"
+                android:padding="15dp">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/bill"
-                    />
+                    android:src="@drawable/bill" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -182,21 +181,21 @@
                     android:textSize="20sp" />
 
             </LinearLayout>
+
             <LinearLayout
-                android:layout_marginRight="10dp"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="#EB0202"
-                android:layout_gravity="center"
-                android:padding="15dp"
-                >
+                android:orientation="horizontal"
+                android:padding="15dp">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/deleteicon"
-                    />
+                    android:src="@drawable/deleteicon" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -207,10 +206,6 @@
                     android:textSize="20sp" />
 
             </LinearLayout>
-
-
-
-
 
 
         </LinearLayout>

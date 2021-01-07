@@ -32,12 +32,13 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.singleitemforrecylerview, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.singleitemforrecylerview, parent,false);
         return new ItemDetailsAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.totalPriceIdInsingleView.setText(listClassData.get(position).getBaseprice());
         holder.itemname.setText(listClassData.get(position).getProductname());
         holder.variantname.setText(listClassData.get(position).getSize());
         holder.itemquantityinitemview.setText(String.valueOf(listClassData.get(position).getQuantity()));
@@ -88,7 +89,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView itemname, variantname, priceid, itemquantityinitemview;
+        private TextView itemname, variantname, priceid, itemquantityinitemview,totalPriceIdInsingleView;
         private ImageView plusbutton, minusbutton, deletebutton;
 
         public ViewHolder(@NonNull View itemView) {
@@ -100,6 +101,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
             plusbutton = itemView.findViewById(R.id.plusbutton);
             minusbutton = itemView.findViewById(R.id.minusbutton);
             deletebutton = itemView.findViewById(R.id.deletebutton);
+            totalPriceIdInsingleView = itemView.findViewById(R.id.totalPriceIdInsingleView);
 
         }
     }

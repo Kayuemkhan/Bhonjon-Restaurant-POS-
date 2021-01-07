@@ -2,24 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/itemView"
     android:layout_width="wrap_content"
-    android:layout_height="38dp"
+    android:layout_height="40dp"
     android:background="#EEE"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/subcatergoryNameId"
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
+        android:layout_height="38dp"
         android:gravity="center"
-        android:padding="5dp"
+        android:padding="4dp"
         android:text="Chicken pizza "
         android:textColor="@color/black"
-        android:textSize="18dp" />
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/tvId"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:layout_gravity="bottom"
         android:background="@color/overlay_dark_light"
         android:visibility="gone" />

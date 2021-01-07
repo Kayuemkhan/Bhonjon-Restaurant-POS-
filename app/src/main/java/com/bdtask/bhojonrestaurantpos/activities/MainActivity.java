@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void AddonsChecking(String addonsStatus, String productname, String price, String size, String productsID, List<Addonsinfo> addonsinfoList1) {
+    public void AddonsChecking(String baseprice, String addonsStatus, String productname, String price, String size, String productsID, List<Addonsinfo> addonsinfoList1) {
         // When Addons are available...
         if (addonsStatus.contains("1")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -258,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
             addcartfromaddons.setOnClickListener(v -> {
                 String t = SharedPref.read("priceaddons", "");
                 now = Integer.parseInt(editextquantity.getText().toString());
-                ListClassData listClassData1 = new ListClassData(productname, price, size, t, productsID, now);
+                ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now);
                 if (listClassData.size() == 0) {
                     listClassData.add(listClassData1);
                 } else {
@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
         else {
             String t = SharedPref.read("priceaddons", "");
             now = 1;
-            ListClassData listClassData1 = new ListClassData(productname, price, size, t, productsID, now);
+            ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now);
             if (listClassData.size() == 0) {
                 listClassData.add(listClassData1);
             } else {
@@ -321,8 +321,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void AddonsCheckingForAllCategories(String addonsStatus, String productname, String price, String size, String productsID, List<com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.Addonsinfo> addonsinfoList) {
-
+    public void AddonsCheckingForAllCategories(String baseprice, String addonsStatus, String productname, String price, String size, String productsID, List<com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.Addonsinfo> addonsinfoList) {
+        String bprice = baseprice;
         // When Addons are available
         if (addonsStatus.contains("1")) {
             Log.d("Addons List Check", "" + new Gson().toJson(addonsinfoList));
@@ -366,10 +366,9 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog alert = builder.create();
             close.setOnClickListener(view -> alert.dismiss());
             addcartfromaddons.setOnClickListener(v -> {
-
                 String t = SharedPref.read("priceaddons", "");
                 now = Integer.parseInt(editextquantity.getText().toString());
-                ListClassData listClassData1 = new ListClassData(productname, price, size, t, productsID, now);
+                ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now);
                 if (listClassData.size() == 0) {
                     listClassData.add(listClassData1);
                 } else {
@@ -405,7 +404,7 @@ public class MainActivity extends AppCompatActivity {
         else {
 
             String t = SharedPref.read("priceaddons", "");
-            ListClassData listClassData1 = new ListClassData(productname, price, size, t, productsID, now);
+            ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now);
             if (listClassData.size() == 0) {
                 listClassData.add(listClassData1);
             } else {

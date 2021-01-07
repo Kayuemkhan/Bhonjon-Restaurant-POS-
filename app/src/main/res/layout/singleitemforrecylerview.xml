@@ -32,6 +32,14 @@
             android:textColor="@color/overlay_dark" />
 
         <TextView
+            android:id="@+id/totalPriceIdInsingleView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="500"
+            android:textColor="@color/overlay_dark" />
+        <TextView
             android:id="@+id/priceid"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -39,6 +47,7 @@
             android:gravity="center"
             android:text="100"
             android:textColor="@color/overlay_dark" />
+
 
         <LinearLayout
             android:layout_width="0dp"

@@ -37,7 +37,7 @@ public class AllCategoriesInfo extends RecyclerView.Adapter<AllCategoriesInfo.Vi
     private boolean haveToInsert = false;
     private String productname, size, t, price, productsID;
     private int now;
-
+    private String baseprice;
     public AllCategoriesInfo(Context applicationContext, List<Foodinfo> categoriesData, MainActivity mainActivity2) {
         this.context = applicationContext;
         this.list = categoriesData;
@@ -63,7 +63,8 @@ public class AllCategoriesInfo extends RecyclerView.Adapter<AllCategoriesInfo.Vi
                 addonsinfoList = list.get(position).getAddonsinfo();
                 Log.d("Addons Info", "" + new Gson().toJson(addonsinfoList));
                 addonsStatus = list.get(position).getAddons().toString();
-                mainActivity.AddonsChecking(addonsStatus, String.valueOf(list.get(position).getProductName()), list.get(position).getPrice(), list.get(position).getVariantName(), list.get(position).getProductsID(), addonsinfoList);
+                baseprice = list.get(position).getPrice();
+                mainActivity.AddonsChecking(baseprice, addonsStatus, String.valueOf(list.get(position).getProductName()), list.get(position).getPrice(), list.get(position).getVariantName(), list.get(position).getProductsID(), addonsinfoList);
             }
         });
     }

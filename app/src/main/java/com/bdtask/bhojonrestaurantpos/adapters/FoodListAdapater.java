@@ -31,6 +31,7 @@ public class FoodListAdapater extends RecyclerView.Adapter<FoodListAdapater.View
     List<Addonsinfo> addonsinfoList;
     private String addonsStatus;
     private MainActivity mainActivity;
+    private String baseprice;
 
     public FoodListAdapater(Context context, List<FoodinfoFoodList> lists, MainActivity mainActivity) {
         this.context = context;
@@ -53,10 +54,12 @@ public class FoodListAdapater extends RecyclerView.Adapter<FoodListAdapater.View
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
+                baseprice = lists.get(position).getPrice();
                 addonsinfoList = lists.get(position).getAddonsinfo();
                 Log.d("Addons Info", "" + new Gson().toJson(addonsinfoList));
                 addonsStatus = lists.get(position).getAddons().toString();
-                mainActivity.AddonsCheckingForAllCategories(addonsStatus, String.valueOf(lists.get(position).getProductName()), lists.get(position).getPrice(), lists.get(position).getVariantName(), lists.get(position).getProductsID(), addonsinfoList);
+                baseprice = lists.get(position).getPrice();
+                mainActivity.AddonsCheckingForAllCategories(baseprice,addonsStatus, String.valueOf(lists.get(position).getProductName()), lists.get(position).getPrice(), lists.get(position).getVariantName(), lists.get(position).getProductsID(), addonsinfoList);
 
             }
         });
