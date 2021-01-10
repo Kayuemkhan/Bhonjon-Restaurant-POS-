@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.activities.MainActivity;
 import com.bdtask.bhojonrestaurantpos.modelClass.datamodel.ListClassData;
+import com.bdtask.bhojonrestaurantpos.utils.SharedPref;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -23,10 +24,11 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     private List<ListClassData> listClassData;
     String quantity;
     private RecyclerView itemshowRecylerview;
-
+    private double totalPriceCount;
     public ItemDetailsAdapter(MainActivity mainActivity, List<ListClassData> listClassData) {
         this.context = mainActivity;
         this.listClassData = listClassData;
+        SharedPref.init(context);
     }
 
     @NonNull
@@ -38,6 +40,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+       // totalPriceCount = Double.parseDouble(listClassData.get(position).getBaseprice()) + Double.parseDouble(SharedPref.read("priceAddons",""));
         holder.totalPriceIdInsingleView.setText(listClassData.get(position).getBaseprice());
         holder.itemname.setText(listClassData.get(position).getProductname());
         holder.variantname.setText(listClassData.get(position).getSize());
@@ -51,7 +54,6 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
             double e = 0;
             e = Double.parseDouble(String.valueOf(Double.parseDouble(String.valueOf(Double.parseDouble(listClassData.get(position).getPrice()) * Double.parseDouble(holder.itemquantityinitemview.getText().toString())))));
             holder.priceid.setText(String.valueOf(e));
-
 
         });
         holder.minusbutton.setOnClickListener(new View.OnClickListener() {

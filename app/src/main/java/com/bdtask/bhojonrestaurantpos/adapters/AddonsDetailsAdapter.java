@@ -53,8 +53,9 @@ public class AddonsDetailsAdapter extends RecyclerView.Adapter<AddonsDetailsAdap
             holder.itemsizeaddons.setText(list.get(position).getAddOnName());
             if (holder.iteminformationaddons.isChecked()) {
                 String priceaddons = list.get(position).getAddonsprice();
-                prizenow1 = Integer.parseInt(priceaddons);
-                SharedPref.write("priceAddons", priceaddons);
+                prizenow1 += Integer.parseInt(priceaddons);
+                SharedPref.write("priceAddons", String.valueOf(prizenow1));
+
             }
         } else {
             holder.itempriceaddons.setText(list2.get(position).getAddonsprice());

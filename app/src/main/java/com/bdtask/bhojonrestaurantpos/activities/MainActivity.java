@@ -120,13 +120,11 @@ public class MainActivity extends AppCompatActivity {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.framelayout_ongoing_order, new OngoingOrderFragment());
             ft.commit();
-
         });
         newOrder.setOnClickListener(v -> {
             view_layout.setVisibility(View.VISIBLE);
             framelayout_ongoing_order.setVisibility(View.GONE);
         });
-
     }
 
     private void init() {
@@ -150,7 +148,6 @@ public class MainActivity extends AppCompatActivity {
         listClassData.clear();
         itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData));
     }
-
 
     // All the categories name will be shown here
     public void getSubCategoryName() {
@@ -185,7 +182,6 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<AllCategoryResponse> call, Throwable t) {
-
                 }
             });
         }
@@ -202,11 +198,9 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<FoodlistResponse> call, Throwable t) {
-
                 }
             });
         }
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -234,7 +228,6 @@ public class MainActivity extends AppCompatActivity {
             Log.d("addonsCheck", "" + now);
             plusbuttonaddons.setOnClickListener(v -> {
                 // Updating the addons Number
-
                 addonsnumber += 1;
                 now = Integer.parseInt(editextquantity.getText().toString());
                 addonsnumber += now;
@@ -253,8 +246,6 @@ public class MainActivity extends AppCompatActivity {
             builder.setView(view2);
             AlertDialog alert = builder.create();
             close.setOnClickListener(view -> alert.dismiss());
-
-
             addcartfromaddons.setOnClickListener(v -> {
                 String t = SharedPref.read("priceaddons", "");
                 now = Integer.parseInt(editextquantity.getText().toString());
@@ -272,7 +263,6 @@ public class MainActivity extends AppCompatActivity {
                             haveToInsert = true;
                         }
                     }
-
                     if (haveToInsert) {
                         haveToInsert = false;
                         listClassData.add(listClassData1);
@@ -647,6 +637,4 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
 
     }
-
-
 }
