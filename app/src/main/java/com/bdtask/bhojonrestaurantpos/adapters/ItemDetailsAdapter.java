@@ -1,6 +1,6 @@
 package com.bdtask.bhojonrestaurantpos.adapters;
-
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +15,7 @@ import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.activities.MainActivity;
 import com.bdtask.bhojonrestaurantpos.modelClass.datamodel.ListClassData;
 import com.bdtask.bhojonrestaurantpos.utils.SharedPref;
+import com.google.gson.Gson;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -30,23 +31,28 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
         this.listClassData = listClassData;
         SharedPref.init(context);
     }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.singleitemforrecylerview, parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.singleitemforrecylerview, parent, false);
         return new ItemDetailsAdapter.ViewHolder(view);
     }
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-       // totalPriceCount = Double.parseDouble(listClassData.get(position).getBaseprice()) + Double.parseDouble(SharedPref.read("priceAddons",""));
+
+        totalPriceCount = Double.parseDouble(listClassData.get(position).getBaseprice());
         holder.totalPriceIdInsingleView.setText(listClassData.get(position).getBaseprice());
         holder.itemname.setText(listClassData.get(position).getProductname());
         holder.variantname.setText(listClassData.get(position).getSize());
         holder.itemquantityinitemview.setText(String.valueOf(listClassData.get(position).getQuantity()));
         double d = Double.parseDouble(listClassData.get(position).getPrice()) * listClassData.get(position).getQuantity();
+        if(SharedPref.read("booleanstat","").equals("true")){
+            Log.wtf("booleanga",SharedPref.read("booleanstat",""));
+            d +=  Double.parseDouble(SharedPref.read("SumOfAddons",""));
+            SharedPref.write("booleanstat","false");
+        }
         holder.priceid.setText(String.valueOf(d));
+
         holder.plusbutton.setOnClickListener(v -> {
             int p = Integer.parseInt(holder.itemquantityinitemview.getText().toString());
             p++;
@@ -54,7 +60,6 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
             double e = 0;
             e = Double.parseDouble(String.valueOf(Double.parseDouble(String.valueOf(Double.parseDouble(listClassData.get(position).getPrice()) * Double.parseDouble(holder.itemquantityinitemview.getText().toString())))));
             holder.priceid.setText(String.valueOf(e));
-
         });
         holder.minusbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +96,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView itemname, variantname, priceid, itemquantityinitemview,totalPriceIdInsingleView;
+        private TextView itemname, variantname, priceid, itemquantityinitemview, totalPriceIdInsingleView;
         private ImageView plusbutton, minusbutton, deletebutton;
 
         public ViewHolder(@NonNull View itemView) {

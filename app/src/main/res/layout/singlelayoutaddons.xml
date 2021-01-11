@@ -30,15 +30,40 @@
             android:padding="10dp"
             android:text="Add on Name" />
 
-        <TextView
-            android:id="@+id/itemquantityaddons"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:padding="5dp"
+            android:orientation="horizontal"
+            android:weightSum="3"
             android:background="@drawable/button_red_border_backgroundnopadding"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="QTY. " />
+            >
+            <ImageView
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_add_green"
+                android:id="@+id/plusbuttonaddonsitems"
+                />
+            <TextView
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:text="0"
+                android:gravity="center"
+                android:id="@+id/itemquantityaddonsitems"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                />
+            <ImageView
+                android:layout_weight="1"
+                android:id="@+id/minusbuttonaddonsitems"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_indeterminate_check_box_24"
+                />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/itempriceaddons"

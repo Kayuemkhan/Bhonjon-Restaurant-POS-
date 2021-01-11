@@ -1,23 +1,32 @@
 package com.bdtask.bhojonrestaurantpos.modelClass.datamodel;
 
 public class ListClassData {
-    private String productname,price,size,t,productsID,baseprice;
+    private String productname, price, size, t, productsID, baseprice;
     private int quantity;
-
+    private int addonsprice;
 
     public ListClassData() {
     }
 
-    public ListClassData(String baseprice,String productname, String price, String size, String t, String productsID,  int quantity) {
+    public ListClassData(String baseprice, String productname, String price, String size, String t, String productsID, int quantity, int addonsprice) {
         this.productname = productname;
         this.baseprice = baseprice;
         this.price = price;
         this.size = size;
         this.t = t;
         this.productsID = productsID;
-
+        this.addonsprice = addonsprice;
         this.quantity = quantity;
     }
+
+    public int getAddonsprice() {
+        return addonsprice;
+    }
+
+    public void setAddonsprice(int addonsprice) {
+        this.addonsprice = addonsprice;
+    }
+
 
     public String getProductname() {
         return productname;
@@ -58,7 +67,6 @@ public class ListClassData {
     public void setProductsID(String productsID) {
         this.productsID = productsID;
     }
-
 
 
     public int getQuantity() {

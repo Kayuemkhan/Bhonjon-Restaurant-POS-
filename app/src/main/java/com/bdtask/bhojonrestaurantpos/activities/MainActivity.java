@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bdtask.bhojonrestaurantpos.Interfaces.ViewInterface;
 import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.SpacingItemDecoration;
 import com.bdtask.bhojonrestaurantpos.Tools;
@@ -61,7 +62,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ViewInterface {
     private RecyclerView subcategoryName, itemRecylerview;
     private WaiterService waiterService;
     private String id;
@@ -91,10 +92,11 @@ public class MainActivity extends AppCompatActivity {
             button_8, button_9, button_Add, button_Sub,
             button_Mul, button_Div, button_Equ, button_Del, button_Dot, button_Remainder,
             newOrder, ongoingOrder, kitchenStatus, qrOrder, onlineOrder;
-
+    private int addonprice =0;
     private Double z = 0.0;
     private RelativeLayout view_layout;
     private FrameLayout framelayout_ongoing_order;
+
 
     @SuppressLint("WrongConstant")
     @Override
@@ -216,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
             itemprice = view2.findViewById(R.id.itemprice);
             addonsrecylerView = view2.findViewById(R.id.addonsrecylerView);
             addonsrecylerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-            addonsrecylerView.setAdapter(new AddonsDetailsAdapter(MainActivity.this, addonsinfoList1));
+            addonsrecylerView.setAdapter(new AddonsDetailsAdapter(MainActivity.this, addonsinfoList1,MainActivity.this::view));
             itemprice.setText(price);
             itemsize.setText(size);
             iteminformation.setText(productname);
@@ -249,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
             addcartfromaddons.setOnClickListener(v -> {
                 String t = SharedPref.read("priceaddons", "");
                 now = Integer.parseInt(editextquantity.getText().toString());
-                ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now);
+                ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now,addonprice);
                 if (listClassData.size() == 0) {
                     listClassData.add(listClassData1);
                 } else {
@@ -281,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
         else {
             String t = SharedPref.read("priceaddons", "");
             now = 1;
-            ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now);
+            ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now,addonprice);
             if (listClassData.size() == 0) {
                 listClassData.add(listClassData1);
             } else {
@@ -326,7 +328,7 @@ public class MainActivity extends AppCompatActivity {
             itemprice = view2.findViewById(R.id.itemprice);
             addonsrecylerView = view2.findViewById(R.id.addonsrecylerView);
             addonsrecylerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-            addonsrecylerView.setAdapter(new AddonsDetailsAdapter(MainActivity.this, addonsinfoList));
+            addonsrecylerView.setAdapter(new AddonsDetailsAdapter(MainActivity.this, addonsinfoList,MainActivity.this::view));
             itemprice.setText(price);
             itemsize.setText(size);
             iteminformation.setText(productname);
@@ -358,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
             addcartfromaddons.setOnClickListener(v -> {
                 String t = SharedPref.read("priceaddons", "");
                 now = Integer.parseInt(editextquantity.getText().toString());
-                ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now);
+                ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now,addonprice);
                 if (listClassData.size() == 0) {
                     listClassData.add(listClassData1);
                 } else {
@@ -392,9 +394,8 @@ public class MainActivity extends AppCompatActivity {
 
         // When Addons are not available
         else {
-
             String t = SharedPref.read("priceaddons", "");
-            ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now);
+            ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now,addonprice);
             if (listClassData.size() == 0) {
                 listClassData.add(listClassData1);
             } else {
@@ -445,196 +446,128 @@ public class MainActivity extends AppCompatActivity {
         button_Del = view2.findViewById(R.id.buttonDel);
         button_Equ = view2.findViewById(R.id.buttoneql);
         edittext1 = view2.findViewById(R.id.display);
-        button_1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edittext1.setText(edittext1.getText() + "1");
+        button_1.setOnClickListener(v -> edittext1.setText(edittext1.getText() + "1"));
+
+        button_2.setOnClickListener(v -> edittext1.setText(edittext1.getText() + "2"));
+
+        button_3.setOnClickListener(v -> edittext1.setText(edittext1.getText() + "3"));
+
+        button_4.setOnClickListener(v -> edittext1.setText(edittext1.getText() + "4"));
+
+        button_5.setOnClickListener(v -> edittext1.setText(edittext1.getText() + "5"));
+
+        button_6.setOnClickListener(v -> edittext1.setText(edittext1.getText() + "6"));
+
+        button_7.setOnClickListener(v -> edittext1.setText(edittext1.getText() + "7"));
+
+        button_8.setOnClickListener(v -> edittext1.setText(edittext1.getText() + "8"));
+
+        button_9.setOnClickListener(v -> edittext1.setText(edittext1.getText() + "9"));
+
+        button_0.setOnClickListener(v -> edittext1.setText(edittext1.getText() + "0"));
+
+        button_Add.setOnClickListener(v -> {
+            if (edittext1.getText().length() != 0) {
+                in1 = Float.parseFloat(edittext1.getText() + "");
+                Add = true;
+                deci = false;
+                edittext1.setText(null);
             }
         });
 
-        button_2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edittext1.setText(edittext1.getText() + "2");
+        button_Sub.setOnClickListener(v -> {
+            if (edittext1.getText().length() != 0) {
+                in1 = Float.parseFloat(edittext1.getText() + "");
+                Sub = true;
+                deci = false;
+                edittext1.setText(null);
             }
         });
 
-        button_3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edittext1.setText(edittext1.getText() + "3");
+        button_Mul.setOnClickListener(v -> {
+            if (edittext1.getText().length() != 0) {
+                in1 = Float.parseFloat(edittext1.getText() + "");
+                Multiply = true;
+                deci = false;
+                edittext1.setText(null);
             }
         });
 
-        button_4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edittext1.setText(edittext1.getText() + "4");
+        button_Div.setOnClickListener(v -> {
+            if (edittext1.getText().length() != 0) {
+                in1 = Float.parseFloat(edittext1.getText() + "");
+                Divide = true;
+                deci = false;
+                edittext1.setText(null);
             }
         });
 
-        button_5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edittext1.setText(edittext1.getText() + "5");
+        button_Remainder.setOnClickListener(v -> {
+            if (edittext1.getText().length() != 0) {
+                in1 = Float.parseFloat(edittext1.getText() + "");
+                Remainder = true;
+                deci = false;
+                edittext1.setText(null);
             }
         });
 
-        button_6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edittext1.setText(edittext1.getText() + "6");
+        button_Equ.setOnClickListener(v -> {
+            if (Add || Sub || Multiply || Divide || Remainder) {
+                i2 = Float.parseFloat(edittext1.getText() + "");
+            }
+
+            if (Add) {
+
+                edittext1.setText(in1 + i2 + "");
+                Add = false;
+            }
+
+            if (Sub) {
+
+                edittext1.setText(in1 - i2 + "");
+                Sub = false;
+            }
+
+            if (Multiply) {
+                edittext1.setText(in1 * i2 + "");
+                Multiply = false;
+            }
+
+            if (Divide) {
+                edittext1.setText(in1 / i2 + "");
+                Divide = false;
+            }
+            if (Remainder) {
+                edittext1.setText(in1 % i2 + "");
+                Remainder = false;
             }
         });
 
-        button_7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edittext1.setText(edittext1.getText() + "7");
-            }
+        button_Del.setOnClickListener(v -> {
+            edittext1.setText("");
+            in1 = 0.0;
+            i2 = 0.0;
         });
 
-        button_8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edittext1.setText(edittext1.getText() + "8");
+        button_Dot.setOnClickListener(v -> {
+            if (deci) {
+
+            } else {
+                edittext1.setText(edittext1.getText() + ".");
+                deci = true;
             }
-        });
 
-        button_9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edittext1.setText(edittext1.getText() + "9");
-            }
-        });
-
-        button_0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edittext1.setText(edittext1.getText() + "0");
-            }
-        });
-
-        button_Add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edittext1.getText().length() != 0) {
-                    in1 = Float.parseFloat(edittext1.getText() + "");
-                    Add = true;
-                    deci = false;
-                    edittext1.setText(null);
-                }
-            }
-        });
-
-        button_Sub.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edittext1.getText().length() != 0) {
-                    in1 = Float.parseFloat(edittext1.getText() + "");
-                    Sub = true;
-                    deci = false;
-                    edittext1.setText(null);
-                }
-            }
-        });
-
-        button_Mul.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edittext1.getText().length() != 0) {
-                    in1 = Float.parseFloat(edittext1.getText() + "");
-                    Multiply = true;
-                    deci = false;
-                    edittext1.setText(null);
-                }
-            }
-        });
-
-        button_Div.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edittext1.getText().length() != 0) {
-                    in1 = Float.parseFloat(edittext1.getText() + "");
-                    Divide = true;
-                    deci = false;
-                    edittext1.setText(null);
-                }
-            }
-        });
-
-        button_Remainder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edittext1.getText().length() != 0) {
-                    in1 = Float.parseFloat(edittext1.getText() + "");
-                    Remainder = true;
-                    deci = false;
-                    edittext1.setText(null);
-                }
-            }
-        });
-
-        button_Equ.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Add || Sub || Multiply || Divide || Remainder) {
-                    i2 = Float.parseFloat(edittext1.getText() + "");
-                }
-
-                if (Add) {
-
-                    edittext1.setText(in1 + i2 + "");
-                    Add = false;
-                }
-
-                if (Sub) {
-
-                    edittext1.setText(in1 - i2 + "");
-                    Sub = false;
-                }
-
-                if (Multiply) {
-                    edittext1.setText(in1 * i2 + "");
-                    Multiply = false;
-                }
-
-                if (Divide) {
-                    edittext1.setText(in1 / i2 + "");
-                    Divide = false;
-                }
-                if (Remainder) {
-                    edittext1.setText(in1 % i2 + "");
-                    Remainder = false;
-                }
-            }
-        });
-
-        button_Del.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edittext1.setText("");
-                in1 = 0.0;
-                i2 = 0.0;
-            }
-        });
-
-        button_Dot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (deci) {
-
-                } else {
-                    edittext1.setText(edittext1.getText() + ".");
-                    deci = true;
-                }
-
-            }
         });
         builder.setView(view2);
         AlertDialog alert = builder.create();
         alert.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         alert.show();
+
+    }
+
+    @Override
+    public void view(String addonsprice) {
+        addonprice +=  Integer.parseInt(addonsprice);
 
     }
 }
