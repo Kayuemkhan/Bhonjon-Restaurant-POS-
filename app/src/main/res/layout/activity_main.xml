@@ -313,7 +313,7 @@
                            android:weightSum="2">
 
                            <include
-                               layout="@layout/spinner"
+                               layout="@layout/spinnercustomername"
                                android:layout_width="0dp"
                                android:layout_height="@dimen/_20sdp"
                                android:layout_weight="1.6" />
@@ -337,7 +337,7 @@
                            android:textStyle="bold" />
 
                        <include
-                           layout="@layout/spinner"
+                           layout="@layout/spinnerwaiter"
                            android:layout_width="match_parent"
                            android:layout_height="@dimen/_20sdp" />
 
@@ -374,7 +374,7 @@
 
 
                                    <include
-                                       layout="@layout/spinner"
+                                        layout="@layout/spinnercustomertype"
                                        android:layout_width="wrap_content"
                                        android:layout_height="@dimen/_20sdp" />
 
@@ -400,7 +400,7 @@
                                        android:textStyle="bold" />
 
                                    <include
-                                       layout="@layout/spinner"
+                                        layout="@layout/spinnercable"
                                        android:layout_width="wrap_content"
                                        android:layout_height="@dimen/_20sdp" />
                                </LinearLayout>

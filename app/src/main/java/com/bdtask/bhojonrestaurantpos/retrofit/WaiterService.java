@@ -2,8 +2,10 @@ package com.bdtask.bhojonrestaurantpos.retrofit;
 
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.AllCategoryResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Category.CategoryResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodlistResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.loginModel.LoginResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.tablelist.TableResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -24,4 +26,10 @@ public interface WaiterService {
     @FormUrlEncoded
     @POST("foodlist")
     Call<FoodlistResponse> foodListResponse(@Field("id") String id, @Field("CategoryID") String categoryId);
+    @FormUrlEncoded
+    @POST("tablelist")
+    Call<TableResponse> getTableList(@Field("id") String id);
+    @FormUrlEncoded
+    @POST("allcustomertype")
+    Call<CustomerTypeResponse> getallCustomerTypes(@Field("id") String id);
 }

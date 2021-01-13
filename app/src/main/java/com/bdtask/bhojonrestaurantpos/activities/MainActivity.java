@@ -14,12 +14,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 
@@ -48,13 +51,17 @@ import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.AllCategoryResponse
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.Foodinfo;
 import com.bdtask.bhojonrestaurantpos.modelClass.Category.CategoryData;
 import com.bdtask.bhojonrestaurantpos.modelClass.Category.CategoryResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeData;
+import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodinfoFoodList;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodlistResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.datamodel.CustomerTypeName;
 import com.bdtask.bhojonrestaurantpos.modelClass.datamodel.ListClassData;
 import com.bdtask.bhojonrestaurantpos.retrofit.AppConfig;
 import com.bdtask.bhojonrestaurantpos.retrofit.WaiterService;
 import com.bdtask.bhojonrestaurantpos.utils.SharedPref;
 import com.google.gson.Gson;
+import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,11 +100,14 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             button_8, button_9, button_Add, button_Sub,
             button_Mul, button_Div, button_Equ, button_Del, button_Dot, button_Remainder,
             newOrder, ongoingOrder, kitchenStatus, qrOrder, onlineOrder;
-    private int addonprice =0;
+    private int addonprice = 0;
     private Double z = 0.0;
     private RelativeLayout view_layout;
     private FrameLayout framelayout_ongoing_order;
-
+    private SearchableSpinner searchableSpinnerCustomerName;
+    List<String> searchablespinner_list = new ArrayList<String>();
+    private List<CustomerTypeData> customerTypeData;
+    private List<String> customerTypeNames ;
 
     @SuppressLint("WrongConstant")
     @Override
@@ -138,6 +148,8 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 ft.commit();
             }
         });
+
+        searchableSpinnerdata();
 //        qrOrder.setOnClickListener(new View.OnClickListener() {
 ////            @Override
 ////            public void onClick(View v) {
@@ -148,6 +160,28 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 ////                ft.commit();
 ////            }
 ////        });
+    }
+
+    private void searchableSpinnerdata() {
+        waiterService.getallCustomerTypes(id).enqueue(new Callback<CustomerTypeResponse>() {
+            @Override
+            public void onResponse(Call<CustomerTypeResponse> call, Response<CustomerTypeResponse> response) {
+                Log.d("Response", "Onresponse" + new Gson().toJson(response.body()));
+                customerTypeData = new ArrayList<>();
+                customerTypeNames = new ArrayList<>();
+                customerTypeData = response.body().getData();
+                for(int i =0;i<customerTypeData.size();i++){
+                    customerTypeNames.add(customerTypeData.get(i).getTypeName());
+                }
+                searchableSpinnerCustomerName.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, customerTypeNames));
+            }
+
+            @Override
+            public void onFailure(Call<CustomerTypeResponse> call, Throwable t) {
+
+            }
+        });
+
     }
 
     private void init() {
@@ -165,6 +199,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         buttonquickorder = findViewById(R.id.buttonquickorder);
         placeorder = findViewById(R.id.placeorder);
         view_layout = findViewById(R.id.view_layout);
+        searchableSpinnerCustomerName = findViewById(R.id.spinnercustomertype);
     }
 
     private void buttoncancelopearations() {
@@ -239,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             itemprice = view2.findViewById(R.id.itemprice);
             addonsrecylerView = view2.findViewById(R.id.addonsrecylerView);
             addonsrecylerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-            addonsrecylerView.setAdapter(new AddonsDetailsAdapter(MainActivity.this, addonsinfoList1,MainActivity.this::view));
+            addonsrecylerView.setAdapter(new AddonsDetailsAdapter(MainActivity.this, addonsinfoList1, MainActivity.this::view));
             itemprice.setText(price);
             itemsize.setText(size);
             iteminformation.setText(productname);
@@ -272,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             addcartfromaddons.setOnClickListener(v -> {
                 String t = SharedPref.read("priceaddons", "");
                 now = Integer.parseInt(editextquantity.getText().toString());
-                ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now,addonprice);
+                ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now, addonprice);
                 if (listClassData.size() == 0) {
                     listClassData.add(listClassData1);
                 } else {
@@ -302,10 +337,10 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         }
         // When Addons are not available
         else {
-            SharedPref.write("booleanstat","false");
+            SharedPref.write("booleanstat", "false");
             String t = SharedPref.read("priceaddons", "");
             now = 1;
-            ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now,addonprice);
+            ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now, addonprice);
             if (listClassData.size() == 0) {
                 listClassData.add(listClassData1);
             } else {
@@ -350,7 +385,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             itemprice = view2.findViewById(R.id.itemprice);
             addonsrecylerView = view2.findViewById(R.id.addonsrecylerView);
             addonsrecylerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-            addonsrecylerView.setAdapter(new AddonsDetailsAdapter(MainActivity.this, addonsinfoList,MainActivity.this::view));
+            addonsrecylerView.setAdapter(new AddonsDetailsAdapter(MainActivity.this, addonsinfoList, MainActivity.this::view));
             itemprice.setText(price);
             itemsize.setText(size);
             iteminformation.setText(productname);
@@ -382,7 +417,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             addcartfromaddons.setOnClickListener(v -> {
                 String t = SharedPref.read("priceaddons", "");
                 now = Integer.parseInt(editextquantity.getText().toString());
-                ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now,addonprice);
+                ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now, addonprice);
                 if (listClassData.size() == 0) {
                     listClassData.add(listClassData1);
                 } else {
@@ -417,7 +452,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         // When Addons are not available
         else {
             String t = SharedPref.read("priceaddons", "");
-            ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now,addonprice);
+            ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now, addonprice);
             if (listClassData.size() == 0) {
                 listClassData.add(listClassData1);
             } else {
@@ -589,7 +624,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
     @Override
     public void view(String addonsprice) {
-        addonprice +=  Integer.parseInt(addonsprice);
+        addonprice += Integer.parseInt(addonsprice);
 
     }
 }
