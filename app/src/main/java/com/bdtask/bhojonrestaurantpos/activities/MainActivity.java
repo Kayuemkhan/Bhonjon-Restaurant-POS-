@@ -105,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     private RelativeLayout view_layout;
     private FrameLayout framelayout_ongoing_order;
     private SearchableSpinner searchableSpinnerCustomerName;
-    List<String> searchablespinner_list = new ArrayList<String>();
     private List<CustomerTypeData> customerTypeData;
     private List<String> customerTypeNames ;
 
