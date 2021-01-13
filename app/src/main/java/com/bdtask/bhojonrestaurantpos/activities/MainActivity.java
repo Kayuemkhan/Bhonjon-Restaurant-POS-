@@ -40,6 +40,7 @@ import com.bdtask.bhojonrestaurantpos.adapters.AllCategoriesInfo;
 import com.bdtask.bhojonrestaurantpos.adapters.CateroiesListNameAdapter;
 import com.bdtask.bhojonrestaurantpos.adapters.FoodListAdapater;
 import com.bdtask.bhojonrestaurantpos.adapters.ItemDetailsAdapter;
+import com.bdtask.bhojonrestaurantpos.fragments.KitchenStatusFragment;
 import com.bdtask.bhojonrestaurantpos.fragments.OngoingOrderFragment;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.Addonsinfo;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.AllCategoriesData;
@@ -116,6 +117,10 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         id = SharedPref.read("ID", "");
         Log.wtf("chekID", "ID" + id);
         getSubCategoryName();
+        newOrder.setOnClickListener(v -> {
+            view_layout.setVisibility(View.VISIBLE);
+            framelayout_ongoing_order.setVisibility(View.GONE);
+        });
         ongoingOrder.setOnClickListener(v -> {
             view_layout.setVisibility(View.GONE);
             framelayout_ongoing_order.setVisibility(View.VISIBLE);
@@ -123,10 +128,26 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             ft.replace(R.id.framelayout_ongoing_order, new OngoingOrderFragment());
             ft.commit();
         });
-        newOrder.setOnClickListener(v -> {
-            view_layout.setVisibility(View.VISIBLE);
-            framelayout_ongoing_order.setVisibility(View.GONE);
+        kitchenStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view_layout.setVisibility(view_layout.GONE);
+                framelayout_ongoing_order.setVisibility(View.VISIBLE);
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.framelayout_ongoing_order, new KitchenStatusFragment());
+                ft.commit();
+            }
         });
+//        qrOrder.setOnClickListener(new View.OnClickListener() {
+////            @Override
+////            public void onClick(View v) {
+////                view_layout.setVisibility(view_layout.GONE);
+////                framelayout_ongoing_order.setVisibility(View.VISIBLE);
+////                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+////                ft.replace(R.id.framelayout_ongoing_order, new ());
+////                ft.commit();
+////            }
+////        });
     }
 
     private void init() {
@@ -281,6 +302,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         }
         // When Addons are not available
         else {
+            SharedPref.write("booleanstat","false");
             String t = SharedPref.read("priceaddons", "");
             now = 1;
             ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now,addonprice);

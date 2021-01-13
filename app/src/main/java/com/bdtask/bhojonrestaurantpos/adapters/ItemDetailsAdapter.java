@@ -26,10 +26,13 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     String quantity;
     private RecyclerView itemshowRecylerview;
     private double totalPriceCount;
+    private double d =0;
+    private double e =0;
     public ItemDetailsAdapter(MainActivity mainActivity, List<ListClassData> listClassData) {
         this.context = mainActivity;
         this.listClassData = listClassData;
         SharedPref.init(context);
+        notifyDataSetChanged();
     }
     @NonNull
     @Override
@@ -39,17 +42,17 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
+        d=0;
         totalPriceCount = Double.parseDouble(listClassData.get(position).getBaseprice());
         holder.totalPriceIdInsingleView.setText(listClassData.get(position).getBaseprice());
         holder.itemname.setText(listClassData.get(position).getProductname());
         holder.variantname.setText(listClassData.get(position).getSize());
         holder.itemquantityinitemview.setText(String.valueOf(listClassData.get(position).getQuantity()));
-        double d = Double.parseDouble(listClassData.get(position).getPrice()) * listClassData.get(position).getQuantity();
+        d = Double.parseDouble(listClassData.get(position).getPrice()) * listClassData.get(position).getQuantity();
         if(SharedPref.read("booleanstat","").equals("true")){
-            Log.wtf("booleanga",SharedPref.read("booleanstat",""));
             d +=  Double.parseDouble(SharedPref.read("SumOfAddons",""));
-            SharedPref.write("booleanstat","false");
+            //SharedPref.write("booleanstat","false");
+
         }
         holder.priceid.setText(String.valueOf(d));
 
@@ -57,9 +60,10 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
             int p = Integer.parseInt(holder.itemquantityinitemview.getText().toString());
             p++;
             holder.itemquantityinitemview.setText(String.valueOf(p));
-            double e = 0;
             e = Double.parseDouble(String.valueOf(Double.parseDouble(String.valueOf(Double.parseDouble(listClassData.get(position).getPrice()) * Double.parseDouble(holder.itemquantityinitemview.getText().toString())))));
+            e += Double.parseDouble(SharedPref.read("SumOfAddons",""));
             holder.priceid.setText(String.valueOf(e));
+
         });
         holder.minusbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +72,6 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                 q--;
                 if (q != 0) {
                     holder.itemquantityinitemview.setText(String.valueOf(q));
-                    double e = 0;
                     e = Double.parseDouble(String.valueOf(Double.parseDouble(String.valueOf(Double.parseDouble(listClassData.get(position).getPrice()) * Double.parseDouble(holder.itemquantityinitemview.getText().toString())))));
                     holder.priceid.setText(String.valueOf(e));
                 }

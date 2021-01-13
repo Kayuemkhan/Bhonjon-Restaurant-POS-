@@ -30,6 +30,7 @@ public class AddonsDetailsAdapter extends RecyclerView.Adapter<AddonsDetailsAdap
     private Boolean s = false;
     private ViewInterface viewInterface;
     private int addonsSelected = 0;
+    private boolean booleanstat = false;
 
     private double prizenow1 = 0, prizenow2 = 0;
 
@@ -40,12 +41,16 @@ public class AddonsDetailsAdapter extends RecyclerView.Adapter<AddonsDetailsAdap
         s = true;
         this.viewInterface = viewInterfac;
         SharedPref.write("booleanstat","false");
+        notifyDataSetChanged();
+
     }
 
     public AddonsDetailsAdapter(MainActivity applicationContext, List<com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.Addonsinfo> addonsinfoList, ViewInterface viewInterfac) {
         this.context = applicationContext;
         this.list2 = addonsinfoList;
         this.viewInterface = viewInterfac;
+        SharedPref.write("booleanstat","false");
+        notifyDataSetChanged();
     }
 
 
@@ -113,8 +118,8 @@ public class AddonsDetailsAdapter extends RecyclerView.Adapter<AddonsDetailsAdap
                 public void onClick(View v) {
                     addonsSelected += Integer.parseInt(holder.itemquantityaddonsitems.getText().toString()) + 1;
                     holder.itemquantityaddonsitems.setText(String.valueOf(addonsSelected));
-                    prizenow1 = (Double.parseDouble(list2.get(position).getAddonsprice()) * addonsSelected);
-                    SharedPref.write("SumOfAddons", String.valueOf(prizenow1));
+                    prizenow2 = (Double.parseDouble(list2.get(position).getAddonsprice()) * addonsSelected);
+                    SharedPref.write("SumOfAddons", String.valueOf(prizenow2));
                 }
             });
             holder.minusbuttonaddonsitems.setOnClickListener(new View.OnClickListener() {
@@ -123,8 +128,8 @@ public class AddonsDetailsAdapter extends RecyclerView.Adapter<AddonsDetailsAdap
                     if (Integer.parseInt(holder.itemquantityaddonsitems.getText().toString()) != 0) {
                         addonsSelected += Integer.parseInt(holder.itemquantityaddonsitems.getText().toString()) - 1;
                         holder.itemquantityaddonsitems.setText(String.valueOf(addonsSelected));
-                        prizenow1 = (Double.parseDouble(list2.get(position).getAddonsprice()) * addonsSelected);
-                        SharedPref.write("SumOfAddons", String.valueOf(prizenow1));
+                        prizenow2 = (Double.parseDouble(list2.get(position).getAddonsprice()) * addonsSelected);
+                        SharedPref.write("SumOfAddons", String.valueOf(prizenow2));
                     }
                 }
             });
