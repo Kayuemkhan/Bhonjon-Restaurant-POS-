@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         SharedPref.init(this);
         loginstatus = SharedPref.read("LOGGEDIN","");
-        if (!loginstatus.contains("")){
+        if (!loginstatus.equals("")){
             startActivity(new Intent(LoginActivity.this,MainActivity.class));
             finish();
         }

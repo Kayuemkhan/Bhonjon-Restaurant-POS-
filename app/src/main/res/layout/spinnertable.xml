@@ -15,7 +15,6 @@
         android:layout_gravity="center"
         android:layout_marginLeft="5dp"
         android:background="@android:color/transparent"
-
         android:gravity="center" />
 
     <ImageView
