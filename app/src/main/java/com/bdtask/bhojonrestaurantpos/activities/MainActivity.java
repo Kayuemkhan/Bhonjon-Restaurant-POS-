@@ -117,7 +117,9 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     private Spinner spinnerwaiter;
     private List<WaiterlistData> waiterslist;
     private List<String> waiterlistnames;
-
+    private TextView grandtotalTV,taxTV;
+    private String restaurent_Vat;
+    private Double subtotal;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +135,6 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         itemRecylerview.setLayoutManager(new GridLayoutManager(MainActivity.this, 5));
         itemRecylerview.addItemDecoration(new SpacingItemDecoration(3, Tools.dpToPx(this, 2), true));
         waiterService = AppConfig.getRetrofit().create(WaiterService.class);
-
         id = SharedPref.read("ID", "");
         Log.wtf("chekID", "ID" + id);
         getSubCategoryName();
@@ -167,6 +168,10 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         tablelist_spinnerdata();
         // setting up the waiters list data in spinner from API
         waiterslistspinnerdata();
+        //get the taxes
+
+
+        //Setting the value in GrandTotal
 //        qrOrder.setOnClickListener(new View.OnClickListener() {
 ////            @Override
 ////            public void onClick(View v) {
@@ -178,6 +183,15 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 ////            }
 ////        });
     }
+
+    public void getalltaxes(String s) {
+        if(listClassData.size()!= 0){
+            for (int i=0;i<listClassData.size();i++){
+                taxTV.setText(String.valueOf(s));
+            }
+        }
+    }
+
 
     // binding all the views with xml
     private void init() {
@@ -198,12 +212,17 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         searchableSpinnerCustomerName = findViewById(R.id.spinnercustomertype);
         tablelist_spinner = findViewById(R.id.spinnertable);
         spinnerwaiter = findViewById(R.id.spinnerwaiter);
+        grandtotalTV = findViewById(R.id.grandtotalTV);
+        taxTV= findViewById(R.id.taxTV);
+
     }
+
     // when user click the cancel button
     private void buttoncancelopearations() {
         listClassData.clear();
         itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData));
     }
+
     private void searchableSpinnerdata() {
         waiterService.getallCustomerTypes(id).enqueue(new Callback<CustomerTypeResponse>() {
             @Override
@@ -251,13 +270,13 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         waiterService.getallWaitersList(id).enqueue(new Callback<WaiterlistResponse>() {
             @Override
             public void onResponse(Call<WaiterlistResponse> call, Response<WaiterlistResponse> response) {
-                waiterslist= new ArrayList<>();
+                waiterslist = new ArrayList<>();
                 waiterlistnames = new ArrayList<>();
                 waiterslist = response.body().getData();
-                for(int i=0; i<waiterslist.size();i++){
+                for (int i = 0; i < waiterslist.size(); i++) {
                     waiterlistnames.add(waiterslist.get(i).getWaitername());
                 }
-                spinnerwaiter.setAdapter(new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_dropdown_item_1line,waiterlistnames));
+                spinnerwaiter.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, waiterlistnames));
             }
 
             @Override
@@ -285,6 +304,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             }
         });
     }
+
     // All the categories item will be shown here
     public void getCategoriesItem(String position, String s) {
         getPosition = position;
@@ -296,6 +316,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 public void onResponse(Call<AllCategoryResponse> call, Response<AllCategoryResponse> response) {
                     Log.d("Response", "Onresponse" + new Gson().toJson(response.body()));
                     List<Foodinfo> categoriesData = response.body().getData().getFoodinfo();
+                    restaurent_Vat = response.body().getData().getRestaurantvat();
                     itemRecylerview.setAdapter(new AllCategoriesInfo(getApplicationContext(), categoriesData, MainActivity.this));
                 }
 
@@ -321,6 +342,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             });
         }
     }
+
     // If the list contains any addons
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void AddonsChecking(String baseprice, String addonsStatus, String productname, String price, String size, String productsID, List<Addonsinfo> addonsinfoList1) {

@@ -143,45 +143,105 @@
                    android:layout_weight="1"
                    android:orientation="vertical">
 
-                   <TextView
+                   <LinearLayout
+                       android:orientation="horizontal"
                        android:layout_width="match_parent"
                        android:layout_height="match_parent"
                        android:layout_weight=".5"
+                       android:weightSum="2"
                        android:background="#E5343E"
-                       android:padding="8dp"
                        android:text="CGT/TAX:"
                        android:textAlignment="center"
-                       android:textColor="@color/white" />
+                       android:textColor="@color/white" >
+                       <TextView
+                           android:gravity="center"
+                           android:layout_width="0dp"
+                           android:layout_height="match_parent"
+                           android:layout_weight="1"
+                           android:text="CGT/TAX: "
+                           android:textAlignment="textEnd"
+                           android:textColor="@color/white"
+                           tools:ignore="RtlCompat" />
+                       <TextView
+                           android:id="@+id/taxTV"
+                           android:layout_width="0dp"
+                           android:layout_height="match_parent"
+                           android:layout_weight="1"
+                           android:textAlignment="textStart"
+                           android:gravity="center"
+                           android:textColor="@color/white"
+                           android:text="...."
+                           tools:ignore="RtlCompat" />
+                   </LinearLayout>
 
-                   <TextView
+                   <LinearLayout
                        android:layout_width="match_parent"
                        android:layout_height="match_parent"
                        android:layout_weight=".5"
+                       android:weightSum="2"
                        android:background="#418BCA"
-                       android:padding="8dp"
-                       android:text="Discount:"
-                       android:textAlignment="center"
-                       android:textColor="@color/white" />
+                       android:orientation="horizontal"
+                       android:textColor="@color/white" >
+                       <TextView
+                           android:gravity="center"
+                           android:layout_width="0dp"
+                           android:layout_height="match_parent"
+                           android:layout_weight="1"
+                           android:background="#418BCA"
+                           android:text="Discount: (%) "
+                           android:textAlignment="textEnd"
+                           android:orientation="horizontal"
+                           android:textColor="@color/white"
+                           tools:ignore="RtlCompat" />
+                       <EditText
+                           android:id="@+id/discountTV"
+                           android:gravity="center"
+                           android:layout_width="0dp"
+                           android:layout_height="match_parent"
+                           android:layout_weight="1"
+                           android:background="#418BCA"
+                           android:textAlignment="textStart"
+                           android:orientation="horizontal"
+                           android:textColor="@color/white"
+                           tools:ignore="RtlCompat" />
+                   </LinearLayout>
 
                </LinearLayout>
 
                <LinearLayout
                    android:layout_width="0dp"
+                   android:orientation="horizontal"
                    android:layout_height="match_parent"
+                   android:background="@color/overlay_dark"
+                   android:gravity="center"
                    android:layout_weight="2">
 
                    <TextView
-                       android:layout_width="match_parent"
+                       android:layout_width="0dp"
+                       android:layout_weight="1"
                        android:layout_height="match_parent"
-                       android:background="@color/overlay_dark"
+                       android:textAlignment="textEnd"
                        android:gravity="center"
-                       android:padding="8dp"
-                       android:text="Grand Total : 1250.00"
+                       android:text="Grand Total : "
+                       android:padding="1dp"
                        android:textColor="#F7CD2D"
                        android:textSize="20sp"
                        android:textStyle="bold"
 
-                       />
+                       tools:ignore="RtlCompat" />
+                   <TextView
+                       android:id="@+id/grandtotalTV"
+                       android:layout_weight="1"
+                       android:layout_width="0dp"
+                       android:layout_height="match_parent"
+                       android:gravity="center"
+                       android:textAlignment="textStart"
+                       android:text="1250.00"
+                       android:textColor="#F7CD2D"
+                       android:textSize="20sp"
+                       android:textStyle="bold"
+
+                       tools:ignore="RtlCompat" />
                </LinearLayout>
 
 
@@ -196,11 +256,11 @@
                android:background="#161616"
                android:weightSum="4">
 
-               <TextView
+               <Button
                    android:id="@+id/buttoncalculator"
                    android:layout_width="0dp"
                    android:layout_height="match_parent"
-                   android:layout_margin="5dp"
+                   android:layout_margin="@dimen/_5sdp"
                    android:layout_weight="1"
                    android:background="#016AF2"
                    android:drawableLeft="@drawable/ic_baseline_calculate_24"
@@ -209,7 +269,7 @@
                    android:scaleType="center"
                    android:text="Calculator"
                    android:textColor="@color/white"
-                   android:textSize="20sp" />
+                   />
 
                <Button
                    android:id="@+id/buttoncancel"

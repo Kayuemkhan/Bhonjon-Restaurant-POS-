@@ -17,7 +17,6 @@ public interface WaiterService {
     @FormUrlEncoded
     @POST("sign_in")
     Call<LoginResponse> doSignIn(@Field("email") String email, @Field("password") String password, @Field("token") String token);
-
     @FormUrlEncoded
     @POST("categorylist")
     Call<CategoryResponse> getAllCategories(@Field("id") String id);
@@ -36,7 +35,4 @@ public interface WaiterService {
     @FormUrlEncoded
     @POST("waiterlist")
     Call<WaiterlistResponse> getallWaitersList(@Field("id") String id);
-
-
-
 }
