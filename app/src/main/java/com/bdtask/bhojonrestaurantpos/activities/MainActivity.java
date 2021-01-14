@@ -55,8 +55,12 @@ import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeData;
 import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodinfoFoodList;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodlistResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.WaiterList.WaiterlistData;
+import com.bdtask.bhojonrestaurantpos.modelClass.WaiterList.WaiterlistResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.datamodel.CustomerTypeName;
 import com.bdtask.bhojonrestaurantpos.modelClass.datamodel.ListClassData;
+import com.bdtask.bhojonrestaurantpos.modelClass.tablelist.TableListData;
+import com.bdtask.bhojonrestaurantpos.modelClass.tablelist.TableResponse;
 import com.bdtask.bhojonrestaurantpos.retrofit.AppConfig;
 import com.bdtask.bhojonrestaurantpos.retrofit.WaiterService;
 import com.bdtask.bhojonrestaurantpos.utils.SharedPref;
@@ -106,7 +110,13 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     private FrameLayout framelayout_ongoing_order;
     private SearchableSpinner searchableSpinnerCustomerName;
     private List<CustomerTypeData> customerTypeData;
-    private List<String> customerTypeNames ;
+    private List<String> customerTypeNames;
+    private Spinner tablelist_spinner;
+    private List<TableListData> tableListData;
+    private List<String> tableName;
+    private Spinner spinnerwaiter;
+    private List<WaiterlistData> waiterslist;
+    private List<String> waiterlistnames;
 
     @SuppressLint("WrongConstant")
     @Override
@@ -123,13 +133,16 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         itemRecylerview.setLayoutManager(new GridLayoutManager(MainActivity.this, 5));
         itemRecylerview.addItemDecoration(new SpacingItemDecoration(3, Tools.dpToPx(this, 2), true));
         waiterService = AppConfig.getRetrofit().create(WaiterService.class);
+
         id = SharedPref.read("ID", "");
         Log.wtf("chekID", "ID" + id);
         getSubCategoryName();
+        // When User click for new Order
         newOrder.setOnClickListener(v -> {
             view_layout.setVisibility(View.VISIBLE);
             framelayout_ongoing_order.setVisibility(View.GONE);
         });
+        // When User click for ongoing Order
         ongoingOrder.setOnClickListener(v -> {
             view_layout.setVisibility(View.GONE);
             framelayout_ongoing_order.setVisibility(View.VISIBLE);
@@ -137,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             ft.replace(R.id.framelayout_ongoing_order, new OngoingOrderFragment());
             ft.commit();
         });
+        // when user click for kitchen status
         kitchenStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,8 +161,12 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 ft.commit();
             }
         });
-
+        // Setting up the customer type data in spinner from API
         searchableSpinnerdata();
+        // Setting up the table list data in spinner from API
+        tablelist_spinnerdata();
+        // setting up the waiters list data in spinner from API
+        waiterslistspinnerdata();
 //        qrOrder.setOnClickListener(new View.OnClickListener() {
 ////            @Override
 ////            public void onClick(View v) {
@@ -161,28 +179,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 ////        });
     }
 
-    private void searchableSpinnerdata() {
-        waiterService.getallCustomerTypes(id).enqueue(new Callback<CustomerTypeResponse>() {
-            @Override
-            public void onResponse(Call<CustomerTypeResponse> call, Response<CustomerTypeResponse> response) {
-                Log.d("Response", "Onresponse" + new Gson().toJson(response.body()));
-                customerTypeData = new ArrayList<>();
-                customerTypeNames = new ArrayList<>();
-                customerTypeData = response.body().getData();
-                for(int i =0;i<customerTypeData.size();i++){
-                    customerTypeNames.add(customerTypeData.get(i).getTypeName());
-                }
-                searchableSpinnerCustomerName.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, customerTypeNames));
-            }
-
-            @Override
-            public void onFailure(Call<CustomerTypeResponse> call, Throwable t) {
-
-            }
-        });
-
-    }
-
+    // binding all the views with xml
     private void init() {
         framelayout_ongoing_order = findViewById(R.id.framelayout_ongoing_order);
         newOrder = findViewById(R.id.newOrder);
@@ -199,12 +196,77 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         placeorder = findViewById(R.id.placeorder);
         view_layout = findViewById(R.id.view_layout);
         searchableSpinnerCustomerName = findViewById(R.id.spinnercustomertype);
+        tablelist_spinner = findViewById(R.id.spinnertable);
+        spinnerwaiter = findViewById(R.id.spinnerwaiter);
     }
-
+    // when user click the cancel button
     private void buttoncancelopearations() {
         listClassData.clear();
         itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData));
     }
+    private void searchableSpinnerdata() {
+        waiterService.getallCustomerTypes(id).enqueue(new Callback<CustomerTypeResponse>() {
+            @Override
+            public void onResponse(Call<CustomerTypeResponse> call, Response<CustomerTypeResponse> response) {
+                customerTypeData = new ArrayList<>();
+                customerTypeNames = new ArrayList<>();
+                customerTypeData = response.body().getData();
+                for (int i = 0; i < customerTypeData.size(); i++) {
+                    customerTypeNames.add(customerTypeData.get(i).getTypeName());
+                }
+                searchableSpinnerCustomerName.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, customerTypeNames));
+            }
+
+            @Override
+            public void onFailure(Call<CustomerTypeResponse> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    private void tablelist_spinnerdata() {
+        waiterService.getTableList(id).enqueue(new Callback<TableResponse>() {
+            @Override
+            public void onResponse(Call<TableResponse> call, Response<TableResponse> response) {
+
+                tableListData = new ArrayList<>();
+                tableName = new ArrayList<>();
+                tableListData = response.body().getData();
+                for (int i = 0; i < tableListData.size(); i++) {
+                    tableName.add(tableListData.get(i).getTableName());
+                }
+                tablelist_spinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, tableName));
+
+            }
+
+            @Override
+            public void onFailure(Call<TableResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void waiterslistspinnerdata() {
+        waiterService.getallWaitersList(id).enqueue(new Callback<WaiterlistResponse>() {
+            @Override
+            public void onResponse(Call<WaiterlistResponse> call, Response<WaiterlistResponse> response) {
+                waiterslist= new ArrayList<>();
+                waiterlistnames = new ArrayList<>();
+                waiterslist = response.body().getData();
+                for(int i=0; i<waiterslist.size();i++){
+                    waiterlistnames.add(waiterslist.get(i).getWaitername());
+                }
+                spinnerwaiter.setAdapter(new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_dropdown_item_1line,waiterlistnames));
+            }
+
+            @Override
+            public void onFailure(Call<WaiterlistResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
 
     // All the categories name will be shown here
     public void getSubCategoryName() {
@@ -223,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             }
         });
     }
-
+    // All the categories item will be shown here
     public void getCategoriesItem(String position, String s) {
         getPosition = position;
         // All Categories List
@@ -259,7 +321,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             });
         }
     }
-
+    // If the list contains any addons
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void AddonsChecking(String baseprice, String addonsStatus, String productname, String price, String size, String productsID, List<Addonsinfo> addonsinfoList1) {
         // When Addons are available...

@@ -65,30 +65,24 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
             holder.priceid.setText(String.valueOf(e));
 
         });
-        holder.minusbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int q = Integer.parseInt(holder.itemquantityinitemview.getText().toString());
-                q--;
-                if (q != 0) {
-                    holder.itemquantityinitemview.setText(String.valueOf(q));
-                    e = Double.parseDouble(String.valueOf(Double.parseDouble(String.valueOf(Double.parseDouble(listClassData.get(position).getPrice()) * Double.parseDouble(holder.itemquantityinitemview.getText().toString())))));
-                    holder.priceid.setText(String.valueOf(e));
-                }
-
+        holder.minusbutton.setOnClickListener(v -> {
+            int q = Integer.parseInt(holder.itemquantityinitemview.getText().toString());
+            q--;
+            if (q != 0) {
+                holder.itemquantityinitemview.setText(String.valueOf(q));
+                e = Double.parseDouble(String.valueOf(Double.parseDouble(String.valueOf(Double.parseDouble(listClassData.get(position).getPrice()) * Double.parseDouble(holder.itemquantityinitemview.getText().toString())))));
+                holder.priceid.setText(String.valueOf(e));
             }
+
         });
-        holder.deletebutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    int actualPosition = holder.getAdapterPosition();
-                    listClassData.remove(actualPosition);
-                    notifyItemRemoved(actualPosition);
-                    notifyItemRangeChanged(actualPosition, listClassData.size());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        holder.deletebutton.setOnClickListener(v -> {
+            try {
+                int actualPosition = holder.getAdapterPosition();
+                listClassData.remove(actualPosition);
+                notifyItemRemoved(actualPosition);
+                notifyItemRangeChanged(actualPosition, listClassData.size());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }

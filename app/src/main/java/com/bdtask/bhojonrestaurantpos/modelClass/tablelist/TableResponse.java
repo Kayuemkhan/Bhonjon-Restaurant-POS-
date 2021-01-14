@@ -10,7 +10,7 @@ public class TableResponse {
     private int statusCode;
 
     @SerializedName("data")
-    private List<DataItem> data;
+    private List<TableListData> data;
 
     @SerializedName("message")
     private String message;
@@ -26,11 +26,11 @@ public class TableResponse {
         return statusCode;
     }
 
-    public void setData(List<DataItem> data) {
+    public void setData(List<TableListData> data) {
         this.data = data;
     }
 
-    public List<DataItem> getData() {
+    public List<TableListData> getData() {
         return data;
     }
 

@@ -4,6 +4,7 @@ import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.AllCategoryResponse
 import com.bdtask.bhojonrestaurantpos.modelClass.Category.CategoryResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodlistResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.WaiterList.WaiterlistResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.loginModel.LoginResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.tablelist.TableResponse;
 
@@ -32,4 +33,10 @@ public interface WaiterService {
     @FormUrlEncoded
     @POST("allcustomertype")
     Call<CustomerTypeResponse> getallCustomerTypes(@Field("id") String id);
+    @FormUrlEncoded
+    @POST("waiterlist")
+    Call<WaiterlistResponse> getallWaitersList(@Field("id") String id);
+
+
+
 }

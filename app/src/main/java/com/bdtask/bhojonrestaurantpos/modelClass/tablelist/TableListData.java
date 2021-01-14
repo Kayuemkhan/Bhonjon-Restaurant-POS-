@@ -2,7 +2,7 @@ package com.bdtask.bhojonrestaurantpos.modelClass.tablelist;
 
 import com.google.gson.annotations.SerializedName;
 
-public class DataItem {
+public class TableListData {
     @SerializedName("TableId")
     private String tableId;
 
