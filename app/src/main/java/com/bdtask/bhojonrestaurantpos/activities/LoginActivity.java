@@ -33,13 +33,15 @@ public class LoginActivity extends AppCompatActivity {
     EditText emailET, passwordET;
     private WaiterService waitersService;
     ProgressDialog progressDialog;
+    private String loginstatus ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         SharedPref.init(this);
-        if (SharedPref.read("LOGGEDIN","") != null){
+        loginstatus = SharedPref.read("LOGGEDIN","");
+        if (!loginstatus.contains("")){
             startActivity(new Intent(LoginActivity.this,MainActivity.class));
             finish();
         }
