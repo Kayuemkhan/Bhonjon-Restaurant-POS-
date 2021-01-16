@@ -4,24 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="top|start"
+    android:gravity="top|start"
     tools:context=".fragments.OngoingOrderFragment">
 
     <RelativeLayout
+        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <LinearLayout
+            android:layout_alignParentStart="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/lowerpartOfOngoingLayout">
+            >
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/tableListRecylerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/lowerpartOfOngoingLayout"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="4"
                 tools:itemCount="50"
                 tools:listitem="@layout/singletablepage" />
 

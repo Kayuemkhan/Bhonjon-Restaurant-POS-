@@ -56,7 +56,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
         d = Double.parseDouble(listClassData.get(position).getPrice()) * listClassData.get(position).getQuantity();
         if(SharedPref.read("booleanstat","").equals("true")){
             d +=  Double.parseDouble(SharedPref.read("SumOfAddons",""));
-           // SharedPref.write("SumOfAddons",null);
+            SharedPref.write("SumOfAddons",null);
             //SharedPref.write("booleanstat","false");
 
         }

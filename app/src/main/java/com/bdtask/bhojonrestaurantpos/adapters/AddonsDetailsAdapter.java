@@ -30,29 +30,22 @@ public class AddonsDetailsAdapter extends RecyclerView.Adapter<AddonsDetailsAdap
     private Boolean s = false;
     private ViewInterface viewInterface;
     private int addonsSelected = 0;
-    private boolean booleanstat = false;
-
     private double prizenow1 = 0, prizenow2 = 0;
-
     public AddonsDetailsAdapter(Context applicationContext, List<Addonsinfo> addonsinfoList1, ViewInterface viewInterfac) {
         this.context = applicationContext;
         this.list = addonsinfoList1;
         SharedPref.init(context);
         s = true;
         this.viewInterface = viewInterfac;
-        SharedPref.write("booleanstat","false");
         notifyDataSetChanged();
-
     }
-
     public AddonsDetailsAdapter(MainActivity applicationContext, List<com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.Addonsinfo> addonsinfoList, ViewInterface viewInterfac) {
         this.context = applicationContext;
         this.list2 = addonsinfoList;
         this.viewInterface = viewInterfac;
-        SharedPref.write("booleanstat","false");
         notifyDataSetChanged();
-    }
 
+    }
 
     @NonNull
     @Override
@@ -90,28 +83,8 @@ public class AddonsDetailsAdapter extends RecyclerView.Adapter<AddonsDetailsAdap
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         SharedPref.write("booleanstat",String.valueOf(isChecked));
-//                    prizenow1 += (Double.parseDouble(list.get(position).getAddonsprice()) * addonsSelected);
-//                    SharedPref.write("SumOfAddons", String.valueOf(prizenow1));
-//                    Log.wtf("SumOfAddonsaaa", SharedPref.read("SumOfAddons", ""));
-
-//                    if (isChecked) {
-//                        Log.wtf("datttttt", String.valueOf(addonsSelected));
-//                        prizenow1 += (Double.parseDouble(list.get(position).getAddonsprice()) * addonsSelected);
-//                        SharedPref.write("SumOfAddons", String.valueOf(prizenow1));
-//                        Log.wtf("SumOfAddonsaaa", SharedPref.read("SumOfAddons", ""));
-//                    }
-
                 }
             });
-//            holder.iteminformationaddons.setOnClickListener(v -> {
-////                if (holder.iteminformationaddons.isChecked()) {
-//                prizenow1 += (Double.parseDouble(list.get(position).getAddonsprice()) * addonsSelected);
-////                    SharedPref.write("SumOfAddons", String.valueOf(prizenow1));
-////                    Log.wtf("SumOfAddonsaaa",SharedPref.read("SumOfAddons",""));
-//                Log.wtf("datttttt", String.valueOf(addonsSelected));
-//                Log.wtf("SumOfAddonsaaa", String.valueOf(list.get(position).getAddonsprice() + "," + String.valueOf(addonsSelected)));
-////                }
-//            });
         } else {
             holder.plusbuttonaddonsitems.setOnClickListener(new View.OnClickListener() {
                 @Override
