@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.activities.MainActivity;
 import com.bdtask.bhojonrestaurantpos.modelClass.datamodel.ListClassData;
+import com.bdtask.bhojonrestaurantpos.modelClass.datamodel.Subtotal;
 import com.bdtask.bhojonrestaurantpos.utils.SharedPref;
 import com.google.gson.Gson;
 
@@ -33,12 +34,15 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     private Double subtotal=0.00;
     private Double total =0.00;
     private List<Double> list;
+    private List<Subtotal> listSubtotal ;
     public ItemDetailsAdapter(MainActivity mainActivity, List<ListClassData> listClassData) {
         this.context = mainActivity;
         this.listClassData = listClassData;
         SharedPref.init(context);
         this.mainActivity = mainActivity;
         list = new ArrayList<>();
+        listSubtotal = new ArrayList<>();
+
     }
     @NonNull
     @Override
@@ -53,7 +57,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
         holder.itemname.setText(listClassData.get(position).getProductname());
         holder.variantname.setText(listClassData.get(position).getSize());
         holder.itemquantityinitemview.setText(String.valueOf(listClassData.get(position).getQuantity()));
-        d = Double.parseDouble(listClassData.get(position).getPrice()) * listClassData.get(position).getQuantity();
+        d = Double.parseDouble(listClassData.get(position).getBaseprice()) * listClassData.get(position).getQuantity();
         if(SharedPref.read("booleanstat","").equals("true")){
             d +=  Double.parseDouble(SharedPref.read("SumOfAddons",""));
             SharedPref.write("SumOfAddons",null);
@@ -61,18 +65,26 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
 
         }
         holder.priceid.setText(String.valueOf(d));
-
+        listClassData.get(position).setPrice(String.valueOf(d));
         holder.plusbutton.setOnClickListener(v -> {
             String datacheck ;
             int p = Integer.parseInt(holder.itemquantityinitemview.getText().toString());
             p++;
             holder.itemquantityinitemview.setText(String.valueOf(p));
-            e = Double.parseDouble(String.valueOf(Double.parseDouble(String.valueOf(Double.parseDouble(listClassData.get(position).getPrice()) * Double.parseDouble(holder.itemquantityinitemview.getText().toString())))));
+            e = Double.parseDouble(String.valueOf(Double.parseDouble(String.valueOf(Double.parseDouble(listClassData.get(position).getBaseprice()) * Double.parseDouble(holder.itemquantityinitemview.getText().toString())))));
             datacheck = SharedPref.read("SumOfAddons","");
             if(!datacheck.equals("")){
                 e += Double.parseDouble(SharedPref.read("SumOfAddons",""));
             }
+            listClassData.get(position).setPrice(String.valueOf(d));
             holder.priceid.setText(String.valueOf(e));
+            listClassData.get(position).setQuantity(p);
+            subtotal =0.0;
+            for(int i =0;i<listClassData.size();i++){
+                subtotal += Double.parseDouble(listClassData.get(i).getPrice());
+            }
+            mainActivity.getalltaxes(String.valueOf(subtotal));
+            notifyDataSetChanged();
 
 
         });
@@ -81,9 +93,16 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
             q--;
             if (q != 0) {
                 holder.itemquantityinitemview.setText(String.valueOf(q));
-                e = Double.parseDouble(String.valueOf(Double.parseDouble(String.valueOf(Double.parseDouble(listClassData.get(position).getPrice()) * Double.parseDouble(holder.itemquantityinitemview.getText().toString())))));
+                e = Double.parseDouble(String.valueOf(Double.parseDouble(String.valueOf(Double.parseDouble(listClassData.get(position).getBaseprice()) * Double.parseDouble(holder.itemquantityinitemview.getText().toString())))));
+                listClassData.get(position).setPrice(String.valueOf(d));
                 holder.priceid.setText(String.valueOf(e));
-
+                listClassData.get(position).setQuantity(q);
+                subtotal =0.0;
+                for(int i =0;i<listClassData.size();i++){
+                    subtotal += Double.parseDouble(listClassData.get(i).getPrice());
+                }
+                mainActivity.getalltaxes(String.valueOf(subtotal));
+                notifyDataSetChanged();
             }
 
         });
@@ -97,6 +116,11 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                 e.printStackTrace();
             }
         });
+        subtotal =0.0;
+        for(int i =0;i<listClassData.size();i++){
+            subtotal += Double.parseDouble(listClassData.get(i).getPrice());
+        }
+        mainActivity.getalltaxes(String.valueOf(subtotal));
     }
 
     @Override

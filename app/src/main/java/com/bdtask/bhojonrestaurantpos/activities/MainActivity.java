@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     private TextView grandtotalTV,taxTV;
     private String restaurent_Vat;
     private Double subtotal;
+    private List<AllCategoriesData> list;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         setContentView(R.layout.activity_main);
         SharedPref.init(MainActivity.this);
         init();
+        list = new ArrayList<>();
         itemshowRecylerview.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         itemshowRecylerview.setHasFixedSize(true);
         buttoncancel.setOnClickListener(v -> buttoncancelopearations());
@@ -207,13 +209,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 ////        });
     }
 
-    public void getalltaxes(String s) {
-        if(listClassData.size()!= 0){
-            for (int i=0;i<listClassData.size();i++){
-                taxTV.setText(String.valueOf(s));
-            }
-        }
-    }
+
 
 
     // binding all the views with xml
@@ -338,6 +334,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 @Override
                 public void onResponse(Call<AllCategoryResponse> call, Response<AllCategoryResponse> response) {
                     Log.d("Response", "Onresponse" + new Gson().toJson(response.body()));
+                    restaurent_Vat = response.body().getData().getRestaurantvat();
                     List<Foodinfo> categoriesData = response.body().getData().getFoodinfo();
                     restaurent_Vat = response.body().getData().getRestaurantvat();
                     itemRecylerview.setAdapter(new AllCategoriesInfo(getApplicationContext(), categoriesData, MainActivity.this));
@@ -733,4 +730,12 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         addonprice += Integer.parseInt(addonsprice);
 
     }
+    public void getalltaxes(String s) {
+        double vat= Double.parseDouble(s);
+        double restaurent_vatt = Double.parseDouble(restaurent_Vat);
+        restaurent_vatt = (restaurent_vatt * vat) / 100 ;
+        taxTV.setText(String.valueOf(restaurent_vatt));
+
+    }
+
 }
