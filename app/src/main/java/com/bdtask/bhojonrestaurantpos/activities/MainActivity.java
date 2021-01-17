@@ -233,6 +233,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         spinnerwaiter = findViewById(R.id.spinnerwaiter);
         grandtotalTV = findViewById(R.id.grandtotalTV);
         taxTV= findViewById(R.id.taxTV);
+        grandtotalTV = findViewById(R.id.grandtotalTV);
 
     }
 
@@ -731,11 +732,13 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
     }
     public void getalltaxes(String s) {
+        double grand_total ;
         double vat= Double.parseDouble(s);
         double restaurent_vatt = Double.parseDouble(restaurent_Vat);
         restaurent_vatt = (restaurent_vatt * vat) / 100 ;
         taxTV.setText(String.valueOf(restaurent_vatt));
-
+        grand_total = vat + restaurent_vatt;
+        grandtotalTV.setText(String.valueOf(grand_total));
     }
 
 }
