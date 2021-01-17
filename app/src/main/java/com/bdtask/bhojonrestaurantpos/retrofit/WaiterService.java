@@ -43,4 +43,8 @@ public interface WaiterService {
     @FormUrlEncoded
     @POST("qrorderlist")
     Call<QROrderResponse> getAllQrORder(@Field("id") String id);
+     @FormUrlEncoded
+    @POST("onlinellorder")
+    Call<QROrderResponse> getallOnlineOrders(@Field("id") String id);
+
 }

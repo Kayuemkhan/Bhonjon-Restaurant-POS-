@@ -25,6 +25,9 @@ public class QROrderData {
     @SerializedName("totalamount")
     @Expose
     private String totalamount;
+    @SerializedName("paidStatus")
+    @Expose
+    private String paidStatus;
 
     public String getOrderid() {
         return orderid;
@@ -81,4 +84,13 @@ public class QROrderData {
     public void setTotalamount(String totalamount) {
         this.totalamount = totalamount;
     }
+
+    public String getPaidStatus() {
+        return paidStatus;
+    }
+
+    public void setPaidStatus(String paidStatus) {
+        this.paidStatus = paidStatus;
+    }
+
 }

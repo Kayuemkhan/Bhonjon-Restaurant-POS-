@@ -174,16 +174,16 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 ft.commit();
             }
         });
-//        onlineOrder.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                view_layout.setVisibility(view_layout.GONE);
-//                framelayout_ongoing_order.setVisibility(View.VISIBLE);
-//                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//                ft.replace(R.id.framelayout_ongoing_order, new OnlineOrderFragment());
-//                ft.commit();
-//            }
-//        });
+        onlineOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view_layout.setVisibility(view_layout.GONE);
+                framelayout_ongoing_order.setVisibility(View.VISIBLE);
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.framelayout_ongoing_order, new OnlineOrderFragment());
+                ft.commit();
+            }
+        });
 
         // Setting up the customer type data in spinner from API
         searchableSpinnerdata();

@@ -1,11 +1,9 @@
 package com.bdtask.bhojonrestaurantpos.adapters;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,7 +15,6 @@ import java.util.List;
 public class QROrderAdapter extends RecyclerView.Adapter<QROrderAdapter.ViewHolder> {
     List<QROrderData> qrOrderDataList;
     Context context;
-
 
     public QROrderAdapter(Context applicationContext, List<QROrderData> qrOrderData) {
         this.qrOrderDataList = qrOrderData;
@@ -37,7 +34,7 @@ public class QROrderAdapter extends RecyclerView.Adapter<QROrderAdapter.ViewHold
             holder.customernameQROrder.setText(qrOrderDataList.get(position).getCustomerName());
             holder.waiterQROrder.setText(qrOrderDataList.get(position).getWaiter());
             holder.tableNoQROrder.setText(qrOrderDataList.get(position).getTablename());
-            holder.paymentStatusQROrder.setText("Paid");
+            holder.paymentStatusQROrder.setText(qrOrderDataList.get(position).getPaidStatus());
             holder.dateQROrder.setText(qrOrderDataList.get(position).getOrderDate());
             holder.ammountQROrder.setText(qrOrderDataList.get(position).getTotalamount());
     }
