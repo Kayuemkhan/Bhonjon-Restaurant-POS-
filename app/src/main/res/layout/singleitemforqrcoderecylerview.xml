@@ -14,6 +14,7 @@
         android:weightSum="8">
 
         <TextView
+            android:id="@+id/invoiceIdQROrder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -24,6 +25,7 @@
             android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/customernameQROrder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -34,6 +36,7 @@
             android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/waiterQROrder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -44,6 +47,7 @@
             android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/tableNoQROrder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -54,6 +58,7 @@
             android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/paymentStatusQROrder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -64,6 +69,7 @@
             android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/dateQROrder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -74,6 +80,7 @@
             android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/ammountQROrder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

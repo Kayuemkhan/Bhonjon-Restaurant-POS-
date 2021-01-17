@@ -45,6 +45,8 @@ import com.bdtask.bhojonrestaurantpos.adapters.FoodListAdapater;
 import com.bdtask.bhojonrestaurantpos.adapters.ItemDetailsAdapter;
 import com.bdtask.bhojonrestaurantpos.fragments.KitchenStatusFragment;
 import com.bdtask.bhojonrestaurantpos.fragments.OngoingOrderFragment;
+import com.bdtask.bhojonrestaurantpos.fragments.OnlineOrderFragment;
+import com.bdtask.bhojonrestaurantpos.fragments.QROrderFragment;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.Addonsinfo;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.AllCategoriesData;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.AllCategoryResponse;
@@ -162,6 +164,27 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 ft.commit();
             }
         });
+        qrOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view_layout.setVisibility(view_layout.GONE);
+                framelayout_ongoing_order.setVisibility(View.VISIBLE);
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.framelayout_ongoing_order, new QROrderFragment());
+                ft.commit();
+            }
+        });
+//        onlineOrder.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                view_layout.setVisibility(view_layout.GONE);
+//                framelayout_ongoing_order.setVisibility(View.VISIBLE);
+//                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//                ft.replace(R.id.framelayout_ongoing_order, new OnlineOrderFragment());
+//                ft.commit();
+//            }
+//        });
+
         // Setting up the customer type data in spinner from API
         searchableSpinnerdata();
         // Setting up the table list data in spinner from API

@@ -5,6 +5,7 @@ import com.bdtask.bhojonrestaurantpos.modelClass.Category.CategoryResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodlistResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.QROrder.QROrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.WaiterList.WaiterlistResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.loginModel.LoginResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.tablelist.TableResponse;
@@ -39,4 +40,7 @@ public interface WaiterService {
     @FormUrlEncoded
     @POST("getongoingorder")
     Call<OngoingOrderResponse> getallOngoingOrder(@Field("id") String id);
+    @FormUrlEncoded
+    @POST("qrorderlist")
+    Call<QROrderResponse> getAllQrORder(@Field("id") String id);
 }
