@@ -2,6 +2,7 @@ package com.bdtask.bhojonrestaurantpos.retrofit;
 
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.AllCategoryResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Category.CategoryResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.CustomerList.CustomerListResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodlistResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderResponse;
@@ -32,6 +33,9 @@ public interface WaiterService {
     @POST("tablelist")
     Call<TableResponse> getTableList(@Field("id") String id);
     @FormUrlEncoded
+    @POST("customerfullist")
+    Call<CustomerListResponse> getallCustomersName(@Field("id") String id);
+    @FormUrlEncoded
     @POST("allcustomertype")
     Call<CustomerTypeResponse> getallCustomerTypes(@Field("id") String id);
     @FormUrlEncoded
@@ -46,5 +50,6 @@ public interface WaiterService {
      @FormUrlEncoded
     @POST("onlinellorder")
     Call<QROrderResponse> getallOnlineOrders(@Field("id") String id);
+
 
 }

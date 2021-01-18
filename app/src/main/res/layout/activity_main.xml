@@ -335,6 +335,13 @@
                    android:layout_below="@+id/categoriesdesign"
                    tools:listitem="@layout/singleitem" />
 
+               <FrameLayout
+                   android:id="@+id/framelayout_ongoing_order"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent">
+
+               </FrameLayout>
+
            </LinearLayout>
 
            <LinearLayout
@@ -541,12 +548,4 @@
        </LinearLayout>
    </RelativeLayout>
 
-    <FrameLayout
-        android:id="@+id/framelayout_ongoing_order"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/upperlayout"
-        >
-
-    </FrameLayout>
 </RelativeLayout>

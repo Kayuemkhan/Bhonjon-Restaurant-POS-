@@ -2,25 +2,16 @@ package com.bdtask.bhojonrestaurantpos.activities;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.SearchManager;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -53,13 +44,14 @@ import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.AllCategoryResponse
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.Foodinfo;
 import com.bdtask.bhojonrestaurantpos.modelClass.Category.CategoryData;
 import com.bdtask.bhojonrestaurantpos.modelClass.Category.CategoryResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.CustomerList.CustomerListData;
+import com.bdtask.bhojonrestaurantpos.modelClass.CustomerList.CustomerListResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeData;
 import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodinfoFoodList;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodlistResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.WaiterList.WaiterlistData;
 import com.bdtask.bhojonrestaurantpos.modelClass.WaiterList.WaiterlistResponse;
-import com.bdtask.bhojonrestaurantpos.modelClass.datamodel.CustomerTypeName;
 import com.bdtask.bhojonrestaurantpos.modelClass.datamodel.ListClassData;
 import com.bdtask.bhojonrestaurantpos.modelClass.tablelist.TableListData;
 import com.bdtask.bhojonrestaurantpos.modelClass.tablelist.TableResponse;
@@ -110,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     private Double z = 0.0;
     private RelativeLayout view_layout;
     private FrameLayout framelayout_ongoing_order;
-    private SearchableSpinner searchableSpinnerCustomerName;
+    private SearchableSpinner searchableSpinnerCustomerType;
     private List<CustomerTypeData> customerTypeData;
     private List<String> customerTypeNames;
     private Spinner tablelist_spinner;
@@ -123,6 +115,9 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     private String restaurent_Vat;
     private Double subtotal;
     private List<AllCategoriesData> list;
+    private Spinner spinnercustomername;
+    private List<CustomerListData> customerListData;
+    private List<String> customerNames;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,6 +182,8 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             }
         });
 
+        // Setting up All the customer name in the Customer Name Spinner List
+        spinnercustomernamelist();
         // Setting up the customer type data in spinner from API
         searchableSpinnerdata();
         // Setting up the table list data in spinner from API
@@ -228,13 +225,13 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         buttonquickorder = findViewById(R.id.buttonquickorder);
         placeorder = findViewById(R.id.placeorder);
         view_layout = findViewById(R.id.view_layout);
-        searchableSpinnerCustomerName = findViewById(R.id.spinnercustomertype);
+        searchableSpinnerCustomerType = findViewById(R.id.spinnercustomertype);
         tablelist_spinner = findViewById(R.id.spinnertable);
         spinnerwaiter = findViewById(R.id.spinnerwaiter);
         grandtotalTV = findViewById(R.id.grandtotalTV);
         taxTV= findViewById(R.id.taxTV);
         grandtotalTV = findViewById(R.id.grandtotalTV);
-
+        spinnercustomername = findViewById(R.id.spinnercustomername);
     }
 
     // when user click the cancel button
@@ -242,7 +239,25 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         listClassData.clear();
         itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData));
     }
+    private void spinnercustomernamelist() {
+        waiterService.getallCustomersName(id).enqueue(new Callback<CustomerListResponse>() {
+            @Override
+            public void onResponse(Call<CustomerListResponse> call, Response<CustomerListResponse> response) {
+                customerNames = new ArrayList<>();
+                customerListData = new ArrayList<>();
+                customerListData = response.body().getData();
+                for (int i =0;i<customerListData.size();i++){
+                    customerNames.add(customerListData.get(i).getCustomerName());
+                }
+                spinnercustomername.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item,customerNames));
+            }
 
+            @Override
+            public void onFailure(Call<CustomerListResponse> call, Throwable t) {
+
+            }
+        });
+    }
     private void searchableSpinnerdata() {
         waiterService.getallCustomerTypes(id).enqueue(new Callback<CustomerTypeResponse>() {
             @Override
@@ -253,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 for (int i = 0; i < customerTypeData.size(); i++) {
                     customerTypeNames.add(customerTypeData.get(i).getTypeName());
                 }
-                searchableSpinnerCustomerName.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, customerTypeNames));
+                searchableSpinnerCustomerType.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, customerTypeNames));
             }
 
             @Override
