@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.annotation.RequiresApi;
@@ -185,28 +187,20 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         spinnercustomernamelist();
         // Setting up the customer type data in spinner from API
         searchableSpinnerdata();
+
         // Setting up the table list data in spinner from API
         tablelist_spinnerdata();
+        //tableFromSpinner = tablelist_spinner.getSelectedItem().toString();
         // setting up the waiters list data in spinner from API
         waiterslistspinnerdata();
-        //get the taxes
+       // waiterFromSpinner = spinnerwaiter.getSelectedItem().toString();
+        // Order Button Funtionality setup
+        placeorder.setOnClickListener(v -> {
+            placeorderdetails();
+        });
 
 
-        //Setting the value in GrandTotal
-//        qrOrder.setOnClickListener(new View.OnClickListener() {
-////            @Override
-////            public void onClick(View v) {
-////                view_layout.setVisibility(view_layout.GONE);
-////                framelayout_ongoing_order.setVisibility(View.VISIBLE);
-////                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-////                ft.replace(R.id.framelayout_ongoing_order, new ());
-////                ft.commit();
-////            }
-////        });
     }
-
-
-
 
     // binding all the views with xml
     private void init() {
@@ -249,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                     customerNames.add(customerListData.get(i).getCustomerName());
                 }
                 spinnercustomername.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item,customerNames));
+
             }
 
             @Override
@@ -256,6 +251,17 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
             }
         });
+       spinnercustomername.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+           @Override
+           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+               customerNameFromSpinner = spinnercustomername.getSelectedItem().toString();
+           }
+
+           @Override
+           public void onNothingSelected(AdapterView<?> parent) {
+
+           }
+       });
     }
     private void searchableSpinnerdata() {
         waiterService.getallCustomerTypes(id).enqueue(new Callback<CustomerTypeResponse>() {
@@ -275,7 +281,17 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
             }
         });
+        searchableSpinnerCustomerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                customerTypeFromSpinner = searchableSpinnerCustomerType.getSelectedItem().toString();
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void tablelist_spinnerdata() {
@@ -298,6 +314,17 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
             }
         });
+        tablelist_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                tableFromSpinner = tablelist_spinner.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void waiterslistspinnerdata() {
@@ -315,6 +342,17 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
             @Override
             public void onFailure(Call<WaiterlistResponse> call, Throwable t) {
+
+            }
+        });
+        spinnerwaiter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                waiterFromSpinner = spinnerwaiter.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
@@ -754,5 +792,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         grand_total = vat + restaurent_vatt;
         grandtotalTV.setText(String.valueOf(grand_total));
     }
-
+    private void placeorderdetails() {
+        List<ListClassData> orderList = new ArrayList<>();
+    }
 }
