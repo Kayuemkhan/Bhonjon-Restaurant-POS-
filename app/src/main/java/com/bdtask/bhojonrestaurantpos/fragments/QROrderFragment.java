@@ -46,7 +46,7 @@ public class QROrderFragment extends Fragment {
         super.onCreate(savedInstanceState);
         id = SharedPref.read("ID", "");
         waiterService = AppConfig.getRetrofit().create(WaiterService.class);
-
+        SharedPref.init(getActivity());
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,7 +63,7 @@ public class QROrderFragment extends Fragment {
             @Override
             public void onResponse(Call<QROrderResponse> call, Response<QROrderResponse> response) {
                 qrOrderData = response.body().getData();
-                qrOrderRecylerview.setAdapter(new QROrderAdapter(getActivity().getApplicationContext(),qrOrderData));
+                qrOrderRecylerview.setAdapter(new QROrderAdapter(getActivity(),qrOrderData));
             }
 
             @Override

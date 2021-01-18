@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     private Spinner spinnercustomername;
     private List<CustomerListData> customerListData;
     private List<String> customerNames;
+    private String customerNameFromSpinner,  customerTypeFromSpinner, waiterFromSpinner, tableFromSpinner;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         // When User click for ongoing Order
         ongoingOrder.setOnClickListener(v -> {
             view_layout.setVisibility(View.GONE);
+
             framelayout_ongoing_order.setVisibility(View.VISIBLE);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.framelayout_ongoing_order, new OngoingOrderFragment());
@@ -161,15 +163,12 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 ft.commit();
             }
         });
-        qrOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                view_layout.setVisibility(view_layout.GONE);
-                framelayout_ongoing_order.setVisibility(View.VISIBLE);
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.framelayout_ongoing_order, new QROrderFragment());
-                ft.commit();
-            }
+        qrOrder.setOnClickListener(v -> {
+            view_layout.setVisibility(view_layout.GONE);
+            framelayout_ongoing_order.setVisibility(View.VISIBLE);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.framelayout_ongoing_order, new QROrderFragment());
+            ft.commit();
         });
         onlineOrder.setOnClickListener(new View.OnClickListener() {
             @Override

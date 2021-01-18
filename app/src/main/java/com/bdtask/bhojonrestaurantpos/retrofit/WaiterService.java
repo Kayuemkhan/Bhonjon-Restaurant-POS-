@@ -6,6 +6,7 @@ import com.bdtask.bhojonrestaurantpos.modelClass.CustomerList.CustomerListRespon
 import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodlistResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.PlaceOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.QROrder.QROrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.WaiterList.WaiterlistResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.loginModel.LoginResponse;
@@ -50,6 +51,11 @@ public interface WaiterService {
      @FormUrlEncoded
     @POST("onlinellorder")
     Call<QROrderResponse> getallOnlineOrders(@Field("id") String id);
-
+//    @FormUrlEncoded
+//    @POST("foodcart")
+//    Call<PlaceOrderResponse> postFoodCart(@Field("id") String id, @Field("VatAmount") String VAT, @Field("TableId") String TableId,
+//                                          @Field("CustomerID") String CustomerID, @Field("TypeID") String TypeID, @Field("ServiceCharge") String ServiceCharge,
+//                                          @Field("Discount") String Discount, @Field("Total") String Total,
+//                                          @Field("Grandtotal") String Grandtotal, @Field("foodinfo") String foodinfo, @Field("CustomerNote") String CustomerNote);
 
 }

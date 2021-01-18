@@ -50,6 +50,7 @@ public class OngoingOrderFragment extends Fragment {
         super.onCreate(savedInstanceState);
         id = SharedPref.read("ID", "");
         waiterService = AppConfig.getRetrofit().create(WaiterService.class);
+        SharedPref.init(getActivity());
     }
 
     @Override
@@ -70,7 +71,7 @@ public class OngoingOrderFragment extends Fragment {
             public void onResponse(Call<OngoingOrderResponse> call, Response<OngoingOrderResponse> response) {
                 Log.d("Response", "Onresponse" + new Gson().toJson(response.body()));
                 ongoingOrderData = response.body().getData();
-                tableListRecylerview.setAdapter(new OngoingOrderAdapter(getActivity().getApplicationContext(),ongoingOrderData));
+                tableListRecylerview.setAdapter(new OngoingOrderAdapter(getActivity(),ongoingOrderData));
             }
 
             @Override
