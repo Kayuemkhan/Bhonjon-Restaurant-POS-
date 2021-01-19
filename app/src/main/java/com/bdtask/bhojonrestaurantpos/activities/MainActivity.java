@@ -52,6 +52,7 @@ import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeData;
 import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodinfoFoodList;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodlistResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.PlaceOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.WaiterList.WaiterlistData;
 import com.bdtask.bhojonrestaurantpos.modelClass.WaiterList.WaiterlistResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.datamodel.ListClassData;
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             button_8, button_9, button_Add, button_Sub,
             button_Mul, button_Div, button_Equ, button_Del, button_Dot, button_Remainder,
             newOrder, ongoingOrder, kitchenStatus, qrOrder, onlineOrder;
+    private String service_charge;
     private int addonprice = 0;
     private Double z = 0.0;
     private RelativeLayout view_layout;
@@ -120,14 +122,20 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     private Spinner spinnercustomername;
     private List<CustomerListData> customerListData;
     private List<String> customerNames;
-    private String customerNameFromSpinner,  customerTypeFromSpinner, waiterFromSpinner, tableFromSpinner;
+    private String customerNameFromSpinner,  customerTypeFromSpinner, waiterFromSpinner, tableFromSpinner, discount;
+    double grand_total ;
+    private List<Foodinfo> foodinfos;
+    private List<Foodinfo> categoriesData;
+    private List<FoodinfoFoodList> foodinfoFoodLists;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SharedPref.init(MainActivity.this);
+        foodinfos = new ArrayList<>();
         init();
+        foodinfoFoodLists = new ArrayList<>();
         list = new ArrayList<>();
         itemshowRecylerview.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         itemshowRecylerview.setHasFixedSize(true);
@@ -388,7 +396,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 public void onResponse(Call<AllCategoryResponse> call, Response<AllCategoryResponse> response) {
                     Log.d("Response", "Onresponse" + new Gson().toJson(response.body()));
                     restaurent_Vat = response.body().getData().getRestaurantvat();
-                    List<Foodinfo> categoriesData = response.body().getData().getFoodinfo();
+                    categoriesData = response.body().getData().getFoodinfo();
                     restaurent_Vat = response.body().getData().getRestaurantvat();
                     itemRecylerview.setAdapter(new AllCategoriesInfo(getApplicationContext(), categoriesData, MainActivity.this));
                 }
@@ -405,7 +413,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 @Override
                 public void onResponse(Call<FoodlistResponse> call, Response<FoodlistResponse> response) {
                     Log.d("Response Food List", "" + new Gson().toJson(response.body()));
-                    List<FoodinfoFoodList> foodinfoFoodLists = response.body().getData().getFoodinfo();
+                    foodinfoFoodLists = response.body().getData().getFoodinfo();
                     itemRecylerview.setAdapter(new FoodListAdapater(getApplicationContext(), foodinfoFoodLists, MainActivity.this));
                 }
 
@@ -636,7 +644,6 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             itemDetailsAdapter.notifyDataSetChanged();
         }
     }
-
     private void calculate() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view2 = getLayoutInflater().inflate(R.layout.aleartdialog_calculator, null);
@@ -777,22 +784,49 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         alert.show();
 
     }
-
     @Override
     public void view(String addonsprice) {
         addonprice += Integer.parseInt(addonsprice);
-
     }
     public void getalltaxes(String s) {
-        double grand_total ;
-        double vat= Double.parseDouble(s);
+        subtotal= Double.parseDouble(s);
         double restaurent_vatt = Double.parseDouble(restaurent_Vat);
-        restaurent_vatt = (restaurent_vatt * vat) / 100 ;
+        restaurent_vatt = (restaurent_vatt * subtotal) / 100 ;
         taxTV.setText(String.valueOf(restaurent_vatt));
-        grand_total = vat + restaurent_vatt;
+        grand_total = subtotal + restaurent_vatt;
         grandtotalTV.setText(String.valueOf(grand_total));
     }
     private void placeorderdetails() {
-        List<ListClassData> orderList = new ArrayList<>();
+        List<Foodinfo> orderList = new ArrayList<>();
+        //List<FoodinfoFoodList> orderlist2 = new ArrayList<>();
+        service_charge = SharedPref.read("SC","");
+        discount = "";
+        String d= ("id\t"+id+" vat\t"+restaurent_Vat+" table_name\t"+tableFromSpinner+" customer_name\t"+customerNameFromSpinner+" customer_type\t"+customerTypeFromSpinner+" service_charge\t"+service_charge+" discount\t"+discount+" subtotal\t"+subtotal+" grand_total"+grand_total);
+        //Toast.makeText(getApplicationContext(),""+d,Toast.LENGTH_LONG).show();
+        for(int i =0;i<categoriesData.size();i++){
+                for(int j =0;j<listClassData.size();j++){
+                    if(listClassData.get(j).getProductsID().equals(categoriesData.get(i).getProductsID())){
+                        orderList.add(categoriesData.get(i));
+                    }
+                }
+
+//                else if(listClassData.get(i).getProductsID() == foodinfoFoodLists.get(i).getProductsID()){
+//                    orderlist2.addAll(foodinfoFoodLists);
+//                    Toast.makeText(getApplicationContext()," fa"+new Gson().toJson(foodinfoFoodLists),Toast.LENGTH_LONG).show();
+//                }
+        }
+        String datas = new Gson().toJson(orderList);
+        waiterService.postFoodCart(id,restaurent_Vat,tableFromSpinner,customerNameFromSpinner,customerTypeFromSpinner,service_charge,discount,String.valueOf(subtotal),String.valueOf(grand_total),datas,"").enqueue(new Callback<PlaceOrderResponse>() {
+            @Override
+            public void onResponse(Call<PlaceOrderResponse> call, Response<PlaceOrderResponse> response) {
+                String ress = response.message();
+                Toast.makeText(getApplicationContext(),""+ress,Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<PlaceOrderResponse> call, Throwable t) {
+
+            }
+        });
     }
 }
