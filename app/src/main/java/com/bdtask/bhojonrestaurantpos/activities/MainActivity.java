@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     private List<CustomerListData> customerListData;
     private List<String> customerNames;
     private String customerNameFromSpinner,  customerTypeFromSpinner, waiterFromSpinner, tableFromSpinner, discount;
-    double grand_total ;
+    private double grand_total ;
     private List<Foodinfo> foodinfos;
     private List<Foodinfo> categoriesData;
     private List<FoodinfoFoodList> foodinfoFoodLists;
@@ -237,6 +237,8 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
     // when user click the cancel button
     private void buttoncancelopearations() {
+        taxTV.setText("0");
+        grandtotalTV.setText("0");
         listClassData.clear();
         itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData));
     }
@@ -815,18 +817,23 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 //                    Toast.makeText(getApplicationContext()," fa"+new Gson().toJson(foodinfoFoodLists),Toast.LENGTH_LONG).show();
 //                }
         }
-        String datas = new Gson().toJson(orderList);
-        waiterService.postFoodCart(id,restaurent_Vat,tableFromSpinner,customerNameFromSpinner,customerTypeFromSpinner,service_charge,discount,String.valueOf(subtotal),String.valueOf(grand_total),datas,"").enqueue(new Callback<PlaceOrderResponse>() {
-            @Override
-            public void onResponse(Call<PlaceOrderResponse> call, Response<PlaceOrderResponse> response) {
-                String ress = response.message();
-                Toast.makeText(getApplicationContext(),""+ress,Toast.LENGTH_LONG).show();
-            }
+        if(orderList.size() == 0 ){
+            Toast.makeText(getApplicationContext(),"No items Here",Toast.LENGTH_SHORT).show();
+        }
+       else {
+            String datas = new Gson().toJson(orderList);
+            waiterService.postFoodCart(id,restaurent_Vat,tableFromSpinner,customerNameFromSpinner,customerTypeFromSpinner,service_charge,discount,String.valueOf(subtotal),String.valueOf(grand_total),datas,"").enqueue(new Callback<PlaceOrderResponse>() {
+                @Override
+                public void onResponse(Call<PlaceOrderResponse> call, Response<PlaceOrderResponse> response) {
+                    String ress = response.message();
+                    Toast.makeText(getApplicationContext(),""+ress,Toast.LENGTH_LONG).show();
+                }
 
-            @Override
-            public void onFailure(Call<PlaceOrderResponse> call, Throwable t) {
+                @Override
+                public void onFailure(Call<PlaceOrderResponse> call, Throwable t) {
 
-            }
-        });
+                }
+            });
+        }
     }
 }
