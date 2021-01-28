@@ -61,6 +61,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="7dp"
                 android:layout_weight="1"
+
                 android:background="#028511"
                 android:text="New Order"
                 android:textColor="@color/white"
@@ -384,6 +385,7 @@
                                android:layout_weight="1.6" />
 
                            <ImageView
+                               android:id="@+id/addingcustomer"
                                android:layout_width="0dp"
                                android:layout_height="match_parent"
                                android:layout_gravity="bottom"

@@ -70,6 +70,7 @@ import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -92,9 +93,9 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     private double n;
     private RecyclerView itemshowRecylerview;
     private SearchView searchView;
-    List<CategoryData> categorieslist;
+    private List<CategoryData> categorieslist;
     private String productsId;
-    List<ListClassData> listClassData = new ArrayList<>();
+    private List<ListClassData> listClassData = new ArrayList<>();
     private boolean haveToInsert = false;
     private TextView buttoncalculator;
     private Button buttoncancel, buttonquickorder, placeorder;
@@ -132,7 +133,8 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     private List<Foodinfo> categoriesData;
     private List<FoodinfoFoodList> foodinfoFoodLists;
     private Double discountvalue;
-
+    private ImageView addingCustomer;
+    private ImageView closeAleart;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +154,6 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         itemRecylerview.addItemDecoration(new SpacingItemDecoration(3, Tools.dpToPx(this, 2), true));
         waiterService = AppConfig.getRetrofit().create(WaiterService.class);
         id = SharedPref.read("ID", "");
-        Log.wtf("chekID", "ID" + id);
         getSubCategoryName();
         // When User click for new Order
         newOrder.setOnClickListener(v -> {
@@ -196,7 +197,10 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 ft.commit();
             }
         });
-
+        // When user click on Quick Orer
+        buttonquickorder.setOnClickListener(v -> {
+            Toasty.info(MainActivity.this, "This Feature isn't implemented Yet", Toast.LENGTH_SHORT, true).show();
+        });
         // Setting up All the customer name in the Customer Name Spinner List
         spinnercustomernamelist();
         // Setting up the customer type data in spinner from API
@@ -212,6 +216,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         placeorder.setOnClickListener(v -> {
             placeorderdetails();
         });
+        // When anyone Setting discount ...
         discountET.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -229,9 +234,11 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
             }
         });
-
+        // Adding new Customer
+        addingCustomer.setOnClickListener(v->{
+            addingnewCustomer();
+        });
     }
-
 
     // binding all the views with xml
     private void init() {
@@ -257,14 +264,20 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         grandtotalTV = findViewById(R.id.grandtotalTV);
         spinnercustomername = findViewById(R.id.spinnercustomername);
         discountET = findViewById(R.id.discountET);
+        addingCustomer = findViewById(R.id.addingcustomer);
     }
 
     // when user click the cancel button
     private void buttoncancelopearations() {
-        taxTV.setText("0");
-        grandtotalTV.setText("0");
-        listClassData.clear();
-        itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData));
+        if(listClassData.size() > 0){
+            taxTV.setText("0");
+            grandtotalTV.setText("0");
+            listClassData.clear();
+            itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData));
+        }
+        else {
+            Toasty.info(MainActivity.this, "No more items to delete", Toast.LENGTH_SHORT, true).show();
+        }
     }
 
     private void spinnercustomernamelist() {
@@ -848,7 +861,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 //                }
         }
         if (orderList.size() == 0) {
-            Toast.makeText(getApplicationContext(), "No items Here", Toast.LENGTH_SHORT).show();
+            Toasty.error(MainActivity.this, "No Items here", Toast.LENGTH_SHORT, true).show();
         } else {
             String datas = new Gson().toJson(orderList);
             waiterService.postFoodCart(id, restaurent_Vat, tableFromSpinner, customerNameFromSpinner, customerTypeFromSpinner, service_charge, discount, String.valueOf(subtotal), String.valueOf(grand_total), datas, "").enqueue(new Callback<PlaceOrderResponse>() {
@@ -890,5 +903,16 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         }
 
     }
-
+    private void addingnewCustomer() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view2 = getLayoutInflater().inflate(R.layout.addingnewcustomer, null);
+        closeAleart = view2.findViewById(R.id.closeAleart);
+        builder.setView(view2);
+        AlertDialog alert = builder.create();
+        alert.setCancelable(false);
+        closeAleart.setOnClickListener(v -> {
+            alert.dismiss();
+        });
+        alert.show();
+    }
 }
