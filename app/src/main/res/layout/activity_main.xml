@@ -195,7 +195,7 @@
                            android:textColor="@color/white"
                            tools:ignore="RtlCompat" />
                        <EditText
-                           android:id="@+id/discountTV"
+                           android:id="@+id/discountET"
                            android:gravity="center"
                            android:layout_width="0dp"
                            android:layout_height="match_parent"

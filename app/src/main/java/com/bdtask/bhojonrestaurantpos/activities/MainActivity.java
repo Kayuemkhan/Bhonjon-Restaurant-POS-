@@ -4,12 +4,15 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -72,6 +75,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements ViewInterface {
+    private EditText discountET;
     private RecyclerView subcategoryName, itemRecylerview;
     private WaiterService waiterService;
     private String id;
@@ -115,18 +119,20 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     private Spinner spinnerwaiter;
     private List<WaiterlistData> waiterslist;
     private List<String> waiterlistnames;
-    private TextView grandtotalTV,taxTV;
+    private TextView grandtotalTV, taxTV;
     private String restaurent_Vat;
     private Double subtotal;
     private List<AllCategoriesData> list;
     private Spinner spinnercustomername;
     private List<CustomerListData> customerListData;
     private List<String> customerNames;
-    private String customerNameFromSpinner,  customerTypeFromSpinner, waiterFromSpinner, tableFromSpinner, discount;
-    private double grand_total ;
+    private String customerNameFromSpinner, customerTypeFromSpinner, waiterFromSpinner, tableFromSpinner, discount;
+    private double grand_total;
     private List<Foodinfo> foodinfos;
     private List<Foodinfo> categoriesData;
     private List<FoodinfoFoodList> foodinfoFoodLists;
+    private Double discountvalue;
+
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,14 +207,31 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         //tableFromSpinner = tablelist_spinner.getSelectedItem().toString();
         // setting up the waiters list data in spinner from API
         waiterslistspinnerdata();
-       // waiterFromSpinner = spinnerwaiter.getSelectedItem().toString();
+        // waiterFromSpinner = spinnerwaiter.getSelectedItem().toString();
         // Order Button Funtionality setup
         placeorder.setOnClickListener(v -> {
             placeorderdetails();
         });
+        discountET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+
+                settingDiscoun(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
     }
+
 
     // binding all the views with xml
     private void init() {
@@ -230,9 +253,10 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         tablelist_spinner = findViewById(R.id.spinnertable);
         spinnerwaiter = findViewById(R.id.spinnerwaiter);
         grandtotalTV = findViewById(R.id.grandtotalTV);
-        taxTV= findViewById(R.id.taxTV);
+        taxTV = findViewById(R.id.taxTV);
         grandtotalTV = findViewById(R.id.grandtotalTV);
         spinnercustomername = findViewById(R.id.spinnercustomername);
+        discountET = findViewById(R.id.discountET);
     }
 
     // when user click the cancel button
@@ -242,6 +266,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         listClassData.clear();
         itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData));
     }
+
     private void spinnercustomernamelist() {
         waiterService.getallCustomersName(id).enqueue(new Callback<CustomerListResponse>() {
             @Override
@@ -249,10 +274,10 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 customerNames = new ArrayList<>();
                 customerListData = new ArrayList<>();
                 customerListData = response.body().getData();
-                for (int i =0;i<customerListData.size();i++){
+                for (int i = 0; i < customerListData.size(); i++) {
                     customerNames.add(customerListData.get(i).getCustomerName());
                 }
-                spinnercustomername.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item,customerNames));
+                spinnercustomername.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, customerNames));
 
             }
 
@@ -261,18 +286,19 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
             }
         });
-       spinnercustomername.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-           @Override
-           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               customerNameFromSpinner = spinnercustomername.getSelectedItem().toString();
-           }
+        spinnercustomername.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                customerNameFromSpinner = spinnercustomername.getSelectedItem().toString();
+            }
 
-           @Override
-           public void onNothingSelected(AdapterView<?> parent) {
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
-           }
-       });
+            }
+        });
     }
+
     private void searchableSpinnerdata() {
         waiterService.getallCustomerTypes(id).enqueue(new Callback<CustomerTypeResponse>() {
             @Override
@@ -646,6 +672,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             itemDetailsAdapter.notifyDataSetChanged();
         }
     }
+
     private void calculate() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view2 = getLayoutInflater().inflate(R.layout.aleartdialog_calculator, null);
@@ -786,47 +813,49 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         alert.show();
 
     }
+
     @Override
     public void view(String addonsprice) {
         addonprice += Integer.parseInt(addonsprice);
     }
+
     public void getalltaxes(String s) {
-        subtotal= Double.parseDouble(s);
+        subtotal = Double.parseDouble(s);
         double restaurent_vatt = Double.parseDouble(restaurent_Vat);
-        restaurent_vatt = (restaurent_vatt * subtotal) / 100 ;
+        restaurent_vatt = (restaurent_vatt * subtotal) / 100;
         taxTV.setText(String.valueOf(restaurent_vatt));
         grand_total = subtotal + restaurent_vatt;
         grandtotalTV.setText(String.valueOf(grand_total));
     }
+
     private void placeorderdetails() {
         List<Foodinfo> orderList = new ArrayList<>();
         //List<FoodinfoFoodList> orderlist2 = new ArrayList<>();
-        service_charge = SharedPref.read("SC","");
+        service_charge = SharedPref.read("SC", "");
         discount = "";
-        String d= ("id\t"+id+" vat\t"+restaurent_Vat+" table_name\t"+tableFromSpinner+" customer_name\t"+customerNameFromSpinner+" customer_type\t"+customerTypeFromSpinner+" service_charge\t"+service_charge+" discount\t"+discount+" subtotal\t"+subtotal+" grand_total"+grand_total);
+        String d = ("id\t" + id + " vat\t" + restaurent_Vat + " table_name\t" + tableFromSpinner + " customer_name\t" + customerNameFromSpinner + " customer_type\t" + customerTypeFromSpinner + " service_charge\t" + service_charge + " discount\t" + discount + " subtotal\t" + subtotal + " grand_total" + grand_total);
         //Toast.makeText(getApplicationContext(),""+d,Toast.LENGTH_LONG).show();
-        for(int i =0;i<categoriesData.size();i++){
-                for(int j =0;j<listClassData.size();j++){
-                    if(listClassData.get(j).getProductsID().equals(categoriesData.get(i).getProductsID())){
-                        orderList.add(categoriesData.get(i));
-                    }
+        for (int i = 0; i < categoriesData.size(); i++) {
+            for (int j = 0; j < listClassData.size(); j++) {
+                if (listClassData.get(j).getProductsID().equals(categoriesData.get(i).getProductsID())) {
+                    orderList.add(categoriesData.get(i));
                 }
+            }
 
 //                else if(listClassData.get(i).getProductsID() == foodinfoFoodLists.get(i).getProductsID()){
 //                    orderlist2.addAll(foodinfoFoodLists);
 //                    Toast.makeText(getApplicationContext()," fa"+new Gson().toJson(foodinfoFoodLists),Toast.LENGTH_LONG).show();
 //                }
         }
-        if(orderList.size() == 0 ){
-            Toast.makeText(getApplicationContext(),"No items Here",Toast.LENGTH_SHORT).show();
-        }
-       else {
+        if (orderList.size() == 0) {
+            Toast.makeText(getApplicationContext(), "No items Here", Toast.LENGTH_SHORT).show();
+        } else {
             String datas = new Gson().toJson(orderList);
-            waiterService.postFoodCart(id,restaurent_Vat,tableFromSpinner,customerNameFromSpinner,customerTypeFromSpinner,service_charge,discount,String.valueOf(subtotal),String.valueOf(grand_total),datas,"").enqueue(new Callback<PlaceOrderResponse>() {
+            waiterService.postFoodCart(id, restaurent_Vat, tableFromSpinner, customerNameFromSpinner, customerTypeFromSpinner, service_charge, discount, String.valueOf(subtotal), String.valueOf(grand_total), datas, "").enqueue(new Callback<PlaceOrderResponse>() {
                 @Override
                 public void onResponse(Call<PlaceOrderResponse> call, Response<PlaceOrderResponse> response) {
                     String ress = response.message();
-                    Toast.makeText(getApplicationContext(),""+ress,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "" + ress, Toast.LENGTH_LONG).show();
                 }
 
                 @Override
@@ -836,4 +865,30 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             });
         }
     }
+
+    private void settingDiscoun(String charSequence) {
+
+        if (charSequence != null && !charSequence.isEmpty()) {
+            if (grand_total > 0) {
+                double totaldiscount;
+                discountvalue = (Double.parseDouble(charSequence) * Double.parseDouble(grandtotalTV.getText().toString())) / 100.00;
+                totaldiscount = Double.parseDouble(grandtotalTV.getText().toString()) - discountvalue;
+                grandtotalTV.setText(String.valueOf(totaldiscount));
+
+            }
+            else {
+                grandtotalTV.setText(String.valueOf(0));
+            }
+        }
+        else {
+            if(grand_total > 0){
+                grandtotalTV.setText(String.valueOf(grand_total));
+            }
+            else {
+                grandtotalTV.setText(String.valueOf(0));
+            }
+        }
+
+    }
+
 }
