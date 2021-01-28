@@ -135,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     private Double discountvalue;
     private ImageView addingCustomer;
     private ImageView closeAleart;
+    private Button closeAleartbyButton;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -905,14 +906,21 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     }
     private void addingnewCustomer() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View view2 = getLayoutInflater().inflate(R.layout.addingnewcustomer, null);
-        closeAleart = view2.findViewById(R.id.closeAleart);
+        View view2 = getLayoutInflater().inflate(R.layout.custom, null);
+//        closeAleart = view2.findViewById(R.id.closeAleart);
+//        closeAleartbyButton = view2.findViewById(R.id.closeAleartbyButton);
         builder.setView(view2);
         AlertDialog alert = builder.create();
         alert.setCancelable(false);
-        closeAleart.setOnClickListener(v -> {
-            alert.dismiss();
-        });
+//        closeAleart.setOnClickListener(v -> {
+//            alert.dismiss();
+//        });
+//        closeAleartbyButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                alert.dismiss();
+//            }
+//        });
         alert.show();
     }
 }

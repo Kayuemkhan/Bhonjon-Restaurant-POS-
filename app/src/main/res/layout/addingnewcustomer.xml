@@ -5,14 +5,12 @@
     android:orientation="vertical"
 
     >
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFB61e"
         android:gravity="center_horizontal"
         android:weightSum="10">
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,13 +23,14 @@
             android:textSize="30sp" />
 
         <ImageView
+            android:layout_marginRight="10dp"
             android:id="@+id/closeAleart"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_gravity="center"
             android:layout_weight=".5"
-            android:gravity="end"
+            android:gravity="center"
             android:src="@drawable/ic_baseline_close_24" />
     </LinearLayout>
 
@@ -44,32 +43,34 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:layout_weight="2"
             android:orientation="horizontal"
-            android:padding="5dp">
+            >
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight=".8"
                 android:padding="5dp"
                 android:text="Customer Name: "
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
                 android:layout_marginLeft="5dp"
-                android:layout_weight="1.5"
+                android:layout_weight="1.2"
                 android:background="@drawable/edit_text_red_background2"
                 android:hint="Customer Name"
-                android:padding="5dp"
-                />
+                android:paddingStart="10dp" />
         </LinearLayout>
-        <LinearLayout
+
+  <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:layout_weight="2"
             android:orientation="horizontal"
             android:padding="5dp">
@@ -77,24 +78,26 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight=".8"
                 android:padding="5dp"
-                android:text="Email Adress: "
+                android:text="Customer Name: "
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
                 android:layout_marginLeft="5dp"
-                android:layout_weight="1.5"
+                android:layout_weight="1.2"
                 android:background="@drawable/edit_text_red_background2"
-                android:hint="Customer Email"
-                android:padding="5dp"
-                />
-        </LinearLayout><LinearLayout
+                android:hint="Customer Name"
+                android:padding="5dp" />
+        </LinearLayout>
+
+  <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:layout_weight="2"
             android:orientation="horizontal"
             android:padding="5dp">
@@ -102,25 +105,26 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight=".8"
                 android:padding="5dp"
-                android:text="Email Adress: "
+                android:text="Customer Name: "
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
                 android:layout_marginLeft="5dp"
-                android:layout_weight="1.5"
+                android:layout_weight="1.2"
                 android:background="@drawable/edit_text_red_background2"
-                android:hint="Customer Email"
-                android:padding="5dp"
-                />
+                android:hint="Customer Name"
+                android:padding="5dp" />
         </LinearLayout>
-        <LinearLayout
+
+  <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:layout_weight="2"
             android:orientation="horizontal"
             android:padding="5dp">
@@ -128,22 +132,77 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight=".8"
                 android:padding="5dp"
-                android:text="Customer Address: "
+                android:text="Customer Name: "
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
                 android:layout_marginLeft="5dp"
-                android:layout_weight="1.5"
+                android:layout_weight="1.2"
                 android:background="@drawable/edit_text_red_background2"
-                android:hint="Customer Email"
-                android:padding="5dp"
-                />
+                android:hint="Customer Name"
+                android:padding="5dp" />
         </LinearLayout>
+
+  <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".8"
+                android:padding="5dp"
+                android:text="Customer Name: "
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1.2"
+                android:background="@drawable/edit_text_red_background2"
+                android:hint="Customer Name"
+                android:padding="5dp" />
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="50dp"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/closeAleartbyButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#F30002"
+            android:text="close"
+            android:textColor="@color/white" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:background="#028511"
+            android:text="submit"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 </LinearLayout>
