@@ -24,7 +24,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Hot Dog Regular"
-                    android:fontFamily="@font/helveticaneue"
+                    android:fontFamily="sans-serif"
                     android:textColor="@color/black" />
 
                 <TextView
@@ -32,7 +32,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1x"
-                    android:fontFamily="@font/helveticaneue"
+                    android:fontFamily="sans-serif"
                     android:textColor="@color/overlay_dark" />
 
 
@@ -53,7 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Kitchen Not Aceepted"
-                    android:fontFamily="@font/helveticaneue"
+                    android:fontFamily="sans-serif"
                     android:textColor="#FD0000" />
             </LinearLayout>
         </LinearLayout>
