@@ -270,6 +270,7 @@
                    android:paddingLeft="5dp"
                    android:scaleType="center"
                    android:text="Calculator"
+                   android:textSize="10sp"
                    android:textColor="@color/white"
                    />
 

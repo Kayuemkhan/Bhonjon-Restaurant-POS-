@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight=".8"
                 android:padding="5dp"
-                android:text="Customer Name: "
+                android:text="Email Adress: "
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
@@ -90,7 +90,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1.2"
                 android:background="@drawable/edit_text_red_background2"
-                android:hint="Customer Name"
+                android:hint="Customer Email"
                 android:padding="5dp" />
         </LinearLayout>
 
@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight=".8"
                 android:padding="5dp"
-                android:text="Customer Name: "
+                android:text="Mobile: "
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
@@ -117,7 +117,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1.2"
                 android:background="@drawable/edit_text_red_background2"
-                android:hint="Customer Name"
+                android:hint="Customer Mobile"
                 android:padding="5dp" />
         </LinearLayout>
 
@@ -134,7 +134,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight=".8"
                 android:padding="5dp"
-                android:text="Customer Name: "
+                android:text="Address: "
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
@@ -144,14 +144,14 @@
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1.2"
                 android:background="@drawable/edit_text_red_background2"
-                android:hint="Customer Name"
+                android:hint="Customer Address"
                 android:padding="5dp" />
         </LinearLayout>
 
   <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="2"
             android:orientation="horizontal"
             android:padding="5dp">
@@ -161,7 +161,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight=".8"
                 android:padding="5dp"
-                android:text="Customer Name: "
+                android:text="Favourite Address: "
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
@@ -171,7 +171,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1.2"
                 android:background="@drawable/edit_text_red_background2"
-                android:hint="Customer Name"
+                android:hint="Customer Address"
                 android:padding="5dp" />
         </LinearLayout>
 
@@ -185,7 +185,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="10dp"
         android:gravity="end">
 
         <Button
@@ -194,6 +194,7 @@
             android:layout_height="wrap_content"
             android:background="#F30002"
             android:text="close"
+            android:padding="5dp"
             android:textColor="@color/white" />
 
         <Button
@@ -202,6 +203,7 @@
             android:layout_marginLeft="20dp"
             android:background="#028511"
             android:text="submit"
+            android:padding="5dp"
             android:textColor="@color/white" />
 
     </LinearLayout>

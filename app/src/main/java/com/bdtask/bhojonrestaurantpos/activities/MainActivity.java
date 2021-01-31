@@ -2,6 +2,7 @@ package com.bdtask.bhojonrestaurantpos.activities;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -70,6 +71,7 @@ import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -843,6 +845,11 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     }
 
     private void placeorderdetails() {
+        SweetAlertDialog pDialog = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("Loading");
+        pDialog.setCancelable(false);
+        pDialog.show();
         List<Foodinfo> orderList = new ArrayList<>();
         //List<FoodinfoFoodList> orderlist2 = new ArrayList<>();
         service_charge = SharedPref.read("SC", "");
@@ -862,14 +869,23 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 //                }
         }
         if (orderList.size() == 0) {
+            pDialog.dismiss();
             Toasty.error(MainActivity.this, "No Items here", Toast.LENGTH_SHORT, true).show();
+
         } else {
             String datas = new Gson().toJson(orderList);
+
             waiterService.postFoodCart(id, restaurent_Vat, tableFromSpinner, customerNameFromSpinner, customerTypeFromSpinner, service_charge, discount, String.valueOf(subtotal), String.valueOf(grand_total), datas, "").enqueue(new Callback<PlaceOrderResponse>() {
                 @Override
                 public void onResponse(Call<PlaceOrderResponse> call, Response<PlaceOrderResponse> response) {
                     String ress = response.message();
-                    Toast.makeText(getApplicationContext(), "" + ress, Toast.LENGTH_LONG).show();
+
+                    pDialog.dismiss();
+                    Toasty.info(MainActivity.this, "Order Placed Successfully", Toast.LENGTH_SHORT, true).show();
+                    taxTV.setText("0");
+                    grandtotalTV.setText("0");
+                    listClassData.clear();
+                    itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData));
                 }
 
                 @Override
@@ -906,21 +922,21 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     }
     private void addingnewCustomer() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View view2 = getLayoutInflater().inflate(R.layout.custom, null);
-//        closeAleart = view2.findViewById(R.id.closeAleart);
-//        closeAleartbyButton = view2.findViewById(R.id.closeAleartbyButton);
+        View view2 = getLayoutInflater().inflate(R.layout.addingnewcustomer, null);
+        closeAleart = view2.findViewById(R.id.closeAleart);
+        closeAleartbyButton = view2.findViewById(R.id.closeAleartbyButton);
         builder.setView(view2);
         AlertDialog alert = builder.create();
         alert.setCancelable(false);
-//        closeAleart.setOnClickListener(v -> {
-//            alert.dismiss();
-//        });
-//        closeAleartbyButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                alert.dismiss();
-//            }
-//        });
+        closeAleart.setOnClickListener(v -> {
+            alert.dismiss();
+        });
+        closeAleartbyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alert.dismiss();
+            }
+        });
         alert.show();
     }
 }

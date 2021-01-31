@@ -1,10 +1,13 @@
 package com.bdtask.bhojonrestaurantpos.retrofit;
 
+import androidx.cardview.widget.CardView;
+
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.AllCategoryResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Category.CategoryResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.CustomerList.CustomerListResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodlistResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.KithcenStatus.KitchenStatusResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.PlaceOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.QROrder.QROrderResponse;
@@ -57,5 +60,8 @@ public interface WaiterService {
                                           @Field("CustomerID") String CustomerID, @Field("TypeID") String TypeID, @Field("ServiceCharge") String ServiceCharge,
                                           @Field("Discount") String Discount, @Field("Total") String Total,
                                           @Field("Grandtotal") String Grandtotal, @Field("foodinfo") String foodinfo, @Field("CustomerNote") String CustomerNote);
+    @FormUrlEncoded
+    @POST("kitchenstatus")
+    Call<KitchenStatusResponse> kithcenStatus(@Field("id") String id);
 
 }

@@ -18,79 +18,91 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="10dp"
+            android:fontFamily="sans-serif"
+            android:padding="8dp"
             android:text="4941"
-            android:textAlignment="center"
+            android:textAlignment="textStart"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
         <TextView
+            android:fontFamily="sans-serif"
             android:id="@+id/customernameQROrder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="10dp"
+            android:padding="8dp"
             android:text="Abid Muhammad"
-            android:textAlignment="center"
+            android:textAlignment="textStart"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
         <TextView
+            android:fontFamily="sans-serif"
+
             android:id="@+id/waiterQROrder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="10dp"
+            android:padding="8dp"
             android:text="Sakib Khan"
-            android:textAlignment="center"
+            android:textAlignment="textStart"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
         <TextView
+            android:fontFamily="sans-serif"
+
             android:id="@+id/tableNoQROrder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="10dp"
+            android:padding="8dp"
             android:text="Table-1"
-            android:textAlignment="center"
+            android:textAlignment="textStart"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
         <TextView
+            android:fontFamily="sans-serif"
+
             android:id="@+id/paymentStatusQROrder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="10dp"
+            android:padding="8dp"
             android:text="Paid"
-            android:textAlignment="center"
+            android:textAlignment="textStart"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
         <TextView
+            android:fontFamily="sans-serif"
+
             android:id="@+id/dateQROrder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="10dp"
+            android:padding="8dp"
             android:text="2020-11-12"
-            android:textAlignment="center"
+            android:textAlignment="textStart"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
         <TextView
+            android:fontFamily="sans-serif"
             android:id="@+id/ammountQROrder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="10dp"
+            android:padding="8dp"
             android:text="5000.00"
-            android:textAlignment="center"
+            android:textAlignment="textStart"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
         <LinearLayout
+            android:padding="5dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -102,6 +114,7 @@
                 android:weightSum="2"
                 android:orientation="horizontal"
                 android:background="#1DB20B"
+                android:padding="2dp"
                 >
                 <ImageView
                     android:scaleType="fitCenter"
@@ -121,8 +134,10 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/cr"
-                android:background="@color/black"
+                android:src="@drawable/view"
+                android:padding="2dp"
+                android:scaleType="fitXY"
+
                 />
             <ImageView
                 android:layout_width="0dp"
