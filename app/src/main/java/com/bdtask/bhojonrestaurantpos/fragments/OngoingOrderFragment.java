@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bdtask.bhojonrestaurantpos.R;
@@ -41,6 +42,7 @@ public class OngoingOrderFragment extends Fragment {
     private String id;
     private RecyclerView tableListRecylerview;
     List<OngoingOrderData> ongoingOrderData = new ArrayList<>();
+    LinearLayout lowerpartOfOngoingLayout, lowerpartOfOngoingLayout2;
 
     public OngoingOrderFragment() {
     }
@@ -56,13 +58,11 @@ public class OngoingOrderFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_ongoing_order, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_ongoing_order, container, false);
+        lowerpartOfOngoingLayout = view.findViewById(R.id.lowerpartOfOngoingLayout);
+        lowerpartOfOngoingLayout2 = view.findViewById(R.id.lowerpartOfOngoingLayout2);
         tableListRecylerview = view.findViewById(R.id.tableListRecylerview);
+
 //        tableListRecylerview.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         tableListRecylerview.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 4));
         tableListRecylerview.addItemDecoration(new SpacingItemDecoration(3, Tools.dpToPx(getActivity().getApplicationContext(), 2), true));
@@ -71,7 +71,7 @@ public class OngoingOrderFragment extends Fragment {
             public void onResponse(Call<OngoingOrderResponse> call, Response<OngoingOrderResponse> response) {
                 Log.d("Response", "Onresponse" + new Gson().toJson(response.body()));
                 ongoingOrderData = response.body().getData();
-                tableListRecylerview.setAdapter(new OngoingOrderAdapter(getActivity(),ongoingOrderData));
+                tableListRecylerview.setAdapter(new OngoingOrderAdapter(getActivity(), ongoingOrderData,OngoingOrderFragment.this));
             }
 
             @Override
@@ -79,6 +79,18 @@ public class OngoingOrderFragment extends Fragment {
 
             }
         });
+        return view;
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+    }
+    public void postworkForTable(Boolean aBoolean){
+        if(aBoolean == true){
+            lowerpartOfOngoingLayout2.setVisibility(View.GONE);
+        }
     }
 }
