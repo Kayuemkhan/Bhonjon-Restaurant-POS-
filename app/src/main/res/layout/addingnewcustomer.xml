@@ -58,6 +58,7 @@
                 android:textSize="18sp" />
 
             <EditText
+                android:id="@+id/addcustomername"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="5dp"
@@ -85,6 +86,7 @@
                 android:textSize="18sp" />
 
             <EditText
+                android:id="@+id/addcustomeremail"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="5dp"
@@ -112,6 +114,7 @@
                 android:textSize="18sp" />
 
             <EditText
+                android:id="@+id/addcustomermobile"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="5dp"
@@ -139,6 +142,7 @@
                 android:textSize="18sp" />
 
             <EditText
+                android:id="@+id/addcustomeraddress"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="5dp"
@@ -166,6 +170,7 @@
                 android:textSize="18sp" />
 
             <EditText
+                android:id="@+id/addcustomerfavouriteaddress"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="5dp"
@@ -198,6 +203,7 @@
             android:textColor="@color/white" />
 
         <Button
+            android:id="@+id/submitAleartbyButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"

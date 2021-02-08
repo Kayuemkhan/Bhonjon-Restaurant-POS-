@@ -11,6 +11,7 @@ import com.bdtask.bhojonrestaurantpos.modelClass.KithcenStatus.KitchenStatusResp
 import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.PlaceOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.QROrder.QROrderResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.SignupNewCustomer.SignupNewCustomerResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.WaiterList.WaiterlistResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.loginModel.LoginResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.tablelist.TableResponse;
@@ -63,5 +64,12 @@ public interface WaiterService {
     @FormUrlEncoded
     @POST("kitchenstatus")
     Call<KitchenStatusResponse> kithcenStatus(@Field("id") String id);
+    @FormUrlEncoded
+    @POST("sign_up")
+    Call<SignupNewCustomerResponse> signUpNewCustomer(@Field("email") String email,
+                                                        @Field("password") String password,
+                                                      @Field("id") String id,
+                                                      @Field("mobile") String mobile,
+                                                      @Field("customer_name") String customer_name);
 
 }

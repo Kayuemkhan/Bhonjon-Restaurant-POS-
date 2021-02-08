@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -57,6 +58,7 @@ import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeRespon
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodinfoFoodList;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodlistResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.PlaceOrderResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.SignupNewCustomer.SignupNewCustomerResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.WaiterList.WaiterlistData;
 import com.bdtask.bhojonrestaurantpos.modelClass.WaiterList.WaiterlistResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.datamodel.ListClassData;
@@ -137,7 +139,8 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     private Double discountvalue;
     private ImageView addingCustomer;
     private ImageView closeAleart;
-    private Button closeAleartbyButton;
+    private Button closeAleartbyButton,submitAleartbyButton;
+    private EditText addcustomername,addcustomeremail,addcustomermobile,addcustomeraddress,addcustomerfavouriteaddress;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -925,9 +928,49 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         View view2 = getLayoutInflater().inflate(R.layout.addingnewcustomer, null);
         closeAleart = view2.findViewById(R.id.closeAleart);
         closeAleartbyButton = view2.findViewById(R.id.closeAleartbyButton);
+        submitAleartbyButton = view2.findViewById(R.id.submitAleartbyButton);
+        addcustomername = view2.findViewById(R.id.addcustomername);
+        addcustomeremail = view2.findViewById(R.id.addcustomeremail);
+        addcustomermobile = view2.findViewById(R.id.addcustomermobile);
+        addcustomeraddress = view2.findViewById(R.id.addcustomeraddress);
+        addcustomerfavouriteaddress = view2.findViewById(R.id.addcustomerfavouriteaddress);
         builder.setView(view2);
         AlertDialog alert = builder.create();
         alert.setCancelable(false);
+        submitAleartbyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String addcustomernam = addcustomername.getText().toString();
+                String addcustomeremai = addcustomeremail.getText().toString();
+                String addcustomermobil = addcustomermobile.getText().toString();
+                String addcustomeraddres = addcustomeraddress.getText().toString();
+                String addcustomerfavouriteaddres = addcustomerfavouriteaddress.getText().toString();
+                String addCustomerPassword = "123456";
+                if(TextUtils.isEmpty(addcustomernam)){
+                    addcustomername.setError("Please give a customer name");
+                    return;
+                }
+                else if(TextUtils.isEmpty(addcustomeremai)){
+                    addcustomeremail.setError("Please give an Email");
+                    return;
+                }
+                else if(TextUtils.isEmpty(addcustomermobil)){
+                    addcustomermobile.setError("Please give an mobile number");
+                    return;
+                }else if(TextUtils.isEmpty(addcustomeraddres)){
+                    addcustomeraddress.setError("Please give an address");
+                    return;
+                }else if(TextUtils.isEmpty(addcustomerfavouriteaddres)){
+                    addcustomerfavouriteaddress.setError("Please give an favouriteaddress");
+                    return;
+                }
+                else{
+                    addnewCustomertoDb(addcustomernam,addCustomerPassword,addcustomeremai,addcustomermobil,addcustomeraddres,addcustomerfavouriteaddres);
+                }
+
+
+            }
+        });
         closeAleart.setOnClickListener(v -> {
             alert.dismiss();
         });
@@ -939,4 +982,22 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         });
         alert.show();
     }
+
+    private void addnewCustomertoDb(String addcustomernam, String addCustomerPassword, String addcustomeremai, String addcustomermobil, String addcustomeraddres, String addcustomerfavouriteaddres) {
+
+        waiterService.signUpNewCustomer(addcustomeremai,addCustomerPassword,id,addcustomermobil,addcustomernam).enqueue(new Callback<SignupNewCustomerResponse>() {
+            @Override
+            public void onResponse(Call<SignupNewCustomerResponse> call, Response<SignupNewCustomerResponse> response) {
+                String response_message = response.body().getMessage();
+                Toasty.info(MainActivity.this,""+response_message,Toasty.LENGTH_SHORT,true).show();
+            }
+
+            @Override
+            public void onFailure(Call<SignupNewCustomerResponse> call, Throwable t) {
+                Toasty.info(MainActivity.this,"Onfailure: "+t,Toasty.LENGTH_SHORT,true).show();
+            }
+        });
+    }
+
+
 }
