@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AppConfig {
 
-    public static String BASE_URL = "https://soft14.bdtask.com/bhojon23_latest/appv1/";
+    public static String BASE_URL = "https://soft14.bdtask.com/bhojon23_latest/V1/";
 
     public static Retrofit getRetrofit() {
         return new Retrofit.Builder()

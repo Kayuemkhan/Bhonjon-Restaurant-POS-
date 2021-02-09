@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 import java.util.List;
 
 public class FoodListAdapater extends RecyclerView.Adapter<FoodListAdapater.ViewHolder> implements Filterable {
+    private String productVat;
     Context context;
     private List<FoodinfoFoodList> lists;
     List<Addonsinfo> addonsinfoList;
@@ -54,12 +55,13 @@ public class FoodListAdapater extends RecyclerView.Adapter<FoodListAdapater.View
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
+                productVat = lists.get(position).getProductvat();
                 baseprice = lists.get(position).getPrice();
                 addonsinfoList = lists.get(position).getAddonsinfo();
                 Log.d("Addons Info", "" + new Gson().toJson(addonsinfoList));
                 addonsStatus = lists.get(position).getAddons().toString();
                 baseprice = lists.get(position).getPrice();
-                mainActivity.AddonsCheckingForAllCategories(baseprice,addonsStatus, String.valueOf(lists.get(position).getProductName()), lists.get(position).getPrice(), lists.get(position).getVariantName(), lists.get(position).getProductsID(), addonsinfoList);
+                mainActivity.AddonsCheckingForAllCategories(productVat,baseprice,addonsStatus, String.valueOf(lists.get(position).getProductName()), lists.get(position).getPrice(), lists.get(position).getVariantName(), lists.get(position).getProductsID(), addonsinfoList);
 
             }
         });

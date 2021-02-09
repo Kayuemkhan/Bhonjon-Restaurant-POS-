@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AllCategoriesInfo extends RecyclerView.Adapter<AllCategoriesInfo.ViewHolder> {
+    private String productVat;
     private Context context;
     private List<Foodinfo> list;
     private MainActivity mainActivity;
@@ -60,11 +61,12 @@ public class AllCategoriesInfo extends RecyclerView.Adapter<AllCategoriesInfo.Vi
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
+                productVat = list.get(position).getProductvat();
                 addonsinfoList = list.get(position).getAddonsinfo();
                 Log.d("Addons Info", "" + new Gson().toJson(addonsinfoList));
                 addonsStatus = list.get(position).getAddons().toString();
                 baseprice = list.get(position).getPrice();
-                mainActivity.AddonsChecking(baseprice, addonsStatus, String.valueOf(list.get(position).getProductName()), list.get(position).getPrice(), list.get(position).getVariantName(), list.get(position).getProductsID(), addonsinfoList);
+                mainActivity.AddonsChecking(productVat,baseprice, addonsStatus, String.valueOf(list.get(position).getProductName()), list.get(position).getPrice(), list.get(position).getVariantName(), list.get(position).getProductsID(), addonsinfoList);
             }
         });
     }

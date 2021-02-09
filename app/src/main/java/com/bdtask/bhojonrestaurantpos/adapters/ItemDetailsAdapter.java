@@ -1,11 +1,9 @@
 package com.bdtask.bhojonrestaurantpos.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,9 +15,7 @@ import com.bdtask.bhojonrestaurantpos.activities.MainActivity;
 import com.bdtask.bhojonrestaurantpos.modelClass.datamodel.ListClassData;
 import com.bdtask.bhojonrestaurantpos.modelClass.datamodel.Subtotal;
 import com.bdtask.bhojonrestaurantpos.utils.SharedPref;
-import com.google.gson.Gson;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +56,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         totalPriceCount = Double.parseDouble(listClassData.get(position).getBaseprice());
         holder.totalPriceIdInsingleView.setText(listClassData.get(position).getBaseprice());
-        holder.itemname.setText(listClassData.get(position).getProductname());
+        holder.itemname.setText(listClassData.get(position).getProductName());
         holder.variantname.setText(listClassData.get(position).getSize());
         holder.itemquantityinitemview.setText(String.valueOf(listClassData.get(position).getQuantity()));
         d = Double.parseDouble(listClassData.get(position).getBaseprice()) * listClassData.get(position).getQuantity();

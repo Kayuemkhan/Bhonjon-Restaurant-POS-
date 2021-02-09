@@ -1,12 +1,15 @@
 package com.bdtask.bhojonrestaurantpos.modelClass.Allcategory;
 
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 public class Foodinfo {
-
+    @PrimaryKey(autoGenerate = true)
+    public int id ;
     @SerializedName("ProductsID")
     @Expose
     private String productsID;

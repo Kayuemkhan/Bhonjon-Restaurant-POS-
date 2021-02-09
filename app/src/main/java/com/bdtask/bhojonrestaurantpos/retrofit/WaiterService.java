@@ -30,7 +30,7 @@ public interface WaiterService {
     Call<CategoryResponse> getAllCategories(@Field("id") String id);
     @FormUrlEncoded
     @POST("allfoodlist")
-    Call<AllCategoryResponse> allcategoryResponse(@Field("id") String id);
+    Call<AllCategoryResponse> allcategoryItemResponse(@Field("id") String id);
     @FormUrlEncoded
     @POST("foodlist")
     Call<FoodlistResponse> foodListResponse(@Field("id") String id, @Field("CategoryID") String categoryId);

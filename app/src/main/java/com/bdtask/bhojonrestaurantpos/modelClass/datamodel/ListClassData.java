@@ -1,39 +1,45 @@
 package com.bdtask.bhojonrestaurantpos.modelClass.datamodel;
 
 public class ListClassData {
-    private String productname, price, size, t, productsID, baseprice;
+    private String ProductName, price, size, priceOfAddons, ProductsID, baseprice;
+    private int quantitys;
+    private int addons;
+    private int addOnsTotal;
+    private String productvat;
     private int quantity;
-    private int addonsprice;
+    private String variantid;
 
     public ListClassData() {
     }
 
-    public ListClassData(String baseprice, String productname, String price, String size, String t, String productsID, int quantity, int addonsprice) {
-        this.productname = productname;
+    public ListClassData(String baseprice, String productName, String price, String size, String priceOfAddons, String productsID, int quantitys, int addons, int addOnsTotal,String productvat, int quantity, String variantid) {
+        this.ProductName = productName;
         this.baseprice = baseprice;
         this.price = price;
         this.size = size;
-        this.t = t;
-        this.productsID = productsID;
-        this.addonsprice = addonsprice;
-        this.quantity = quantity;
+        this.priceOfAddons = priceOfAddons;
+        this.ProductsID = productsID;
+        this.addons = addons;
+        this.quantitys = quantitys;
+        this.productvat = productvat;
+        this.quantity = quantitys;
+        this.variantid = productsID;
     }
 
-    public int getAddonsprice() {
-        return addonsprice;
+    public int getAddons() {
+        return addons;
     }
 
-    public void setAddonsprice(int addonsprice) {
-        this.addonsprice = addonsprice;
+    public void setAddons(int addons) {
+        this.addons = addons;
     }
 
-
-    public String getProductname() {
-        return productname;
+    public String getProductName() {
+        return ProductName;
     }
 
-    public void setProductname(String productname) {
-        this.productname = productname;
+    public void setProductName(String productName) {
+        this.ProductName = productName;
     }
 
     public String getPrice() {
@@ -52,29 +58,29 @@ public class ListClassData {
         this.size = size;
     }
 
-    public String getT() {
-        return t;
+    public String getAddOnsTotal() {
+        return priceOfAddons;
     }
 
-    public void setT(String t) {
-        this.t = t;
+    public void setAddOnsTotal(String addOnsTotal) {
+        this.priceOfAddons = addOnsTotal;
     }
 
     public String getProductsID() {
-        return productsID;
+        return ProductsID;
     }
 
     public void setProductsID(String productsID) {
-        this.productsID = productsID;
+        this.ProductsID = productsID;
     }
 
 
     public int getQuantity() {
-        return quantity;
+        return quantitys;
     }
 
     public void setQuantity(int quantity) {
-        this.quantity = quantity;
+        this.quantitys = quantity;
     }
 
     public String getBaseprice() {
@@ -83,5 +89,21 @@ public class ListClassData {
 
     public void setBaseprice(String baseprice) {
         this.baseprice = baseprice;
+    }
+
+    public String getProductvat() {
+        return productvat;
+    }
+
+    public void setProductvat(String productvat) {
+        this.productvat = productvat;
+    }
+
+    public String getVariantid() {
+        return variantid;
+    }
+
+    public void setVariantid(String variantid) {
+        this.variantid = variantid;
     }
 }

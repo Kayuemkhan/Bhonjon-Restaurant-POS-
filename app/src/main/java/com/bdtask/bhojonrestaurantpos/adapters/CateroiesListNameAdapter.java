@@ -42,13 +42,10 @@ public class CateroiesListNameAdapter extends RecyclerView.Adapter<CateroiesList
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         holder.subcatergoryNameId.setText(list.get(position).getName());
-        holder.subcatergoryNameId.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rowId = position;
-                notifyDataSetChanged();
-                //holder.tvId.setVisibility(View.VISIBLE);
-            }
+        holder.subcatergoryNameId.setOnClickListener(v -> {
+            rowId = position;
+            notifyDataSetChanged();
+            //holder.tvId.setVisibility(View.VISIBLE);
         });
 
         if (rowId == position) {
