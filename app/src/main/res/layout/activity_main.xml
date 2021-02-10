@@ -439,12 +439,10 @@
                                    android:layout_height="wrap_content"
                                    android:orientation="horizontal">
 
-
                                    <include
                                         layout="@layout/spinnercustomertype"
                                        android:layout_width="wrap_content"
                                        android:layout_height="@dimen/_20sdp" />
-
                                </LinearLayout>
 
                            </LinearLayout>
