@@ -41,23 +41,23 @@
             android:weightSum="7">
 
             <LinearLayout
+                android:id="@+id/completeorderTV"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:gravity="center"
-
                 android:background="@drawable/buttongreenback"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="15dp">
 
                 <TextView
-                    android:gravity="center"
-                    android:layout_gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_gravity="center"
                     android:enabled="true"
+                    android:gravity="center"
                     android:text="Complete"
                     android:textAlignment="center"
                     android:textColor="@color/white"
@@ -66,104 +66,108 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1"
-                android:background="#115FC9"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:padding="15dp">
-
-                <ImageView
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/spliticon" />
-
-                <TextView
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Spilit"
-                    android:textColor="@color/white"
-                    android:textSize="25sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1"
-                android:background="#1BA392"
-                android:orientation="horizontal"
-                android:padding="15dp">
-
-                <ImageView
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/mergeicon" />
-
-                <TextView
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Marge"
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
+                android:id="@+id/spilitTV"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/buttongreenback"
+                android:backgroundTint="#115FC9"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="15dp">
 
                 <ImageView
-                    android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/editicon" />
+                    android:src="@drawable/spliticon" />
 
                 <TextView
-                    android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Edit"
-                    android:paddingLeft="-2dp"
+                    android:text="\tSpilit"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="25sp" />
+
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/mergeTV"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:background="#0B6240"
+                android:background="@drawable/buttongreenback"
+                android:backgroundTint="#1BA392"
                 android:orientation="horizontal"
                 android:padding="15dp">
 
                 <ImageView
-                    android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:src="@drawable/mergeicon" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="\tMarge"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/editTV"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+
+                android:background="@drawable/buttongreenback"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <ImageView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/editicon" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingLeft="-2dp"
+                    android:text="Edit"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/posinvoiceTV"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/buttongreenback"
+                android:backgroundTint="#0B6240"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:src="@drawable/creditcard" />
 
                 <TextView
-                    android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:gravity="center"
                     android:paddingLeft="5dp"
                     android:text="POS Invoice"
                     android:textColor="@color/white"
@@ -171,6 +175,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/duePOSTV"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -181,40 +186,42 @@
                 android:padding="15dp">
 
                 <ImageView
-                    android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:gravity="center"
                     android:src="@drawable/bill" />
 
                 <TextView
-                    android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:gravity="center"
                     android:text="Due POS"
                     android:textColor="@color/white"
                     android:textSize="20sp" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/cancelTV"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:background="#EB0202"
+                android:background="@drawable/buttongreenback"
+                android:backgroundTint="#EB0202"
                 android:orientation="horizontal"
                 android:padding="15dp">
 
                 <ImageView
-                    android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:gravity="center"
                     android:src="@drawable/deleteicon" />
 
                 <TextView
-                    android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:gravity="center"
                     android:text="Cancel"
                     android:textColor="@color/white"
                     android:textSize="20sp" />
@@ -241,14 +248,14 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:visibility="invisible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="true"
                     android:text="compelete"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:visibility="invisible" />
 
             </LinearLayout>
 

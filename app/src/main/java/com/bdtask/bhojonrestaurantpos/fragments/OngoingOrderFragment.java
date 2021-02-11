@@ -1,5 +1,9 @@
 package com.bdtask.bhojonrestaurantpos.fragments;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,10 +13,15 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,13 +41,16 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
 public class OngoingOrderFragment extends Fragment {
+    private ImageView closepaymentpageIV;
     private WaiterService waiterService;
+    private LinearLayout completeorderTV, spilitTV, mergeTV, editTV, posinvoiceTV, duePOSTV, cancelTV;
     private String id;
     private RecyclerView tableListRecylerview;
     List<OngoingOrderData> ongoingOrderData = new ArrayList<>();
@@ -62,7 +74,13 @@ public class OngoingOrderFragment extends Fragment {
         lowerpartOfOngoingLayout = view.findViewById(R.id.lowerpartOfOngoingLayout);
         lowerpartOfOngoingLayout2 = view.findViewById(R.id.lowerpartOfOngoingLayout2);
         tableListRecylerview = view.findViewById(R.id.tableListRecylerview);
-
+        completeorderTV = view.findViewById(R.id.completeorderTV);
+        spilitTV = view.findViewById(R.id.spilitTV);
+        mergeTV = view.findViewById(R.id.mergeTV);
+        editTV = view.findViewById(R.id.editTV);
+        posinvoiceTV = view.findViewById(R.id.posinvoiceTV);
+        duePOSTV = view.findViewById(R.id.duePOSTV);
+        cancelTV = view.findViewById(R.id.cancelTV);
 //        tableListRecylerview.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         tableListRecylerview.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 4));
         tableListRecylerview.addItemDecoration(new SpacingItemDecoration(3, Tools.dpToPx(getActivity().getApplicationContext(), 2), true));
@@ -71,7 +89,7 @@ public class OngoingOrderFragment extends Fragment {
             public void onResponse(Call<OngoingOrderResponse> call, Response<OngoingOrderResponse> response) {
                 Log.d("Response", "Onresponse" + new Gson().toJson(response.body()));
                 ongoingOrderData = response.body().getData();
-                tableListRecylerview.setAdapter(new OngoingOrderAdapter(getActivity(), ongoingOrderData,OngoingOrderFragment.this));
+                tableListRecylerview.setAdapter(new OngoingOrderAdapter(getActivity(), ongoingOrderData, OngoingOrderFragment.this));
             }
 
             @Override
@@ -79,7 +97,56 @@ public class OngoingOrderFragment extends Fragment {
 
             }
         });
+        completeorderTV.setOnClickListener(v -> {
+            completeorder();
+        });
+        spilitTV.setOnClickListener(v -> {
+            Toasty.info(getContext(), "No Action", Toasty.LENGTH_SHORT).show();
+        });
+        mergeTV.setOnClickListener(v -> {
+            Toasty.info(getContext(), "No Action", Toasty.LENGTH_SHORT).show();
+        });
+        editTV.setOnClickListener(v -> {
+            Toasty.info(getContext(), "No Action", Toasty.LENGTH_SHORT).show();
+        });
+        posinvoiceTV.setOnClickListener(v -> {
+            Toasty.info(getContext(), "No Action", Toasty.LENGTH_SHORT).show();
+        });
+        duePOSTV.setOnClickListener(v -> {
+            Toasty.info(getContext(), "No Action", Toasty.LENGTH_SHORT).show();
+        });
+        cancelTV.setOnClickListener(v -> {
+            Toasty.info(getContext(), "No Action", Toasty.LENGTH_SHORT).show();
+        });
         return view;
+    }
+
+    private void completeorder() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = (LayoutInflater) getContext().
+                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view2 = inflater.inflate(R.layout.aleartdialog_paymentpage, null);
+        builder.setView(view2);
+        closepaymentpageIV = view2.findViewById(R.id.closepaymentpageIV);
+        AlertDialog alert = builder.create();
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        closepaymentpageIV.setOnClickListener(v -> {
+            alert.dismiss();
+        });
+        alert.show();
+//        Window window = alert.getWindow();
+//
+//        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+//        alert.setCancelable(false);
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        Double width = metrics.widthPixels * .7;
+        Double height = metrics.heightPixels * .7;
+        Window win = alert.getWindow();
+        win.setLayout(width.intValue(), height.intValue());
+//        alert.show();
     }
 
     @Override
@@ -88,8 +155,9 @@ public class OngoingOrderFragment extends Fragment {
 
 
     }
-    public void postworkForTable(Boolean aBoolean){
-        if(aBoolean == true){
+
+    public void postworkForTable(Boolean aBoolean) {
+        if (aBoolean == true) {
             lowerpartOfOngoingLayout2.setVisibility(View.GONE);
         }
     }
