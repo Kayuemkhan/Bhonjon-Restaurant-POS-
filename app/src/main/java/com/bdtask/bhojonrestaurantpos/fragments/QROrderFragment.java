@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.SpacingItemDecoration;
@@ -36,7 +37,8 @@ public class QROrderFragment extends Fragment {
     private String id;
     private RecyclerView qrOrderRecylerview;
     List<QROrderData> qrOrderData = new ArrayList<>();
-
+    private LinearLayout layoutId1;
+    private LinearLayout qrOrderRecylerviewLayout;
 
     public QROrderFragment() {
     }
@@ -57,13 +59,24 @@ public class QROrderFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        layoutId1= view.findViewById(R.id.layoutId1);
+        qrOrderRecylerviewLayout= view.findViewById(R.id.qrOrderRecylerviewLayout);
         qrOrderRecylerview = view.findViewById(R.id.qrOrderRecylerview);
         qrOrderRecylerview.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         waiterService.getAllQrORder(id).enqueue(new Callback<QROrderResponse>() {
             @Override
             public void onResponse(Call<QROrderResponse> call, Response<QROrderResponse> response) {
                 qrOrderData = response.body().getData();
-                qrOrderRecylerview.setAdapter(new QROrderAdapter(getActivity(),qrOrderData));
+                if(qrOrderData.size()<=0){
+                    layoutId1.setVisibility(View.VISIBLE);
+                    qrOrderRecylerviewLayout.setVisibility(View.GONE);
+                }
+                else {
+                    layoutId1.setVisibility(View.GONE);
+                    qrOrderRecylerviewLayout.setVisibility(View.VISIBLE);
+                    qrOrderRecylerview.setAdapter(new QROrderAdapter(getActivity(),qrOrderData));
+                }
+
             }
 
             @Override

@@ -39,6 +39,16 @@ public class KitchenStatuAdapter extends RecyclerView.Adapter<KitchenStatuAdapte
 
     @Override
     public void onBindViewHolder(@NonNull KitchenStatuAdapter.Viewholder holder, int i) {
+        try {
+            if(kitchenStatusData.get(i).getIteminfo().get(i).getStatus()== "Ready"){
+                int actualPosition = holder.getAdapterPosition();
+                kitchenStatusData.remove(actualPosition);
+                notifyItemRemoved(actualPosition);
+                notifyItemRangeChanged(actualPosition,kitchenStatusData.size());
+            }
+        }catch (Exception e){
+
+        }
         holder.tableidinkitchenstatus.setText(kitchenStatusData.get(i).getTable());
         holder.toeknidinkitchenstatus.setText(kitchenStatusData.get(i).getToken());
         holder.waiternameinkitchenstatus.setText(kitchenStatusData.get(i).getWaiter());

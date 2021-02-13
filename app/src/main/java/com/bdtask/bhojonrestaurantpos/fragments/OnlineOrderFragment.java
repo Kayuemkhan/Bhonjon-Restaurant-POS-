@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.adapters.QROrderAdapter;
@@ -33,6 +34,8 @@ public class OnlineOrderFragment extends Fragment {
     private String id;
     private RecyclerView qrOrderRecylerview;
     List<QROrderData> qrOrderData = new ArrayList<>();
+    private LinearLayout layoutId2;
+    private LinearLayout onlineOrderRecylerviewLayout;
     public OnlineOrderFragment() {
     }
     @Override
@@ -51,13 +54,23 @@ public class OnlineOrderFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        layoutId2= view.findViewById(R.id.layoutId2);
+        onlineOrderRecylerviewLayout= view.findViewById(R.id.onlineOrderRecylerviewLayout);
         qrOrderRecylerview = view.findViewById(R.id.onlineOrderRecylerview);
         qrOrderRecylerview.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         waiterService.getallOnlineOrders(id).enqueue(new Callback<QROrderResponse>() {
             @Override
             public void onResponse(Call<QROrderResponse> call, Response<QROrderResponse> response) {
                 qrOrderData = response.body().getData();
-                qrOrderRecylerview.setAdapter(new QROrderAdapter(getActivity(),qrOrderData));
+                if(qrOrderData.size()<=0){
+                    layoutId2.setVisibility(View.VISIBLE);
+                    onlineOrderRecylerviewLayout.setVisibility(View.GONE);
+                }else {
+                    layoutId2.setVisibility(View.GONE);
+                    onlineOrderRecylerviewLayout.setVisibility(View.VISIBLE);
+                    qrOrderRecylerview.setAdapter(new QROrderAdapter(getActivity(),qrOrderData));
+                }
+
             }
             @Override
             public void onFailure(Call<QROrderResponse> call, Throwable t) {
