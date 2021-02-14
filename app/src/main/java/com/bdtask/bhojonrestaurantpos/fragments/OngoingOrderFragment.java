@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -22,6 +24,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -53,12 +56,12 @@ public class OngoingOrderFragment extends Fragment {
     private ImageView closepaymentpageIV;
     private WaiterService waiterService;
     private LinearLayout completeorderTV, spilitTV, mergeTV, editTV, posinvoiceTV, duePOSTV, cancelTV;
-    private String id,selectedDiscountType;
+    private String id,selectedDiscountType,discountETPaymentammount;
     private RecyclerView tableListRecylerview;
     List<OngoingOrderData> ongoingOrderData = new ArrayList<>();
     LinearLayout lowerpartOfOngoingLayout, lowerpartOfOngoingLayout2;
     private Spinner spinnerdiscounttype;
-
+    private EditText discountETPayment;
     public OngoingOrderFragment() {
     }
 
@@ -132,6 +135,8 @@ public class OngoingOrderFragment extends Fragment {
         builder.setView(view2);
         spinnerdiscounttype = view2.findViewById(R.id.spinnerdiscounttype);
         spinnerdiscounttypedataSelection();
+        discountETPayment = view2.findViewById(R.id.discountETPayment);
+        getdiscountAmmount();
         closepaymentpageIV = view2.findViewById(R.id.closepaymentpageIV);
         AlertDialog alert = builder.create();
         alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -152,6 +157,23 @@ public class OngoingOrderFragment extends Fragment {
         Window win = alert.getWindow();
         win.setLayout(width.intValue(), height.intValue());
 //        alert.show();
+    }
+
+    private void getdiscountAmmount() {
+        discountETPayment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                discountETPaymentammount = String.valueOf(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     private void spinnerdiscounttypedataSelection() {
