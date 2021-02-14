@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="30dp"
     android:orientation="vertical">
 
@@ -204,6 +205,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/paymentTV"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="20dp"
@@ -224,86 +226,15 @@
 
                 </LinearLayout>
 
-                <LinearLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/paymentOptionsRV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:weightSum="2">
+                    tools:itemCount="1"
+                    tools:listitem="@layout/singlepaymentoptionslayout"
+                    />
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Payment Method"
-                            android:textColor="#262626"
-                            android:textSize="18sp" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <include
-                                layout="@layout/spinnercustomertype"
-                                android:layout_width="wrap_content"
-                                android:layout_height="@dimen/_20sdp" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Customer Payment"
-                            android:textColor="#262626"
-                            android:textSize="18sp" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <EditText
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_20sdp"
-                                android:background="@drawable/edit_text_red_background"
-                                android:paddingLeft="10dp"
-                                android:text="0" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:gravity="end">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="#35A002"
-                        android:padding="15dp"
-
-                        android:text="Add New Payment "
-                        android:textColor="@color/white" />
-                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -604,6 +535,7 @@
                         android:background="@color/black" />
                 </LinearLayout>
                 <LinearLayout
+                    android:layout_marginTop="20dp"
                     android:layout_gravity="bottom"
                     android:gravity="bottom"
                     android:layout_width="match_parent"

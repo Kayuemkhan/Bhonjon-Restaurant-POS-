@@ -29,10 +29,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
-    Button signInBtn;
-    EditText emailET, passwordET;
+    private Button signInBtn;
+    private EditText emailET, passwordET;
     private WaiterService waitersService;
-    ProgressDialog progressDialog;
+    private ProgressDialog progressDialog;
     private String loginstatus ="";
 
     @Override

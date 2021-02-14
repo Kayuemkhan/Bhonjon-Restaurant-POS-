@@ -35,6 +35,7 @@ import com.bdtask.bhojonrestaurantpos.SpacingItemDecoration;
 import com.bdtask.bhojonrestaurantpos.Tools;
 import com.bdtask.bhojonrestaurantpos.activities.MainActivity;
 import com.bdtask.bhojonrestaurantpos.adapters.OngoingOrderAdapter;
+import com.bdtask.bhojonrestaurantpos.adapters.PaymentOptionsAdapters;
 import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderData;
 import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.WaiterList.WaiterlistResponse;
@@ -53,6 +54,8 @@ import retrofit2.Response;
 
 
 public class OngoingOrderFragment extends Fragment {
+    private int size =0;
+    private LinearLayout paymentTV;
     private ImageView closepaymentpageIV;
     private WaiterService waiterService;
     private LinearLayout completeorderTV, spilitTV, mergeTV, editTV, posinvoiceTV, duePOSTV, cancelTV;
@@ -62,6 +65,7 @@ public class OngoingOrderFragment extends Fragment {
     LinearLayout lowerpartOfOngoingLayout, lowerpartOfOngoingLayout2;
     private Spinner spinnerdiscounttype;
     private EditText discountETPayment;
+    private RecyclerView paymentOptionsRV;
     public OngoingOrderFragment() {
     }
 
@@ -137,7 +141,13 @@ public class OngoingOrderFragment extends Fragment {
         spinnerdiscounttypedataSelection();
         discountETPayment = view2.findViewById(R.id.discountETPayment);
         getdiscountAmmount();
+        paymentOptionsRV = view2.findViewById(R.id.paymentOptionsRV);
+        paymentOptionsRV.setLayoutManager(new LinearLayoutManager(getActivity()));
         closepaymentpageIV = view2.findViewById(R.id.closepaymentpageIV);
+        paymentTV = view2.findViewById(R.id.paymentTV);
+        paymentTV.setOnClickListener(v -> {
+            createnewPaymentPage();
+        });
         AlertDialog alert = builder.create();
         alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         closepaymentpageIV.setOnClickListener(v -> {
@@ -158,6 +168,11 @@ public class OngoingOrderFragment extends Fragment {
         win.setLayout(width.intValue(), height.intValue());
 //        alert.show();
     }
+
+    private void createnewPaymentPage() {
+        paymentOptionsRV.setAdapter(new PaymentOptionsAdapters(getActivity()));
+    }
+
 
     private void getdiscountAmmount() {
         discountETPayment.addTextChangedListener(new TextWatcher() {
