@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bdtask.bhojonrestaurantpos.R;
+import com.bdtask.bhojonrestaurantpos.fragments.OngoingOrderFragment;
 import com.bdtask.bhojonrestaurantpos.modelClass.PaymentList.PaymentData;
 import com.bdtask.bhojonrestaurantpos.modelClass.PaymentList.PaymentResponse;
 import com.bdtask.bhojonrestaurantpos.retrofit.AppConfig;
@@ -25,23 +26,23 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsAdapters.ViewHolder> {
     private Context context;
     private WaiterService waiterService;
     private String id;
     private List<PaymentData> paymentData;
     private List<String> paymentName;
-
-    public PaymentOptionsAdapters(FragmentActivity activity) {
+    private int sizes;
+    private OngoingOrderFragment ongoingOrderFragment;
+    public PaymentOptionsAdapters(FragmentActivity activity, int size, OngoingOrderFragment fragmentActivityClass, List<String> paymentNames) {
         this.context = activity;
-        paymentName= new ArrayList<>();
+        this.paymentName = new ArrayList<>();
         SharedPref.init(context);
         id = SharedPref.read("ID", "");
         waiterService = AppConfig.getRetrofit().create(WaiterService.class);
+        this.sizes = size;
+        this.ongoingOrderFragment = fragmentActivityClass;
+        this.paymentName = paymentNames;
     }
 
     @NonNull
@@ -53,29 +54,13 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.spinnerPaymentType.setAdapter(new ArrayAdapter<String>(context,R.layout.support_simple_spinner_dropdown_item,paymentName));
 
-        waiterService.paymentListResponse(id).enqueue(new Callback<PaymentResponse>() {
-            @Override
-            public void onResponse(Call<PaymentResponse> call, Response<PaymentResponse> response) {
-                paymentData = response.body().getData();
-                for(int i =0;i<paymentData.size();i++){
-                    //Log.d("aaaaaaaa",""+new Gson().toJson(paymentData.get(i).getPayname()));
-                    paymentName.add(paymentData.get(i).getPayname());
-                    //Log.d("aaaaaaaa",""+new Gson().toJson(paymentName));
-                }
-                Log.d("aaaaaaaa",""+new Gson().toJson(paymentName));
-                holder.spinnerPaymentType.setAdapter(new ArrayAdapter<String>(context,R.layout.support_simple_spinner_dropdown_item,paymentName));
-            }
-            @Override
-            public void onFailure(Call<PaymentResponse> call, Throwable t) {
-            }
-        });
-        Log.d("paymentD",""+new Gson().toJson(paymentName));
     }
 
     @Override
     public int getItemCount() {
-        return 1;
+        return sizes;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

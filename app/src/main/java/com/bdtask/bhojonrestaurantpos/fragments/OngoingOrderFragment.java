@@ -6,9 +6,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,21 +23,21 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.SpacingItemDecoration;
 import com.bdtask.bhojonrestaurantpos.Tools;
-import com.bdtask.bhojonrestaurantpos.activities.MainActivity;
 import com.bdtask.bhojonrestaurantpos.adapters.OngoingOrderAdapter;
 import com.bdtask.bhojonrestaurantpos.adapters.PaymentOptionsAdapters;
 import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderData;
 import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderResponse;
-import com.bdtask.bhojonrestaurantpos.modelClass.WaiterList.WaiterlistResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.PaymentList.PaymentData;
+import com.bdtask.bhojonrestaurantpos.modelClass.PaymentList.PaymentResponse;
 import com.bdtask.bhojonrestaurantpos.retrofit.AppConfig;
 import com.bdtask.bhojonrestaurantpos.retrofit.WaiterService;
 import com.bdtask.bhojonrestaurantpos.utils.SharedPref;
@@ -54,7 +53,9 @@ import retrofit2.Response;
 
 
 public class OngoingOrderFragment extends Fragment {
-    private int size =0;
+    private List<PaymentData> paymentData;
+    private List<String> paymentName;
+    int size =1;
     private LinearLayout paymentTV;
     private ImageView closepaymentpageIV;
     private WaiterService waiterService;
@@ -62,10 +63,11 @@ public class OngoingOrderFragment extends Fragment {
     private String id,selectedDiscountType,discountETPaymentammount;
     private RecyclerView tableListRecylerview;
     List<OngoingOrderData> ongoingOrderData = new ArrayList<>();
-    LinearLayout lowerpartOfOngoingLayout, lowerpartOfOngoingLayout2;
+    private LinearLayout lowerpartOfOngoingLayout, lowerpartOfOngoingLayout2,addnewpaymentTV;
     private Spinner spinnerdiscounttype;
     private EditText discountETPayment;
     private RecyclerView paymentOptionsRV;
+
     public OngoingOrderFragment() {
     }
 
@@ -75,6 +77,8 @@ public class OngoingOrderFragment extends Fragment {
         id = SharedPref.read("ID", "");
         waiterService = AppConfig.getRetrofit().create(WaiterService.class);
         SharedPref.init(getActivity());
+        paymentData = new ArrayList<>();
+        paymentName = new ArrayList<>();
     }
 
     @Override
@@ -130,7 +134,6 @@ public class OngoingOrderFragment extends Fragment {
         });
         return view;
     }
-
     private void completeorder() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = (LayoutInflater) getContext().
@@ -145,8 +148,17 @@ public class OngoingOrderFragment extends Fragment {
         paymentOptionsRV.setLayoutManager(new LinearLayoutManager(getActivity()));
         closepaymentpageIV = view2.findViewById(R.id.closepaymentpageIV);
         paymentTV = view2.findViewById(R.id.paymentTV);
+        addnewpaymentTV = view2.findViewById(R.id.addnewpaymentTV);
         paymentTV.setOnClickListener(v -> {
-            createnewPaymentPage();
+            addnewpaymentTV.setVisibility(View.VISIBLE);
+            createnewPaymentPage(size);
+        });
+        addnewpaymentTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                size = size+1;
+                createnewPaymentPage(size);
+            }
         });
         AlertDialog alert = builder.create();
         alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -168,23 +180,33 @@ public class OngoingOrderFragment extends Fragment {
         win.setLayout(width.intValue(), height.intValue());
 //        alert.show();
     }
-
-    private void createnewPaymentPage() {
-        paymentOptionsRV.setAdapter(new PaymentOptionsAdapters(getActivity()));
+    private void createnewPaymentPage(int size) {
+        waiterService.paymentListResponse(id).enqueue(new Callback<PaymentResponse>() {
+            @Override
+            public void onResponse(Call<PaymentResponse> call, Response<PaymentResponse> response) {
+                paymentData = response.body().getData();
+                for(int i =0;i<paymentData.size();i++){
+                    //Log.d("aaaaaaaa",""+new Gson().toJson(paymentData.get(i).getPayname()));
+                    paymentName.add(paymentData.get(i).getPayname());
+                    //Log.d("aaaaaaaa",""+new Gson().toJson(paymentName));
+                }
+                Log.d("aaaaaaaa",""+new Gson().toJson(paymentName));
+            }
+            @Override
+            public void onFailure(Call<PaymentResponse> call, Throwable t) {
+            }
+        });
+        paymentOptionsRV.setAdapter(new PaymentOptionsAdapters(getActivity(),size, OngoingOrderFragment.this,paymentName));
     }
-
-
     private void getdiscountAmmount() {
         discountETPayment.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 discountETPaymentammount = String.valueOf(s);
             }
-
             @Override
             public void afterTextChanged(Editable s) {
             }

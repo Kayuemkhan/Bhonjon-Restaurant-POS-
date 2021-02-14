@@ -1,43 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="30dp"
     android:orientation="vertical">
-
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/curvetopcorners"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
-       <LinearLayout
-           android:layout_width="wrap_content"
-           android:layout_height="match_parent"
-           >
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:paddingLeft="30dp"
-               android:paddingTop="15dp"
-               android:paddingBottom="15dp"
-               android:layout_gravity="center"
-               android:text="@string/select_your_payment_methods"
-               android:textColor="@color/black"
-               android:textSize="20sp" />
-       </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingLeft="30dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="@string/select_your_payment_methods"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+        </LinearLayout>
+
         <LinearLayout
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-          android:padding="3dp"
             android:layout_marginRight="10dp"
-            android:gravity="end">
+            android:gravity="end"
+            android:padding="3dp">
 
             <ImageView
 
@@ -52,8 +51,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -231,10 +230,24 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:itemCount="1"
-                    tools:listitem="@layout/singlepaymentoptionslayout"
-                    />
+                    tools:listitem="@layout/singlepaymentoptionslayout" />
 
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/addnewpaymentTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:gravity="end">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#35A002"
+                        android:padding="15dp"
+                        android:text="Add New Payment "
+                        android:textColor="@color/white" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -270,8 +283,8 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:padding="10dp"
-                            >
+                            android:padding="10dp">
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -308,7 +321,6 @@
                             android:padding="10dp"
                             android:text="100 Taka"
                             android:textColor="#262626" />
-
 
 
                     </LinearLayout>
@@ -383,7 +395,6 @@
                             android:textColor="#262626" />
 
 
-
                     </LinearLayout>
 
                     <View
@@ -408,7 +419,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:orientation="vertical">
-
 
 
                         <TextView
@@ -483,7 +493,6 @@
                         android:orientation="vertical">
 
 
-
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -512,7 +521,6 @@
                         android:orientation="vertical">
 
 
-
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -534,25 +542,25 @@
                         android:layout_height="match_parent"
                         android:background="@color/black" />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:layout_marginTop="20dp"
-                    android:layout_gravity="bottom"
-                    android:gravity="bottom"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
                     android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginRight="20dp"
-                    >
+                    android:gravity="bottom">
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Pay Now &amp; Print Invoice"
-                        android:textSize="20sp"
-                        android:padding="15dp"
                         android:background="@drawable/buttongreenback"
-                        android:textColor="@color/white"
                         android:gravity="center"
-                        />
+                        android:padding="15dp"
+                        android:text="Pay Now &amp; Print Invoice"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -560,6 +568,7 @@
         </LinearLayout>
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

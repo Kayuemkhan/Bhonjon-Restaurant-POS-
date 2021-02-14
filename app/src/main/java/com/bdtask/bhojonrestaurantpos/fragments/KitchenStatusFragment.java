@@ -38,7 +38,7 @@ public class KitchenStatusFragment extends Fragment {
     private String id;
     private RecyclerView kitchenStatusrecylerview;
     List<KitchenStatusData> kitchenStatusData = new ArrayList<>();
-    private LinearLayout layoutId;
+    private LinearLayout layoutId,addnewpaymentTV;
     private List<Iteminfo> iteminfoList;
 
     public KitchenStatusFragment() {
