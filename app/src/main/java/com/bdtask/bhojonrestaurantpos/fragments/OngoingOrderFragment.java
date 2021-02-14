@@ -21,8 +21,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bdtask.bhojonrestaurantpos.R;
@@ -51,10 +53,11 @@ public class OngoingOrderFragment extends Fragment {
     private ImageView closepaymentpageIV;
     private WaiterService waiterService;
     private LinearLayout completeorderTV, spilitTV, mergeTV, editTV, posinvoiceTV, duePOSTV, cancelTV;
-    private String id;
+    private String id,selectedDiscountType;
     private RecyclerView tableListRecylerview;
     List<OngoingOrderData> ongoingOrderData = new ArrayList<>();
     LinearLayout lowerpartOfOngoingLayout, lowerpartOfOngoingLayout2;
+    private Spinner spinnerdiscounttype;
 
     public OngoingOrderFragment() {
     }
@@ -127,6 +130,8 @@ public class OngoingOrderFragment extends Fragment {
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view2 = inflater.inflate(R.layout.aleartdialog_paymentpage, null);
         builder.setView(view2);
+        spinnerdiscounttype = view2.findViewById(R.id.spinnerdiscounttype);
+        spinnerdiscounttypedataSelection();
         closepaymentpageIV = view2.findViewById(R.id.closepaymentpageIV);
         AlertDialog alert = builder.create();
         alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -149,11 +154,18 @@ public class OngoingOrderFragment extends Fragment {
 //        alert.show();
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    private void spinnerdiscounttypedataSelection() {
+        spinnerdiscounttype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedDiscountType = spinnerdiscounttype.getSelectedItem().toString();
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
     }
 
     public void postworkForTable(Boolean aBoolean) {

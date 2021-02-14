@@ -101,7 +101,6 @@ public class KitchenStatusFragment extends Fragment {
 
         }
 
-
         return view;
     }
 
