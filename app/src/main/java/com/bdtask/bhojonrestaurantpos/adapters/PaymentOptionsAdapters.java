@@ -13,6 +13,7 @@ import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bdtask.bhojonrestaurantpos.R;
@@ -35,16 +36,22 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
     private List<PaymentData> paymentData;
     private List<String> paymentName;
     private int sizes;
+    private List<String> terminalName;
+    private List<String> bankListName;
     private OngoingOrderFragment ongoingOrderFragment;
-    public PaymentOptionsAdapters(FragmentActivity activity, int size, OngoingOrderFragment fragmentActivityClass, List<String> paymentNames) {
-        this.context = activity;
-        this.paymentName = new ArrayList<>();
+    public PaymentOptionsAdapters(FragmentActivity activity, int size, OngoingOrderFragment fragmentActivityClass, List<String> paymentNames, List<String> terminalName, List<String> bankListName) {
         SharedPref.init(context);
         id = SharedPref.read("ID", "");
         waiterService = AppConfig.getRetrofit().create(WaiterService.class);
+        this.context = activity;
+        this.paymentName = new ArrayList<>();
         this.sizes = size;
         this.ongoingOrderFragment = fragmentActivityClass;
         this.paymentName = paymentNames;
+        this.terminalName = terminalName;
+        this.bankListName = bankListName;
+
+
     }
 
     @NonNull
@@ -61,6 +68,12 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedPaymentOptions = holder.spinnerPaymentType.getSelectedItem().toString();
+                if(selectedPaymentOptions.contains("Card Payment")){
+                    holder.cardterminalLayout.setVisibility(View.VISIBLE);
+                }
+                else {
+                    holder.cardterminalLayout.setVisibility(View.GONE);
+                }
                 ongoingOrderFragment.getSelectedOptions(selectedPaymentOptions);
             }
 
@@ -80,13 +93,13 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
         private Spinner spinnerPaymentType;
         private EditText customerpaymentET;
         private LinearLayout addnewpaymentTV;
-
+        private LinearLayout cardterminalLayout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             spinnerPaymentType = itemView.findViewById(R.id.spinnerPaymentType);
             customerpaymentET = itemView.findViewById(R.id.customerpaymentET);
             addnewpaymentTV = itemView.findViewById(R.id.addnewpaymentTV);
-
+            cardterminalLayout = itemView.findViewById(R.id.cardterminalLayout);
         }
     }
 }

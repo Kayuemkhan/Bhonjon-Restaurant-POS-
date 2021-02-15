@@ -34,10 +34,14 @@ import com.bdtask.bhojonrestaurantpos.SpacingItemDecoration;
 import com.bdtask.bhojonrestaurantpos.Tools;
 import com.bdtask.bhojonrestaurantpos.adapters.OngoingOrderAdapter;
 import com.bdtask.bhojonrestaurantpos.adapters.PaymentOptionsAdapters;
+import com.bdtask.bhojonrestaurantpos.modelClass.BankList.BankListData;
+import com.bdtask.bhojonrestaurantpos.modelClass.BankList.BankListResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderData;
 import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.PaymentList.PaymentData;
 import com.bdtask.bhojonrestaurantpos.modelClass.PaymentList.PaymentResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.TerminalList.TerminalData;
+import com.bdtask.bhojonrestaurantpos.modelClass.TerminalList.TerminalResponse;
 import com.bdtask.bhojonrestaurantpos.retrofit.AppConfig;
 import com.bdtask.bhojonrestaurantpos.retrofit.WaiterService;
 import com.bdtask.bhojonrestaurantpos.utils.SharedPref;
@@ -55,22 +59,26 @@ import retrofit2.Response;
 public class OngoingOrderFragment extends Fragment {
     private List<PaymentData> paymentData;
     private List<String> paymentName;
-    int size =1;
+    int size = 1;
     private LinearLayout paymentTV;
     private ImageView closepaymentpageIV;
     private WaiterService waiterService;
     private LinearLayout completeorderTV, spilitTV, mergeTV, editTV, posinvoiceTV, duePOSTV, cancelTV;
-    private String id,selectedDiscountType,discountETPaymentammount;
+    private String id, selectedDiscountType, discountETPaymentammount;
     private RecyclerView tableListRecylerview;
-    List<OngoingOrderData> ongoingOrderData = new ArrayList<>();
-    private LinearLayout lowerpartOfOngoingLayout, lowerpartOfOngoingLayout2,addnewpaymentTV;
+    private List<OngoingOrderData> ongoingOrderData = new ArrayList<>();
+    private LinearLayout lowerpartOfOngoingLayout, lowerpartOfOngoingLayout2, addnewpaymentTV;
     private Spinner spinnerdiscounttype;
     private EditText discountETPayment;
     private RecyclerView paymentOptionsRV;
+    private List<TerminalData> terminalData;
+    private List<String> terminalName;
+    private List<BankListData> bankListData;
+    private List<String> bankListName;
+
 
     public OngoingOrderFragment() {
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,8 +87,11 @@ public class OngoingOrderFragment extends Fragment {
         SharedPref.init(getActivity());
         paymentData = new ArrayList<>();
         paymentName = new ArrayList<>();
+        terminalData = new ArrayList<>();
+        bankListName = new ArrayList<>();
+        bankListData = new ArrayList<>();
+        terminalName = new ArrayList<>();
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -95,7 +106,6 @@ public class OngoingOrderFragment extends Fragment {
         posinvoiceTV = view.findViewById(R.id.posinvoiceTV);
         duePOSTV = view.findViewById(R.id.duePOSTV);
         cancelTV = view.findViewById(R.id.cancelTV);
-//        tableListRecylerview.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         tableListRecylerview.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 4));
         tableListRecylerview.addItemDecoration(new SpacingItemDecoration(3, Tools.dpToPx(getActivity().getApplicationContext(), 2), true));
         waiterService.getallOngoingOrder(id).enqueue(new Callback<OngoingOrderResponse>() {
@@ -105,24 +115,50 @@ public class OngoingOrderFragment extends Fragment {
                 ongoingOrderData = response.body().getData();
                 tableListRecylerview.setAdapter(new OngoingOrderAdapter(getActivity(), ongoingOrderData, OngoingOrderFragment.this));
             }
-
             @Override
             public void onFailure(Call<OngoingOrderResponse> call, Throwable t) {
-
             }
         });
         waiterService.paymentListResponse(id).enqueue(new Callback<PaymentResponse>() {
             @Override
             public void onResponse(Call<PaymentResponse> call, Response<PaymentResponse> response) {
                 paymentData = response.body().getData();
-                paymentName.add(0,"");
-                for(int i =0;i<paymentData.size();i++){
+                paymentName.add(0, "");
+                for (int i = 0; i < paymentData.size(); i++) {
                     paymentName.add(paymentData.get(i).getPayname());
                 }
-                Log.d("aaaaaaaa",""+new Gson().toJson(paymentName));
+                Log.d("aaaaaaaa", "" + new Gson().toJson(paymentName));
             }
             @Override
             public void onFailure(Call<PaymentResponse> call, Throwable t) {
+            }
+        });
+        waiterService.terminalListResponse(id).enqueue(new Callback<TerminalResponse>() {
+            @Override
+            public void onResponse(Call<TerminalResponse> call, Response<TerminalResponse> response) {
+                terminalData = response.body().getData();
+                for(int i =0 ;i<terminalData.size();i++){
+                    terminalName.add(terminalData.get(i).getTerminalname());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TerminalResponse> call, Throwable t) {
+
+            }
+        });
+        waiterService.bankListResponse(id).enqueue(new Callback<BankListResponse>() {
+            @Override
+            public void onResponse(Call<BankListResponse> call, Response<BankListResponse> response) {
+                bankListData = response.body().getData();
+                for(int i =0;i<bankListData.size();i++){
+                    bankListName.add(bankListData.get(i).getBankname());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BankListResponse> call, Throwable t) {
+
             }
         });
         completeorderTV.setOnClickListener(v -> {
@@ -148,6 +184,7 @@ public class OngoingOrderFragment extends Fragment {
         });
         return view;
     }
+
     private void completeorder() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = (LayoutInflater) getContext().
@@ -170,7 +207,7 @@ public class OngoingOrderFragment extends Fragment {
         addnewpaymentTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                size = size+1;
+                size = size + 1;
                 createnewPaymentPage(size);
             }
         });
@@ -190,18 +227,22 @@ public class OngoingOrderFragment extends Fragment {
         win.setLayout(width.intValue(), height.intValue());
 
     }
+
     private void createnewPaymentPage(int size) {
-        paymentOptionsRV.setAdapter(new PaymentOptionsAdapters(getActivity(),size, OngoingOrderFragment.this,paymentName));
+        paymentOptionsRV.setAdapter(new PaymentOptionsAdapters(getActivity(), size, OngoingOrderFragment.this, paymentName,terminalName,bankListName));
     }
+
     private void getdiscountAmmount() {
         discountETPayment.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 discountETPaymentammount = String.valueOf(s);
             }
+
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -227,7 +268,8 @@ public class OngoingOrderFragment extends Fragment {
             lowerpartOfOngoingLayout2.setVisibility(View.GONE);
         }
     }
-    public void getSelectedOptions(String selectedPaymentOptions){
-        Toasty.info(getContext(),""+selectedPaymentOptions,Toasty.LENGTH_SHORT).show();
+
+    public void getSelectedOptions(String selectedPaymentOptions) {
+        Toasty.info(getContext(), "" + selectedPaymentOptions, Toasty.LENGTH_SHORT).show();
     }
 }
