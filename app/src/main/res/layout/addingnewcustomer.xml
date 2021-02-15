@@ -1,216 +1,224 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-
+    app:cardCornerRadius="10dp"
+    app:cardElevation="10dp"
     >
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FFB61e"
-        android:gravity="center_horizontal"
-        android:weightSum="10">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="9.5"
-            android:fontFamily="sans-serif-condensed-medium"
-            android:padding="10dp"
-            android:text="Add Customer"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="30sp" />
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="vertical"
+       >
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:background="#FFB61e"
+           android:gravity="center_horizontal"
+           android:weightSum="10">
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_weight="9.5"
+               android:fontFamily="sans-serif-condensed-medium"
+               android:padding="10dp"
+               android:text="Add Customer"
+               android:textAlignment="center"
+               android:textColor="@color/white"
+               android:textSize="30sp" />
 
-        <ImageView
-            android:layout_marginRight="10dp"
-            android:id="@+id/closeAleart"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="center"
-            android:layout_weight=".5"
-            android:gravity="center"
-            android:src="@drawable/ic_baseline_close_24" />
-    </LinearLayout>
+           <ImageView
+               android:layout_marginRight="10dp"
+               android:id="@+id/closeAleart"
+               android:layout_width="0dp"
+               android:layout_height="wrap_content"
+               android:layout_alignParentEnd="true"
+               android:layout_gravity="center"
+               android:layout_weight=".5"
+               android:gravity="center"
+               android:src="@drawable/ic_baseline_close_24" />
+       </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:orientation="vertical">
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_margin="10dp"
+           android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="2"
-            android:orientation="horizontal"
-            >
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginBottom="10dp"
+               android:layout_weight="2"
+               android:orientation="horizontal"
+               >
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".8"
-                android:padding="5dp"
-                android:text="Customer Name: "
-                android:textColor="@color/black"
-                android:textSize="18sp" />
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_weight=".8"
+                   android:padding="5dp"
+                   android:text="Customer Name: "
+                   android:textColor="@color/black"
+                   android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/addcustomername"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="1.2"
-                android:background="@drawable/edit_text_red_background2"
-                android:hint="Customer Name"
-                android:paddingStart="10dp" />
-        </LinearLayout>
+               <EditText
+                   android:id="@+id/addcustomername"
+                   android:layout_width="0dp"
+                   android:layout_height="50dp"
+                   android:layout_marginLeft="5dp"
+                   android:layout_weight="1.2"
+                   android:background="@drawable/edit_text_red_background2"
+                   android:hint="Customer Name"
+                   android:paddingStart="10dp" />
+           </LinearLayout>
 
-  <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="2"
-            android:orientation="horizontal"
-            android:padding="5dp">
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginBottom="10dp"
+               android:layout_weight="2"
+               android:orientation="horizontal"
+               android:padding="5dp">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".8"
-                android:padding="5dp"
-                android:text="Email Adress: "
-                android:textColor="@color/black"
-                android:textSize="18sp" />
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_weight=".8"
+                   android:padding="5dp"
+                   android:text="Email Adress: "
+                   android:textColor="@color/black"
+                   android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/addcustomeremail"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="1.2"
-                android:background="@drawable/edit_text_red_background2"
-                android:hint="Customer Email"
-                android:padding="5dp" />
-        </LinearLayout>
+               <EditText
+                   android:id="@+id/addcustomeremail"
+                   android:layout_width="0dp"
+                   android:layout_height="50dp"
+                   android:layout_marginLeft="5dp"
+                   android:layout_weight="1.2"
+                   android:background="@drawable/edit_text_red_background2"
+                   android:hint="Customer Email"
+                   android:padding="5dp" />
+           </LinearLayout>
 
-  <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="2"
-            android:orientation="horizontal"
-            android:padding="5dp">
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginBottom="10dp"
+               android:layout_weight="2"
+               android:orientation="horizontal"
+               android:padding="5dp">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".8"
-                android:padding="5dp"
-                android:text="Mobile: "
-                android:textColor="@color/black"
-                android:textSize="18sp" />
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_weight=".8"
+                   android:padding="5dp"
+                   android:text="Mobile: "
+                   android:textColor="@color/black"
+                   android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/addcustomermobile"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="1.2"
-                android:background="@drawable/edit_text_red_background2"
-                android:hint="Customer Mobile"
-                android:padding="5dp" />
-        </LinearLayout>
+               <EditText
+                   android:id="@+id/addcustomermobile"
+                   android:layout_width="0dp"
+                   android:layout_height="50dp"
+                   android:layout_marginLeft="5dp"
+                   android:layout_weight="1.2"
+                   android:background="@drawable/edit_text_red_background2"
+                   android:hint="Customer Mobile"
+                   android:padding="5dp" />
+           </LinearLayout>
 
-  <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="2"
-            android:orientation="horizontal"
-            android:padding="5dp">
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginBottom="10dp"
+               android:layout_weight="2"
+               android:orientation="horizontal"
+               android:padding="5dp">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".8"
-                android:padding="5dp"
-                android:text="Address: "
-                android:textColor="@color/black"
-                android:textSize="18sp" />
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_weight=".8"
+                   android:padding="5dp"
+                   android:text="Address: "
+                   android:textColor="@color/black"
+                   android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/addcustomeraddress"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="1.2"
-                android:background="@drawable/edit_text_red_background2"
-                android:hint="Customer Address"
-                android:padding="5dp" />
-        </LinearLayout>
+               <EditText
+                   android:id="@+id/addcustomeraddress"
+                   android:layout_width="0dp"
+                   android:layout_height="50dp"
+                   android:layout_marginLeft="5dp"
+                   android:layout_weight="1.2"
+                   android:background="@drawable/edit_text_red_background2"
+                   android:hint="Customer Address"
+                   android:padding="5dp" />
+           </LinearLayout>
 
-  <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_weight="2"
-            android:orientation="horizontal"
-            android:padding="5dp">
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginBottom="5dp"
+               android:layout_weight="2"
+               android:orientation="horizontal"
+               android:padding="5dp">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".8"
-                android:padding="5dp"
-                android:text="Favourite Address: "
-                android:textColor="@color/black"
-                android:textSize="18sp" />
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_weight=".8"
+                   android:padding="5dp"
+                   android:text="Favourite Address: "
+                   android:textColor="@color/black"
+                   android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/addcustomerfavouriteaddress"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="1.2"
-                android:background="@drawable/edit_text_red_background2"
-                android:hint="Customer Address"
-                android:padding="5dp" />
-        </LinearLayout>
-
-
+               <EditText
+                   android:id="@+id/addcustomerfavouriteaddress"
+                   android:layout_width="0dp"
+                   android:layout_height="50dp"
+                   android:layout_marginLeft="5dp"
+                   android:layout_weight="1.2"
+                   android:background="@drawable/edit_text_red_background2"
+                   android:hint="Customer Address"
+                   android:padding="5dp" />
+           </LinearLayout>
 
 
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="10dp"
-        android:gravity="end">
 
-        <Button
-            android:id="@+id/closeAleartbyButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#F30002"
-            android:text="close"
-            android:padding="5dp"
-            android:textColor="@color/white" />
+       </LinearLayout>
 
-        <Button
-            android:id="@+id/submitAleartbyButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:background="#028511"
-            android:text="submit"
-            android:padding="5dp"
-            android:textColor="@color/white" />
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_gravity="end"
+           android:layout_marginRight="20dp"
+           android:layout_marginBottom="10dp"
+           android:gravity="end">
 
-    </LinearLayout>
-</LinearLayout>
+           <Button
+               android:id="@+id/closeAleartbyButton"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:background="#F30002"
+               android:text="close"
+               android:padding="5dp"
+               android:textColor="@color/white" />
+
+           <Button
+               android:id="@+id/submitAleartbyButton"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginLeft="20dp"
+               android:background="#028511"
+               android:text="submit"
+               android:padding="5dp"
+               android:textColor="@color/white" />
+
+       </LinearLayout>
+   </LinearLayout>
+</androidx.cardview.widget.CardView>

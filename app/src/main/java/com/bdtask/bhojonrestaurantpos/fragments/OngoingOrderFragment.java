@@ -111,6 +111,20 @@ public class OngoingOrderFragment extends Fragment {
 
             }
         });
+        waiterService.paymentListResponse(id).enqueue(new Callback<PaymentResponse>() {
+            @Override
+            public void onResponse(Call<PaymentResponse> call, Response<PaymentResponse> response) {
+                paymentData = response.body().getData();
+                paymentName.add(0,"");
+                for(int i =0;i<paymentData.size();i++){
+                    paymentName.add(paymentData.get(i).getPayname());
+                }
+                Log.d("aaaaaaaa",""+new Gson().toJson(paymentName));
+            }
+            @Override
+            public void onFailure(Call<PaymentResponse> call, Throwable t) {
+            }
+        });
         completeorderTV.setOnClickListener(v -> {
             completeorder();
         });
@@ -166,10 +180,6 @@ public class OngoingOrderFragment extends Fragment {
             alert.dismiss();
         });
         alert.show();
-//        Window window = alert.getWindow();
-//
-//        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-//        alert.setCancelable(false);
         WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         DisplayMetrics metrics = new DisplayMetrics();
@@ -178,24 +188,9 @@ public class OngoingOrderFragment extends Fragment {
         Double height = metrics.heightPixels * .7;
         Window win = alert.getWindow();
         win.setLayout(width.intValue(), height.intValue());
-//        alert.show();
+
     }
     private void createnewPaymentPage(int size) {
-        waiterService.paymentListResponse(id).enqueue(new Callback<PaymentResponse>() {
-            @Override
-            public void onResponse(Call<PaymentResponse> call, Response<PaymentResponse> response) {
-                paymentData = response.body().getData();
-                for(int i =0;i<paymentData.size();i++){
-                    //Log.d("aaaaaaaa",""+new Gson().toJson(paymentData.get(i).getPayname()));
-                    paymentName.add(paymentData.get(i).getPayname());
-                    //Log.d("aaaaaaaa",""+new Gson().toJson(paymentName));
-                }
-                Log.d("aaaaaaaa",""+new Gson().toJson(paymentName));
-            }
-            @Override
-            public void onFailure(Call<PaymentResponse> call, Throwable t) {
-            }
-        });
         paymentOptionsRV.setAdapter(new PaymentOptionsAdapters(getActivity(),size, OngoingOrderFragment.this,paymentName));
     }
     private void getdiscountAmmount() {
@@ -231,5 +226,8 @@ public class OngoingOrderFragment extends Fragment {
         if (aBoolean == true) {
             lowerpartOfOngoingLayout2.setVisibility(View.GONE);
         }
+    }
+    public void getSelectedOptions(String selectedPaymentOptions){
+        Toasty.info(getContext(),""+selectedPaymentOptions,Toasty.LENGTH_SHORT).show();
     }
 }

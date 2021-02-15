@@ -2,14 +2,18 @@ package com.bdtask.bhojonrestaurantpos.activities;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -1016,6 +1020,14 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             }
         });
         alert.show();
+        WindowManager wm = (WindowManager) (MainActivity.this).getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        Double width = metrics.widthPixels * .7;
+        Double height = metrics.heightPixels * .7;
+        Window win = alert.getWindow();
+        win.setLayout(width.intValue(), height.intValue());
     }
 
     private void addnewCustomertoDb(String addcustomernam, String addCustomerPassword, String addcustomeremai, String addcustomermobil, String addcustomeraddres, String addcustomerfavouriteaddres) {

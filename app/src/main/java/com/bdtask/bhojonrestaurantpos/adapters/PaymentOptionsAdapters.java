@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsAdapters.ViewHolder> {
+    private String selectedPaymentOptions;
     private Context context;
     private WaiterService waiterService;
     private String id;
@@ -55,7 +57,18 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.spinnerPaymentType.setAdapter(new ArrayAdapter<String>(context,R.layout.support_simple_spinner_dropdown_item,paymentName));
+        holder.spinnerPaymentType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedPaymentOptions = holder.spinnerPaymentType.getSelectedItem().toString();
+                ongoingOrderFragment.getSelectedOptions(selectedPaymentOptions);
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @Override
