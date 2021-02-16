@@ -7,11 +7,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -23,7 +23,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,6 +33,7 @@ import com.bdtask.bhojonrestaurantpos.SpacingItemDecoration;
 import com.bdtask.bhojonrestaurantpos.Tools;
 import com.bdtask.bhojonrestaurantpos.adapters.OngoingOrderAdapter;
 import com.bdtask.bhojonrestaurantpos.adapters.PaymentOptionsAdapters;
+import com.bdtask.bhojonrestaurantpos.modelClass.AdaptersModel;
 import com.bdtask.bhojonrestaurantpos.modelClass.BankList.BankListData;
 import com.bdtask.bhojonrestaurantpos.modelClass.BankList.BankListResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderData;
@@ -75,10 +75,13 @@ public class OngoingOrderFragment extends Fragment {
     private List<String> terminalName;
     private List<BankListData> bankListData;
     private List<String> bankListName;
-
-
+    private Parcelable recyclerViewState;
+    private List<Integer> sizeList;
+    private List<AdaptersModel> adaptersDat;
+    private Boolean checkState = false;
     public OngoingOrderFragment() {
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +94,10 @@ public class OngoingOrderFragment extends Fragment {
         bankListName = new ArrayList<>();
         bankListData = new ArrayList<>();
         terminalName = new ArrayList<>();
+        sizeList = new ArrayList<>();
+        adaptersDat = new ArrayList<>();
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -115,6 +121,7 @@ public class OngoingOrderFragment extends Fragment {
                 ongoingOrderData = response.body().getData();
                 tableListRecylerview.setAdapter(new OngoingOrderAdapter(getActivity(), ongoingOrderData, OngoingOrderFragment.this));
             }
+
             @Override
             public void onFailure(Call<OngoingOrderResponse> call, Throwable t) {
             }
@@ -129,6 +136,7 @@ public class OngoingOrderFragment extends Fragment {
                 }
                 Log.d("aaaaaaaa", "" + new Gson().toJson(paymentName));
             }
+
             @Override
             public void onFailure(Call<PaymentResponse> call, Throwable t) {
             }
@@ -137,7 +145,7 @@ public class OngoingOrderFragment extends Fragment {
             @Override
             public void onResponse(Call<TerminalResponse> call, Response<TerminalResponse> response) {
                 terminalData = response.body().getData();
-                for(int i =0 ;i<terminalData.size();i++){
+                for (int i = 0; i < terminalData.size(); i++) {
                     terminalName.add(terminalData.get(i).getTerminalname());
                 }
             }
@@ -151,7 +159,7 @@ public class OngoingOrderFragment extends Fragment {
             @Override
             public void onResponse(Call<BankListResponse> call, Response<BankListResponse> response) {
                 bankListData = response.body().getData();
-                for(int i =0;i<bankListData.size();i++){
+                for (int i = 0; i < bankListData.size(); i++) {
                     bankListName.add(bankListData.get(i).getBankname());
                 }
             }
@@ -203,12 +211,17 @@ public class OngoingOrderFragment extends Fragment {
         paymentTV.setOnClickListener(v -> {
             addnewpaymentTV.setVisibility(View.VISIBLE);
             createnewPaymentPage(size);
+            sizeList.add(size-1,1);
         });
         addnewpaymentTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 size = size + 1;
-                createnewPaymentPage(size);
+                sizeList.add(size-1,1);
+                PaymentOptionsAdapters paymentOptionsAdapters= new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat);
+                //paymentOptionsAdapters.notifyItemInserted(size);
+                paymentOptionsRV.setAdapter(paymentOptionsAdapters);
+                //createnewPaymentPage(size);
             }
         });
         AlertDialog alert = builder.create();
@@ -229,7 +242,15 @@ public class OngoingOrderFragment extends Fragment {
     }
 
     private void createnewPaymentPage(int size) {
-        paymentOptionsRV.setAdapter(new PaymentOptionsAdapters(getActivity(), size, OngoingOrderFragment.this, paymentName,terminalName,bankListName));
+//        paymentOptionsRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                recyclerViewState = paymentOptionsRV.getLayoutManager().onSaveInstanceState(); // save recycleView state
+//            }
+//        });
+        paymentOptionsRV.setAdapter(new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName,adaptersDat));
+        paymentOptionsRV.getLayoutManager().onRestoreInstanceState(recyclerViewState);
     }
 
     private void getdiscountAmmount() {
@@ -260,6 +281,7 @@ public class OngoingOrderFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
+
         });
     }
 
@@ -269,7 +291,26 @@ public class OngoingOrderFragment extends Fragment {
         }
     }
 
-    public void getSelectedOptions(String selectedPaymentOptions) {
-        Toasty.info(getContext(), "" + selectedPaymentOptions, Toasty.LENGTH_SHORT).show();
+    public void getSelectedOptions(String selectedPaymentOptions, int adapterPosition) {
+        AdaptersModel adaptersModel = new AdaptersModel(adapterPosition,selectedPaymentOptions);
+        for(int i=0;i<adaptersDat.size();i++){
+            if(adaptersDat.get(i).getPosition() == adapterPosition){
+                adaptersDat.get(i).setAdaptersData(selectedPaymentOptions);
+                checkState = true;
+            }
+            else if(adaptersDat.get(i).getPosition() == adapterPosition && adaptersDat.get(i).getAdaptersData() == selectedPaymentOptions){
+                adaptersDat.get(i).setAdaptersData(selectedPaymentOptions);
+                checkState = true;
+            }
+            else {
+                checkState = false;
+            }
+        }
+        if(checkState == false){
+            adaptersDat.add(adaptersModel);
+        }
+
+        Log.d("adaptersData",""+new Gson().toJson(adaptersDat));
+        Toasty.info(getContext(), "" + selectedPaymentOptions+""+adapterPosition, Toasty.LENGTH_SHORT).show();
     }
 }
