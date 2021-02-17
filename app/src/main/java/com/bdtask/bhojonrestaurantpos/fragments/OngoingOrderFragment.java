@@ -59,7 +59,7 @@ import retrofit2.Response;
 public class OngoingOrderFragment extends Fragment {
     private List<PaymentData> paymentData;
     private List<String> paymentName;
-    int size = 1;
+    int size = 0;
     private LinearLayout paymentTV;
     private ImageView closepaymentpageIV;
     private WaiterService waiterService;
@@ -235,18 +235,20 @@ public class OngoingOrderFragment extends Fragment {
         addnewpaymentTV = view2.findViewById(R.id.addnewpaymentTV);
         paymentTV.setOnClickListener(v -> {
             addnewpaymentTV.setVisibility(View.VISIBLE);
-            createnewPaymentPage(size);
-            sizeList.add(size - 1, 1);
+            if(sizeList.size() == 0){
+                sizeList.add(0,1);
+                createnewPaymentPage(sizeList);
+            }
         });
         addnewpaymentTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 size = size + 1;
-                sizeList.add(size - 1, 1);
+                sizeList.add(size , 1);
                 PaymentOptionsAdapters paymentOptionsAdapters = new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat);
                 //paymentOptionsAdapters.notifyItemInserted(size);
                 paymentOptionsRV.setAdapter(paymentOptionsAdapters);
-                //createnewPaymentPage(size);
+                createnewPaymentPage(sizeList);
             }
         });
         AlertDialog alert = builder.create();
@@ -266,7 +268,7 @@ public class OngoingOrderFragment extends Fragment {
 
     }
 
-    private void createnewPaymentPage(int size) {
+    private void createnewPaymentPage(List<Integer> size) {
 //        paymentOptionsRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
 //            @Override
 //            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -274,7 +276,7 @@ public class OngoingOrderFragment extends Fragment {
 //                recyclerViewState = paymentOptionsRV.getLayoutManager().onSaveInstanceState(); // save recycleView state
 //            }
 //        });
-        paymentOptionsRV.setAdapter(new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat));
+        paymentOptionsRV.setAdapter(new PaymentOptionsAdapters(getActivity(), size, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat));
         paymentOptionsRV.getLayoutManager().onRestoreInstanceState(recyclerViewState);
     }
 

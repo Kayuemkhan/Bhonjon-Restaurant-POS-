@@ -12,6 +12,10 @@
         <item>Amount</item>
         <item>Percentage (%)</item>
     </array>
+    <array name="numbertype">
+        <item>1</item>
+        <item>2</item>
+    </array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="select_your_payment_methods">Select your payment methods</string>
