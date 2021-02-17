@@ -79,6 +79,7 @@ public class OngoingOrderFragment extends Fragment {
     private List<Integer> sizeList;
     private List<AdaptersModel> adaptersDat;
     private Boolean checkState = false;
+
     public OngoingOrderFragment() {
     }
 
@@ -188,9 +189,33 @@ public class OngoingOrderFragment extends Fragment {
             Toasty.info(getContext(), "No Action", Toasty.LENGTH_SHORT).show();
         });
         cancelTV.setOnClickListener(v -> {
-            Toasty.info(getContext(), "No Action", Toasty.LENGTH_SHORT).show();
+            cancelOrder();
         });
         return view;
+    }
+
+    private void cancelOrder() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater2 = (LayoutInflater) getContext().
+                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view2 = inflater2.inflate(R.layout.aleartcancel, null);
+        builder.setView(view2);
+        AlertDialog alert = builder.create();
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ImageView cancelorderclose = view2.findViewById(R.id.cancelorderclose);
+        cancelorderclose.setOnClickListener(v -> {
+            alert.dismiss();
+        });
+        alert.show();
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        Double width = metrics.widthPixels * .7;
+        Double height = metrics.heightPixels * .7;
+        Window win = alert.getWindow();
+        win.setLayout(width.intValue(), height.intValue());
+
     }
 
     private void completeorder() {
@@ -211,14 +236,14 @@ public class OngoingOrderFragment extends Fragment {
         paymentTV.setOnClickListener(v -> {
             addnewpaymentTV.setVisibility(View.VISIBLE);
             createnewPaymentPage(size);
-            sizeList.add(size-1,1);
+            sizeList.add(size - 1, 1);
         });
         addnewpaymentTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 size = size + 1;
-                sizeList.add(size-1,1);
-                PaymentOptionsAdapters paymentOptionsAdapters= new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat);
+                sizeList.add(size - 1, 1);
+                PaymentOptionsAdapters paymentOptionsAdapters = new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat);
                 //paymentOptionsAdapters.notifyItemInserted(size);
                 paymentOptionsRV.setAdapter(paymentOptionsAdapters);
                 //createnewPaymentPage(size);
@@ -249,7 +274,7 @@ public class OngoingOrderFragment extends Fragment {
 //                recyclerViewState = paymentOptionsRV.getLayoutManager().onSaveInstanceState(); // save recycleView state
 //            }
 //        });
-        paymentOptionsRV.setAdapter(new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName,adaptersDat));
+        paymentOptionsRV.setAdapter(new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat));
         paymentOptionsRV.getLayoutManager().onRestoreInstanceState(recyclerViewState);
     }
 
@@ -292,25 +317,23 @@ public class OngoingOrderFragment extends Fragment {
     }
 
     public void getSelectedOptions(String selectedPaymentOptions, int adapterPosition) {
-        AdaptersModel adaptersModel = new AdaptersModel(adapterPosition,selectedPaymentOptions);
-        for(int i=0;i<adaptersDat.size();i++){
-            if(adaptersDat.get(i).getPosition() == adapterPosition){
+        AdaptersModel adaptersModel = new AdaptersModel(adapterPosition, selectedPaymentOptions);
+        for (int i = 0; i < adaptersDat.size(); i++) {
+            if (adaptersDat.get(i).getPosition() == adapterPosition) {
                 adaptersDat.get(i).setAdaptersData(selectedPaymentOptions);
                 checkState = true;
-            }
-            else if(adaptersDat.get(i).getPosition() == adapterPosition && adaptersDat.get(i).getAdaptersData() == selectedPaymentOptions){
+            } else if (adaptersDat.get(i).getPosition() == adapterPosition && adaptersDat.get(i).getAdaptersData() == selectedPaymentOptions) {
                 adaptersDat.get(i).setAdaptersData(selectedPaymentOptions);
                 checkState = true;
-            }
-            else {
+            } else {
                 checkState = false;
             }
         }
-        if(checkState == false){
+        if (checkState == false) {
             adaptersDat.add(adaptersModel);
         }
 
-        Log.d("adaptersData",""+new Gson().toJson(adaptersDat));
-        Toasty.info(getContext(), "" + selectedPaymentOptions+""+adapterPosition, Toasty.LENGTH_SHORT).show();
+        Log.d("adaptersData", "" + new Gson().toJson(adaptersDat));
+        Toasty.info(getContext(), "" + selectedPaymentOptions + "" + adapterPosition, Toasty.LENGTH_SHORT).show();
     }
 }

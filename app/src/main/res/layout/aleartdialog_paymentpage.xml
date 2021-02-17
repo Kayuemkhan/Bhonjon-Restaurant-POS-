@@ -30,7 +30,6 @@
         </LinearLayout>
 
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -39,7 +38,6 @@
             android:padding="3dp">
 
             <ImageView
-
                 android:id="@+id/closepaymentpageIV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
