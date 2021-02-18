@@ -38,7 +38,7 @@ public class KitchenStatusFragment extends Fragment {
     private String id;
     private RecyclerView kitchenStatusrecylerview;
     List<KitchenStatusData> kitchenStatusData = new ArrayList<>();
-    private LinearLayout layoutId,addnewpaymentTV;
+    private LinearLayout layoutId, addnewpaymentTV;
     private List<Iteminfo> iteminfoList;
 
     public KitchenStatusFragment() {
@@ -66,28 +66,37 @@ public class KitchenStatusFragment extends Fragment {
                 @Override
                 public void onResponse(Call<KitchenStatusResponse> call, Response<KitchenStatusResponse> response) {
                     kitchenStatusData = response.body().getData();
-                    for (int i = 0; i < kitchenStatusData.size(); i++) {
-                        iteminfoList = kitchenStatusData.get(i).getIteminfo();
-                        for (int j = 0; j < iteminfoList.size(); j++) {
-                            if (iteminfoList.get(j).getStatus().equals("Ready")) {
-                                iteminfoList.remove(j);
+                    try {
+                        for (int i = 0; i < kitchenStatusData.size(); i++) {
+                            iteminfoList = kitchenStatusData.get(i).getIteminfo();
+                            Log.d("iteminfodataaa", "" + new Gson().toJson(iteminfoList));
+                            for (int j = 0; j < iteminfoList.size(); j++) {
+                                if (iteminfoList.get(j).getStatus().equals("Ready")) {
+                                    iteminfoList.remove(j);
+                                }
                             }
                         }
-                    }
-                    for (int k = 0; k < kitchenStatusData.size(); k++) {
-                        iteminfoList = kitchenStatusData.get(k).getIteminfo();
-                        if (iteminfoList.size() == 0) {
-                            kitchenStatusData.remove(k);
-                            k--;
+                        for (int k = 0; k < kitchenStatusData.size(); k++) {
+                            iteminfoList = kitchenStatusData.get(k).getIteminfo();
+                            if (iteminfoList.size() == 0) {
+                                kitchenStatusData.remove(k);
+                                k--;
+                            }
                         }
+                    } catch (Exception e) {
+
                     }
-                    if (kitchenStatusData.size() <= 0) {
-                        layoutId.setVisibility(View.VISIBLE);
-                        kitchenStatusrecylerview.setVisibility(View.GONE);
-                    } else {
-                        layoutId.setVisibility(View.GONE);
-                        kitchenStatusrecylerview.setVisibility(View.VISIBLE);
-                        kitchenStatusrecylerview.setAdapter(new KitchenStatuAdapter(getActivity(), kitchenStatusData));
+                    try {
+                        if (kitchenStatusData.size() <= 0) {
+                            layoutId.setVisibility(View.VISIBLE);
+                            kitchenStatusrecylerview.setVisibility(View.GONE);
+                        } else {
+                            layoutId.setVisibility(View.GONE);
+                            kitchenStatusrecylerview.setVisibility(View.VISIBLE);
+                            kitchenStatusrecylerview.setAdapter(new KitchenStatuAdapter(getActivity(), kitchenStatusData));
+                        }
+                    } catch (Exception e) {
+
                     }
 
                 }

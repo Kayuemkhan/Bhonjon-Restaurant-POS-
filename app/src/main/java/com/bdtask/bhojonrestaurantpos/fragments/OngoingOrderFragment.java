@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Parcelable;
 import android.text.Editable;
+import android.text.TextPaint;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -22,11 +23,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.SpacingItemDecoration;
@@ -36,6 +41,7 @@ import com.bdtask.bhojonrestaurantpos.adapters.PaymentOptionsAdapters;
 import com.bdtask.bhojonrestaurantpos.modelClass.AdaptersModel;
 import com.bdtask.bhojonrestaurantpos.modelClass.BankList.BankListData;
 import com.bdtask.bhojonrestaurantpos.modelClass.BankList.BankListResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.CancelOrder.CancelOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderData;
 import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.PaymentList.PaymentData;
@@ -79,6 +85,8 @@ public class OngoingOrderFragment extends Fragment {
     private List<Integer> sizeList;
     private List<AdaptersModel> adaptersDat;
     private Boolean checkState = false;
+    private String orderid;
+    private String reason;
 
     public OngoingOrderFragment() {
     }
@@ -186,7 +194,7 @@ public class OngoingOrderFragment extends Fragment {
             Toasty.info(getContext(), "No Action", Toasty.LENGTH_SHORT).show();
         });
         duePOSTV.setOnClickListener(v -> {
-            Toasty.info(getContext(), "No Action", Toasty.LENGTH_SHORT).show();
+            duePOSPrint();
         });
         cancelTV.setOnClickListener(v -> {
             cancelOrder();
@@ -194,15 +202,37 @@ public class OngoingOrderFragment extends Fragment {
         return view;
     }
 
-    private void cancelOrder() {
+    public void cancelOrder() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater2 = (LayoutInflater) getContext().
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view2 = inflater2.inflate(R.layout.aleartcancel, null);
+        final EditText reasonET3 = view2.findViewById(R.id.reasonET);
+        final TextView orderIdCO = view2.findViewById(R.id.orderIdCO);
+        orderIdCO.setText(orderid);
+        TextView cancelOrderSubmit = view2.findViewById(R.id.cancelOrderSubmit);
+        cancelOrderSubmit.setOnClickListener(v -> {
+            reason = reasonET3.getText().toString();
+            if (!orderid.isEmpty() && !reason.isEmpty()) {
+                Log.d("checaa", "" + new Gson().toJson("OrderId: " + orderid + "id: " + id + "reason: " + reason));
+            }
+        });
+//        waiterService.cancelOderResponse(id,orderid,reason).enqueue(new Callback<CancelOrderResponse>() {
+//            @Override
+//            public void onResponse(Call<CancelOrderResponse> call, Response<CancelOrderResponse> response) {
+//                Toasty.info(getActivity(),"Item removed Successfully",Toasty.LENGTH_SHORT,true).show();
+//            }
+//            @Override
+//            public void onFailure(Call<CancelOrderResponse> call, Throwable t) {
+//
+//            }
+//        });
+
         builder.setView(view2);
         AlertDialog alert = builder.create();
         alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         ImageView cancelorderclose = view2.findViewById(R.id.cancelorderclose);
+
         cancelorderclose.setOnClickListener(v -> {
             alert.dismiss();
         });
@@ -235,8 +265,8 @@ public class OngoingOrderFragment extends Fragment {
         addnewpaymentTV = view2.findViewById(R.id.addnewpaymentTV);
         paymentTV.setOnClickListener(v -> {
             addnewpaymentTV.setVisibility(View.VISIBLE);
-            if(sizeList.size() == 0){
-                sizeList.add(0,1);
+            if (sizeList.size() == 0) {
+                sizeList.add(0, 1);
                 createnewPaymentPage(sizeList);
             }
         });
@@ -244,7 +274,7 @@ public class OngoingOrderFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 size = size + 1;
-                sizeList.add(size , 1);
+                sizeList.add(size, 1);
                 PaymentOptionsAdapters paymentOptionsAdapters = new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat);
                 //paymentOptionsAdapters.notifyItemInserted(size);
                 paymentOptionsRV.setAdapter(paymentOptionsAdapters);
@@ -337,5 +367,65 @@ public class OngoingOrderFragment extends Fragment {
 
         Log.d("adaptersData", "" + new Gson().toJson(adaptersDat));
         Toasty.info(getContext(), "" + selectedPaymentOptions + "" + adapterPosition, Toasty.LENGTH_SHORT).show();
+    }
+
+    private void duePOSPrint() {
+        AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = (LayoutInflater) getContext().
+                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view2 = inflater.inflate(R.layout.aleartduepos, null);
+        final ImageView crossicon = view2.findViewById(R.id.crossicon);
+
+        builder2.setView(view2);
+        AlertDialog alert = builder2.create();
+        //alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        WebView dueposWV = view2.findViewById(R.id.dueposWV);
+        // dueposWV.setWebViewClient(new WebViewClient());
+        //dueposWV.getSettings().setBuiltInZoomControls(true);
+        WebSettings webSettings = dueposWV.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        String url = "https://soft14.bdtask.com/bhojon23_latest/appv1/posorderdueinvoice/"+orderid;
+        Log.d("url",""+url);
+        dueposWV.loadUrl(url);
+        WebView webView = new WebView(getActivity());
+        webView.setWebViewClient(new WebViewClient() {
+
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                Log.i("TAG", "page finished loading " + url);
+                createWebPrintJob(view);
+
+            }
+        });
+        url = "https://soft14.bdtask.com/bhojon23_latest/appv1/posorderdueinvoice/"+orderid;
+        Log.d("url",""+url);
+        dueposWV.loadUrl(url);
+//        Log.d("response",""+)
+        //webView.loadData(response,"text/html","utf-8");
+        //webView.loadData(response, "text/html; charset=UTF-8", null);
+        //dueposWV.loadDataWithBaseURL(null, response, "text/html", "UTF-8", null);
+        crossicon.setOnClickListener(v -> {
+            alert.dismiss();
+        });
+        alert.show();
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        Double width = metrics.widthPixels * .7;
+        Double height = metrics.heightPixels * .7;
+        Window win = alert.getWindow();
+        win.setLayout(width.intValue(), height.intValue());
+    }
+
+    private void createWebPrintJob(WebView view) {
+    }
+
+    public void setAllId(String orderids) {
+        orderid = orderids;
     }
 }

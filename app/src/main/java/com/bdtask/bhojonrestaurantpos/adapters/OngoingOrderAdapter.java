@@ -60,6 +60,7 @@ public class OngoingOrderAdapter extends RecyclerView.Adapter<OngoingOrderAdapte
             ongoingOrderFragment.postworkForTable(aBoolean);
         });
         if (row_index == i) {
+
             holder.tabledetailslayout.setBackgroundResource(R.color.back);
             holder.ongoingOrderCustomerName.setTextColor(Color.parseColor("#FFFFFF"));
             holder.ongoingOrderOderId.setTextColor(Color.parseColor("#FFFFFF"));
@@ -67,6 +68,7 @@ public class OngoingOrderAdapter extends RecyclerView.Adapter<OngoingOrderAdapte
             holder.cusnamelayout.setTextColor(Color.parseColor("#FFFFFF"));
             holder.cusorderlayout.setTextColor(Color.parseColor("#FFFFFF"));
             holder.cuswaiterlayout.setTextColor(Color.parseColor("#FFFFFF"));
+            ongoingOrderFragment.setAllId(ongoingOrderData.get(row_index).getOrderid());
             //holder.categoryImage.setColorFilter(Color.argb(255, 255, 255, 255));
 
         } else {
@@ -101,7 +103,6 @@ public class OngoingOrderAdapter extends RecyclerView.Adapter<OngoingOrderAdapte
             cusnamelayout = itemView.findViewById(R.id.cusnamelayout);
             cusorderlayout = itemView.findViewById(R.id.cusorderlayout);
             cuswaiterlayout = itemView.findViewById(R.id.cuswaiterlayout);
-
         }
     }
 }

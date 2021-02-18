@@ -69,6 +69,7 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
         holder.spinnerPaymentType.setAdapter(new ArrayAdapter<String>(context, R.layout.support_simple_spinner_dropdown_item, paymentName));
         Log.d("position",""+new Gson().toJson(holder.getAdapterPosition()));
        if(adaptersData.size() > holder.getAdapterPosition()){
+
            if(adaptersData.get(position).getPosition() == holder.getAdapterPosition() &&  adaptersData.get(position).getAdaptersData().contains("Card Payment")){
                cardPaymentOrNot = true;
            }

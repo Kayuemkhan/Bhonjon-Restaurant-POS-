@@ -82,6 +82,7 @@
                         android:textSize="18sp" />
 
                     <TextView
+                        android:id="@+id/orderIdCO"
                         android:padding="15dp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -118,6 +119,7 @@
                         android:textSize="18sp" />
 
                     <EditText
+                        android:id="@+id/reasonET"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
@@ -143,6 +145,7 @@
                 android:gravity="end"
                 >
                 <TextView
+                    android:id="@+id/cancelOrderSubmit"
                     android:layout_marginRight="15dp"
                     android:padding="10dp"
                     android:background="@drawable/buttongreenback"

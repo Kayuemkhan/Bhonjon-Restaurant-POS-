@@ -4,6 +4,7 @@ import androidx.cardview.widget.CardView;
 
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.AllCategoryResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.BankList.BankListResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.CancelOrder.CancelOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Category.CategoryResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.CustomerList.CustomerListResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeResponse;
@@ -22,6 +23,7 @@ import com.bdtask.bhojonrestaurantpos.modelClass.tablelist.TableResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface WaiterService {
@@ -82,6 +84,11 @@ public interface WaiterService {
     @POST("terminallist")
     Call<TerminalResponse> terminalListResponse(@Field("id") String id);
     @FormUrlEncoded
+    @POST("ordercancel")
+    Call<CancelOrderResponse> cancelOderResponse(@Field("id") String id,@Field("orderid") String orderid,@Field("reason") String reason);
+    @FormUrlEncoded
     @POST("banklist")
     Call<BankListResponse> bankListResponse(@Field("id") String id);
+//    @FormUrlEncoded
+//    @GET("posorderdueinvoice"/)
 }
