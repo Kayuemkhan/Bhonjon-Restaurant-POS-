@@ -211,28 +211,30 @@ public class OngoingOrderFragment extends Fragment {
         final TextView orderIdCO = view2.findViewById(R.id.orderIdCO);
         orderIdCO.setText(orderid);
         TextView cancelOrderSubmit = view2.findViewById(R.id.cancelOrderSubmit);
-        cancelOrderSubmit.setOnClickListener(v -> {
-            reason = reasonET3.getText().toString();
-            if (!orderid.isEmpty() && !reason.isEmpty()) {
-                Log.d("checaa", "" + new Gson().toJson("OrderId: " + orderid + "id: " + id + "reason: " + reason));
-            }
-        });
-//        waiterService.cancelOderResponse(id,orderid,reason).enqueue(new Callback<CancelOrderResponse>() {
-//            @Override
-//            public void onResponse(Call<CancelOrderResponse> call, Response<CancelOrderResponse> response) {
-//                Toasty.info(getActivity(),"Item removed Successfully",Toasty.LENGTH_SHORT,true).show();
-//            }
-//            @Override
-//            public void onFailure(Call<CancelOrderResponse> call, Throwable t) {
-//
-//            }
-//        });
 
         builder.setView(view2);
         AlertDialog alert = builder.create();
         alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         ImageView cancelorderclose = view2.findViewById(R.id.cancelorderclose);
+        cancelOrderSubmit.setOnClickListener(v -> {
+            reason = reasonET3.getText().toString();
+            Log.d("getText",""+reason+orderid);
+            if (!orderid.isEmpty() && !reason.isEmpty()) {
+                Log.d("checaa", "" + new Gson().toJson("OrderId: " + orderid + "id: " + id + "reason: " + reason));
+                waiterService.cancelOderResponse(id,orderid,reason).enqueue(new Callback<CancelOrderResponse>() {
+                    @Override
+                    public void onResponse(Call<CancelOrderResponse> call, Response<CancelOrderResponse> response) {
+                        Toasty.info(getActivity(),"Item removed Successfully",Toasty.LENGTH_SHORT,true).show();
+                        alert.dismiss();
+                    }
+                    @Override
+                    public void onFailure(Call<CancelOrderResponse> call, Throwable t) {
 
+                    }
+                });
+            }
+
+        });
         cancelorderclose.setOnClickListener(v -> {
             alert.dismiss();
         });
@@ -387,27 +389,6 @@ public class OngoingOrderFragment extends Fragment {
         String url = "https://soft14.bdtask.com/bhojon23_latest/appv1/posorderdueinvoice/"+orderid;
         Log.d("url",""+url);
         dueposWV.loadUrl(url);
-        WebView webView = new WebView(getActivity());
-        webView.setWebViewClient(new WebViewClient() {
-
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return false;
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                Log.i("TAG", "page finished loading " + url);
-                createWebPrintJob(view);
-
-            }
-        });
-        url = "https://soft14.bdtask.com/bhojon23_latest/appv1/posorderdueinvoice/"+orderid;
-        Log.d("url",""+url);
-        dueposWV.loadUrl(url);
-//        Log.d("response",""+)
-        //webView.loadData(response,"text/html","utf-8");
-        //webView.loadData(response, "text/html; charset=UTF-8", null);
-        //dueposWV.loadDataWithBaseURL(null, response, "text/html", "UTF-8", null);
         crossicon.setOnClickListener(v -> {
             alert.dismiss();
         });
