@@ -87,7 +87,7 @@ public class OngoingOrderFragment extends Fragment {
     private Boolean checkState = false;
     private String orderid;
     private String reason;
-
+    String grandTotal ;
     public OngoingOrderFragment() {
     }
 
@@ -256,6 +256,7 @@ public class OngoingOrderFragment extends Fragment {
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view2 = inflater.inflate(R.layout.aleartdialog_paymentpage, null);
         builder.setView(view2);
+
         spinnerdiscounttype = view2.findViewById(R.id.spinnerdiscounttype);
         spinnerdiscounttypedataSelection();
         discountETPayment = view2.findViewById(R.id.discountETPayment);
@@ -265,6 +266,15 @@ public class OngoingOrderFragment extends Fragment {
         closepaymentpageIV = view2.findViewById(R.id.closepaymentpageIV);
         paymentTV = view2.findViewById(R.id.paymentTV);
         addnewpaymentTV = view2.findViewById(R.id.addnewpaymentTV);
+        TextView totalAmount = view2.findViewById(R.id.totalAmount);
+        TextView totalDueAmount = view2.findViewById(R.id.totalDueAmount);
+        TextView payableAmount = view2.findViewById(R.id.payableAmount);
+        TextView changeamount = view2.findViewById(R.id.changeamount);
+        if (!grandTotal.isEmpty()) {
+            totalAmount.setText(grandTotal);
+            totalDueAmount.setText(String.valueOf(Double.valueOf(grandTotal)));
+        }
+
         paymentTV.setOnClickListener(v -> {
             addnewpaymentTV.setVisibility(View.VISIBLE);
             if (sizeList.size() == 0) {
@@ -406,7 +416,8 @@ public class OngoingOrderFragment extends Fragment {
     private void createWebPrintJob(WebView view) {
     }
 
-    public void setAllId(String orderids) {
+    public void setAllId(String orderids, Integer grandtotal) {
         orderid = orderids;
+        grandTotal = grandtotal.toString();
     }
 }

@@ -315,12 +315,13 @@
                             android:background="@color/black" />
 
                         <TextView
+                            android:id="@+id/totalAmount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:padding="10dp"
-                            android:text="100 Taka"
+                            android:text="0 Taka"
                             android:textColor="#262626" />
 
 
@@ -387,12 +388,13 @@
                             android:background="@color/black" />
 
                         <TextView
+                            android:id="@+id/totalDueAmount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:padding="10dp"
-                            android:text="100 Taka"
+                            android:text="0 Taka"
                             android:textColor="#262626" />
 
 
@@ -455,12 +457,13 @@
                             android:background="@color/black" />
 
                         <TextView
+                            android:id="@+id/payableAmount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:padding="10dp"
-                            android:text="100 Taka"
+                            android:text="0 Taka"
                             android:textColor="#262626" />
 
                         <View
@@ -523,12 +526,13 @@
 
 
                         <TextView
+                            android:id="@+id/changeamount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:padding="10dp"
-                            android:text="100 Taka"
+                            android:text="0 Taka"
                             android:textColor="#262626" />
 
                         <View

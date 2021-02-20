@@ -19,6 +19,9 @@ public class OngoingOrderData {
     @SerializedName("before_time")
     @Expose
     private String beforeTime;
+    @SerializedName("grandtotal")
+    @Expose
+    private Integer grandtotal;
     @SerializedName("split")
     @Expose
     private Integer split;
@@ -61,6 +64,14 @@ public class OngoingOrderData {
 
     public void setBeforeTime(String beforeTime) {
         this.beforeTime = beforeTime;
+    }
+
+    public Integer getGrandtotal() {
+        return grandtotal;
+    }
+
+    public void setGrandtotal(Integer grandtotal) {
+        this.grandtotal = grandtotal;
     }
 
     public Integer getSplit() {
