@@ -66,6 +66,7 @@ public class KitchenStatusFragment extends Fragment {
                 @Override
                 public void onResponse(Call<KitchenStatusResponse> call, Response<KitchenStatusResponse> response) {
                     kitchenStatusData = response.body().getData();
+                    Log.d("iteminfolist",""+new Gson().toJson(iteminfoList));
                     try {
                         for (int i = 0; i < kitchenStatusData.size(); i++) {
                             iteminfoList = kitchenStatusData.get(i).getIteminfo();

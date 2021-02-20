@@ -12,9 +12,12 @@ import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -61,7 +64,7 @@ import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeData;
 import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodinfoFoodList;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodlistResponse;
-import com.bdtask.bhojonrestaurantpos.modelClass.PlaceOrderResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.PlaceOrder.PlaceOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.SignupNewCustomer.SignupNewCustomerResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.WaiterList.WaiterlistData;
 import com.bdtask.bhojonrestaurantpos.modelClass.WaiterList.WaiterlistResponse;
@@ -136,23 +139,24 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     private List<String> customerNames;
     private String customerNameFromSpinner, customerTypeFromSpinner, waiterFromSpinner, tableFromSpinner, discount;
     private double grand_total;
-    private List<Foodinfo> foodinfos;
     private List<Foodinfo> categoriesData;
     private List<FoodinfoFoodList> foodinfoFoodLists;
     private Double discountvalue;
     private ImageView addingCustomer;
     private ImageView closeAleart;
-    private Button closeAleartbyButton,submitAleartbyButton;
-    private EditText addcustomername,addcustomeremail,addcustomermobile,addcustomeraddress,addcustomerfavouriteaddress;
-    private String productvat ="0";
+    private Button closeAleartbyButton, submitAleartbyButton;
+    private EditText addcustomername, addcustomeremail, addcustomermobile, addcustomeraddress, addcustomerfavouriteaddress;
+    private String productvat = "0";
     double restaurent_vatt;
+    private String orderid;
+
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SharedPref.init(MainActivity.this);
-        foodinfos = new ArrayList<>();
+        List<Foodinfo> foodinfos = new ArrayList<>();
         init();
         foodinfoFoodLists = new ArrayList<>();
         list = new ArrayList<>();
@@ -210,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         });
         // When user click on Quick Orer
         buttonquickorder.setOnClickListener(v -> {
-            Toasty.info(MainActivity.this, "This Feature isn't implemented Yet", Toast.LENGTH_SHORT, true).show();
+            placeorderdetails();
         });
         // Setting up All the customer name in the Customer Name Spinner List
         spinnercustomernamelist();
@@ -246,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             }
         });
         // Adding new Customer
-        addingCustomer.setOnClickListener(v->{
+        addingCustomer.setOnClickListener(v -> {
             addingnewCustomer();
         });
     }
@@ -280,13 +284,12 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
     // when user click the cancel button
     private void buttoncancelopearations() {
-        if(listClassData.size() > 0){
+        if (listClassData.size() > 0) {
             taxTV.setText("0");
             grandtotalTV.setText("0");
             listClassData.clear();
             itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData));
-        }
-        else {
+        } else {
             Toasty.info(MainActivity.this, "No more items to delete", Toast.LENGTH_SHORT, true).show();
         }
     }
@@ -526,7 +529,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 String priceOfAddons = SharedPref.read("priceaddons", "");
                 now = Integer.parseInt(editextquantity.getText().toString());
 
-                ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, priceOfAddons, productsID, now, addonprice,0,productvat,now,productsID);
+                ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, priceOfAddons, productsID, now, addonprice, 0, productvat, now, productsID);
                 if (listClassData.size() == 0) {
                     listClassData.add(listClassData1);
                 } else {
@@ -559,7 +562,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             SharedPref.write("booleanstat", "false");
             String priceOfAddons = SharedPref.read("priceaddons", "");
             now = 1;
-            ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, priceOfAddons, productsID, now, addonprice,0,productvat,now,productsID);
+            ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, priceOfAddons, productsID, now, addonprice, 0, productvat, now, productsID);
             if (listClassData.size() == 0) {
                 listClassData.add(listClassData1);
             } else {
@@ -635,7 +638,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             addcartfromaddons.setOnClickListener(v -> {
                 String t = SharedPref.read("priceaddons", "");
                 now = Integer.parseInt(editextquantity.getText().toString());
-                ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now, addonprice,0,productvat,now,productsID);
+                ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now, addonprice, 0, productvat, now, productsID);
                 if (listClassData.size() == 0) {
                     listClassData.add(listClassData1);
                 } else {
@@ -670,7 +673,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         // When Addons are not available
         else {
             String t = SharedPref.read("priceaddons", "");
-            ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now, addonprice,0,productvat,now,productsID);
+            ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now, addonprice, 0, productvat, now, productsID);
             if (listClassData.size() == 0) {
                 listClassData.add(listClassData1);
             } else {
@@ -855,11 +858,16 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     }
 
     private void placeorderdetails() {
-        SweetAlertDialog pDialog = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-        pDialog.setTitleText("Loading");
-        pDialog.setCancelable(false);
-        pDialog.show();
+//        SweetAlertDialog pDialog = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+//        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+//        pDialog.setTitleText("Loading");
+//        pDialog.setCancelable(false);
+//        pDialog.show();
+        SweetAlertDialog pDialog = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.SUCCESS_TYPE);
+        pDialog.setTitleText("Do you want to print Invoice");
+        pDialog.setConfirmText("Yes");
+        pDialog.setCancelText("No");
+
         List<ListClassData> orderList = new ArrayList<>();
         List<ListClassData> orderlist2 = new ArrayList<>();
         service_charge = SharedPref.read("SC", "");
@@ -870,13 +878,12 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
         for (int i = 0; i < categoriesData.size(); i++) {
             for (int j = 0; j < listClassData.size(); j++) {
-                if(!categoriesData.isEmpty()){
+                if (!categoriesData.isEmpty()) {
                     if (listClassData.get(j).getProductsID().equals(categoriesData.get(i).getProductsID())) {
                         orderList.add(listClassData.get(j));
                     }
-                }
-                else {
-                    if(listClassData.get(j).getProductsID().equals(foodinfoFoodLists.get(i).getProductsID())){
+                } else {
+                    if (listClassData.get(j).getProductsID().equals(foodinfoFoodLists.get(i).getProductsID())) {
                         orderlist2.add(listClassData.get(j));
                     }
                 }
@@ -889,16 +896,15 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
         } else {
             String datas;
-            if(!orderList.isEmpty()){
-                datas  = new Gson().toJson(orderList);
-            }
-            else {
+            if (!orderList.isEmpty()) {
+                datas = new Gson().toJson(orderList);
+            } else {
                 datas = new Gson().toJson(orderlist2);
             }
 
-            Log.d("checkaa",""+datas);
+            Log.d("checkaa", "" + datas);
             Log.d("laraman", id + "\t vatid " + String.valueOf(taxTV.getText().toString()) + "\t tableid " + tableFromSpinner + "\t customerid " +
-                    customerNameFromSpinner + "\t typeid " + customerTypeFromSpinner + "\t servicecharge " + service_charge+ "\t discount " + discountET.getText().toString()
+                    customerNameFromSpinner + "\t typeid " + customerTypeFromSpinner + "\t servicecharge " + service_charge + "\t discount " + discountET.getText().toString()
                     + "\t sumD " + String.valueOf(subtotal) + "\t grandTotal " + String.valueOf(grandtotalTV.getText().toString()) + "\t datas " + datas + "\t Notes " + " ");
 //            waiterService.postFoodCart(id, taxTV.getText().toString(), tableFromSpinner, customerNameFromSpinner,
 //                    customerTypeFromSpinner, service_charge, discountET.getText().toString(), String.valueOf(subtotal),
@@ -925,19 +931,67 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 @Override
                 public void onResponse(Call<PlaceOrderResponse> call, Response<PlaceOrderResponse> response) {
                     String ress = response.body().getMessage();
-                    pDialog.dismiss();
-                    Toasty.info(MainActivity.this, ""+ress, Toast.LENGTH_SHORT, true).show();
+                    orderid = response.body().getData().getOrderid().toString();
+                    pDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            pDialog.dismissWithAnimation();
+
+                        }
+                    }).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            pDialog.dismissWithAnimation();
+                            printInvoice(orderid);
+                        }
+                    }).show();
+                    //pDialog.show();
+
+                    Toasty.info(MainActivity.this, "" + ress, Toast.LENGTH_SHORT, true).show();
                     taxTV.setText("0");
                     grandtotalTV.setText("0");
                     listClassData.clear();
                     itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData));
                 }
+
                 @Override
                 public void onFailure(Call<PlaceOrderResponse> call, Throwable t) {
 
                 }
             });
         }
+    }
+
+    private void printInvoice(String orderid) {
+        AlertDialog.Builder builder2 = new AlertDialog.Builder(MainActivity.this);
+        LayoutInflater inflater = (LayoutInflater) MainActivity.this.
+                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view2 = inflater.inflate(R.layout.aleartduepos, null);
+        final ImageView crossicon = view2.findViewById(R.id.crossicon);
+
+        builder2.setView(view2);
+        AlertDialog alert = builder2.create();
+        //alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        WebView dueposWV = view2.findViewById(R.id.dueposWV);
+        // dueposWV.setWebViewClient(new WebViewClient());
+        //dueposWV.getSettings().setBuiltInZoomControls(true);
+        WebSettings webSettings = dueposWV.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        String url = "https://soft14.bdtask.com/bhojon23_latest/appv1/posorderdueinvoice/"+orderid;
+        Log.d("url",""+url);
+        dueposWV.loadUrl(url);
+        crossicon.setOnClickListener(v -> {
+            alert.dismiss();
+        });
+        alert.show();
+        WindowManager wm = (WindowManager) MainActivity.this.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        Double width = metrics.widthPixels * .7;
+        Double height = metrics.heightPixels * .7;
+        Window win = alert.getWindow();
+        win.setLayout(width.intValue(), height.intValue());
     }
 
     private void settingDiscoun(String charSequence) {
@@ -949,21 +1003,19 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 totaldiscount = Double.parseDouble(grandtotalTV.getText().toString()) - discountvalue;
                 grandtotalTV.setText(String.valueOf(totaldiscount));
 
-            }
-            else {
+            } else {
                 grandtotalTV.setText(String.valueOf(0));
             }
-        }
-        else {
-            if(grand_total > 0){
+        } else {
+            if (grand_total > 0) {
                 grandtotalTV.setText(String.valueOf(grand_total));
-            }
-            else {
+            } else {
                 grandtotalTV.setText(String.valueOf(0));
             }
         }
 
     }
+
     private void addingnewCustomer() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view2 = getLayoutInflater().inflate(R.layout.addingnewcustomer, null);
@@ -987,26 +1039,23 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 String addcustomeraddres = addcustomeraddress.getText().toString();
                 String addcustomerfavouriteaddres = addcustomerfavouriteaddress.getText().toString();
                 String addCustomerPassword = "123456";
-                if(TextUtils.isEmpty(addcustomernam)){
+                if (TextUtils.isEmpty(addcustomernam)) {
                     addcustomername.setError("Please give a customer name");
                     return;
-                }
-                else if(TextUtils.isEmpty(addcustomeremai)){
+                } else if (TextUtils.isEmpty(addcustomeremai)) {
                     addcustomeremail.setError("Please give an Email");
                     return;
-                }
-                else if(TextUtils.isEmpty(addcustomermobil)){
+                } else if (TextUtils.isEmpty(addcustomermobil)) {
                     addcustomermobile.setError("Please give an mobile number");
                     return;
-                }else if(TextUtils.isEmpty(addcustomeraddres)){
+                } else if (TextUtils.isEmpty(addcustomeraddres)) {
                     addcustomeraddress.setError("Please give an address");
                     return;
-                }else if(TextUtils.isEmpty(addcustomerfavouriteaddres)){
+                } else if (TextUtils.isEmpty(addcustomerfavouriteaddres)) {
                     addcustomerfavouriteaddress.setError("Please give an favouriteaddress");
                     return;
-                }
-                else{
-                    addnewCustomertoDb(addcustomernam,addCustomerPassword,addcustomeremai,addcustomermobil,addcustomeraddres,addcustomerfavouriteaddres);
+                } else {
+                    addnewCustomertoDb(addcustomernam, addCustomerPassword, addcustomeremai, addcustomermobil, addcustomeraddres, addcustomerfavouriteaddres);
                 }
             }
         });
@@ -1032,16 +1081,16 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
     private void addnewCustomertoDb(String addcustomernam, String addCustomerPassword, String addcustomeremai, String addcustomermobil, String addcustomeraddres, String addcustomerfavouriteaddres) {
 
-        waiterService.signUpNewCustomer(addcustomeremai,addCustomerPassword,id,addcustomermobil,addcustomernam).enqueue(new Callback<SignupNewCustomerResponse>() {
+        waiterService.signUpNewCustomer(addcustomeremai, addCustomerPassword, id, addcustomermobil, addcustomernam).enqueue(new Callback<SignupNewCustomerResponse>() {
             @Override
             public void onResponse(Call<SignupNewCustomerResponse> call, Response<SignupNewCustomerResponse> response) {
                 String response_message = response.body().getMessage();
-                Toasty.info(MainActivity.this,""+response_message,Toasty.LENGTH_SHORT,true).show();
+                Toasty.info(MainActivity.this, "" + response_message, Toasty.LENGTH_SHORT, true).show();
             }
 
             @Override
             public void onFailure(Call<SignupNewCustomerResponse> call, Throwable t) {
-                Toasty.info(MainActivity.this,"Onfailure: "+t,Toasty.LENGTH_SHORT,true).show();
+                Toasty.info(MainActivity.this, "Onfailure: " + t, Toasty.LENGTH_SHORT, true).show();
             }
         });
     }

@@ -121,7 +121,7 @@ public class OngoingOrderFragment extends Fragment {
         posinvoiceTV = view.findViewById(R.id.posinvoiceTV);
         duePOSTV = view.findViewById(R.id.duePOSTV);
         cancelTV = view.findViewById(R.id.cancelTV);
-        tableListRecylerview.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 4));
+        tableListRecylerview.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 3));
         tableListRecylerview.addItemDecoration(new SpacingItemDecoration(3, Tools.dpToPx(getActivity().getApplicationContext(), 2), true));
         waiterService.getallOngoingOrder(id).enqueue(new Callback<OngoingOrderResponse>() {
             @Override

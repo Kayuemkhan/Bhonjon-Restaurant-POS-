@@ -1,7 +1,5 @@
 package com.bdtask.bhojonrestaurantpos.retrofit;
 
-import androidx.cardview.widget.CardView;
-
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.AllCategoryResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.BankList.BankListResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.CancelOrder.CancelOrderResponse;
@@ -12,7 +10,7 @@ import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodlistResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.KithcenStatus.KitchenStatusResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.PaymentList.PaymentResponse;
-import com.bdtask.bhojonrestaurantpos.modelClass.PlaceOrderResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.PlaceOrder.PlaceOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.QROrder.QROrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.SignupNewCustomer.SignupNewCustomerResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.TerminalList.TerminalResponse;
@@ -23,7 +21,6 @@ import com.bdtask.bhojonrestaurantpos.modelClass.tablelist.TableResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface WaiterService {
