@@ -38,9 +38,10 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
     private List<String> terminalName;
     private List<String> bankListName;
     private OngoingOrderFragment ongoingOrderFragment;
-    private List<Integer> sizeList= new ArrayList<>();
+    private List<Integer> sizeList = new ArrayList<>();
     private List<AdaptersModel> adaptersData = new ArrayList<>();
     private Boolean cardPaymentOrNot = false;
+
     public PaymentOptionsAdapters(FragmentActivity activity, List<Integer> size, OngoingOrderFragment fragmentActivityClass, List<String> paymentNames, List<String> terminalName, List<String> bankListName, List<AdaptersModel> adaptersDat) {
         SharedPref.init(context);
         id = SharedPref.read("ID", "");
@@ -66,32 +67,24 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Log.d("viewholderdata", "" + new Gson().toJson(adaptersData));
         holder.spinnerPaymentType.setAdapter(new ArrayAdapter<String>(context, R.layout.support_simple_spinner_dropdown_item, paymentName));
-        Log.d("position",""+new Gson().toJson(holder.getAdapterPosition()));
-       if(adaptersData.size() > holder.getAdapterPosition()){
+        Log.d("position", "" + new Gson().toJson(holder.getAdapterPosition()));
 
-           if(adaptersData.get(position).getPosition() == holder.getAdapterPosition() &&  adaptersData.get(position).getAdaptersData().contains("Card Payment")){
-               cardPaymentOrNot = true;
-           }
-           else {
-               cardPaymentOrNot = false;
-           }
-       }
         holder.spinnerPaymentType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(cardPaymentOrNot == true){
-                    holder.spinnerPaymentType.setSelection(1);
+                selectedPaymentOptions = holder.spinnerPaymentType.getSelectedItem().toString();
+                if (selectedPaymentOptions.contains("Card Payment")) {
+                    holder.cardterminalLayout.setVisibility(View.VISIBLE);
+                } else {
+                    holder.cardterminalLayout.setVisibility(View.GONE);
                 }
-               else {
-                    selectedPaymentOptions = holder.spinnerPaymentType.getSelectedItem().toString();
-                    if (selectedPaymentOptions.contains("Card Payment")) {
-                        holder.cardterminalLayout.setVisibility(View.VISIBLE);
-                    } else {
-                        holder.cardterminalLayout.setVisibility(View.GONE);
-                    }
+                if (holder.cardterminalLayout.getVisibility() == View.VISIBLE) {
+                    holder.spinnercardterminall.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, terminalName));
+                    holder.spinnerselectbankk.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, bankListName));
                 }
-                ongoingOrderFragment.getSelectedOptions(selectedPaymentOptions,holder.getAdapterPosition());
+
             }
 
             @Override
@@ -99,6 +92,7 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
 
             }
         });
+        ongoingOrderFragment.getSelectedOptions(selectedPaymentOptions, holder.getAdapterPosition());
     }
 
     @Override
@@ -112,6 +106,8 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
         private EditText customerpaymentET;
         private LinearLayout addnewpaymentTV;
         private LinearLayout cardterminalLayout;
+        private Spinner spinnercardterminall;
+        private Spinner spinnerselectbankk;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -119,6 +115,9 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
             customerpaymentET = itemView.findViewById(R.id.customerpaymentET);
             addnewpaymentTV = itemView.findViewById(R.id.addnewpaymentTV);
             cardterminalLayout = itemView.findViewById(R.id.cardterminalLayout);
+            spinnercardterminall = itemView.findViewById(R.id.spinnercardterminall);
+            spinnerselectbankk = itemView.findViewById(R.id.spinnerselectbankk);
+
         }
     }
 }

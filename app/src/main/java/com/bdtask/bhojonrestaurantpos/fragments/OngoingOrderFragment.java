@@ -270,9 +270,13 @@ public class OngoingOrderFragment extends Fragment {
         TextView totalDueAmount = view2.findViewById(R.id.totalDueAmount);
         TextView payableAmount = view2.findViewById(R.id.payableAmount);
         TextView changeamount = view2.findViewById(R.id.changeamount);
-        if (!grandTotal.isEmpty()) {
-            totalAmount.setText(grandTotal);
-            totalDueAmount.setText(String.valueOf(Double.valueOf(grandTotal)));
+        try {
+            if (!grandTotal.isEmpty()) {
+                totalAmount.setText(grandTotal);
+                totalDueAmount.setText(String.valueOf(Double.valueOf(grandTotal)));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
         paymentTV.setOnClickListener(v -> {
@@ -366,14 +370,17 @@ public class OngoingOrderFragment extends Fragment {
             if (adaptersDat.get(i).getPosition() == adapterPosition) {
                 adaptersDat.get(i).setAdaptersData(selectedPaymentOptions);
                 checkState = true;
-            } else if (adaptersDat.get(i).getPosition() == adapterPosition && adaptersDat.get(i).getAdaptersData() == selectedPaymentOptions) {
+            }
+            else if (adaptersDat.get(i).getPosition() == adapterPosition && adaptersDat.get(i).getAdaptersData() == selectedPaymentOptions) {
                 adaptersDat.get(i).setAdaptersData(selectedPaymentOptions);
                 checkState = true;
-            } else {
+            }
+            else {
                 checkState = false;
             }
         }
-        if (checkState == false) {
+        // if check state is false then add data to list
+        if (!checkState) {
             adaptersDat.add(adaptersModel);
         }
 
