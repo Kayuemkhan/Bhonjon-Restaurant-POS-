@@ -60,12 +60,13 @@
                 android:orientation="horizontal">
 
                 <EditText
+                    android:inputType="number"
                     android:id="@+id/customerpaymentET"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_20sdp"
                     android:background="@drawable/edit_text_red_background"
                     android:paddingLeft="10dp"
-                    android:text="0" />
+                    android:hint="0" />
             </LinearLayout>
 
         </LinearLayout>

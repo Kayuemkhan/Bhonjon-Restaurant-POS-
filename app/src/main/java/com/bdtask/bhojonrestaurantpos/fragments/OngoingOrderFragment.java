@@ -66,6 +66,7 @@ public class OngoingOrderFragment extends Fragment {
     private List<PaymentData> paymentData;
     private List<String> paymentName;
     int size = 0;
+    private List<Integer> setListPlace;
     private LinearLayout paymentTV;
     private ImageView closepaymentpageIV;
     private WaiterService waiterService;
@@ -87,7 +88,8 @@ public class OngoingOrderFragment extends Fragment {
     private Boolean checkState = false;
     private String orderid;
     private String reason;
-    String grandTotal ;
+    String grandTotal;
+
     public OngoingOrderFragment() {
     }
 
@@ -105,6 +107,7 @@ public class OngoingOrderFragment extends Fragment {
         terminalName = new ArrayList<>();
         sizeList = new ArrayList<>();
         adaptersDat = new ArrayList<>();
+        setListPlace = new ArrayList<>();
     }
 
     @Override
@@ -218,15 +221,16 @@ public class OngoingOrderFragment extends Fragment {
         ImageView cancelorderclose = view2.findViewById(R.id.cancelorderclose);
         cancelOrderSubmit.setOnClickListener(v -> {
             reason = reasonET3.getText().toString();
-            Log.d("getText",""+reason+orderid);
+            Log.d("getText", "" + reason + orderid);
             if (!orderid.isEmpty() && !reason.isEmpty()) {
                 Log.d("checaa", "" + new Gson().toJson("OrderId: " + orderid + "id: " + id + "reason: " + reason));
-                waiterService.cancelOderResponse(id,orderid,reason).enqueue(new Callback<CancelOrderResponse>() {
+                waiterService.cancelOderResponse(id, orderid, reason).enqueue(new Callback<CancelOrderResponse>() {
                     @Override
                     public void onResponse(Call<CancelOrderResponse> call, Response<CancelOrderResponse> response) {
-                        Toasty.info(getActivity(),"Item removed Successfully",Toasty.LENGTH_SHORT,true).show();
+                        Toasty.info(getActivity(), "Item removed Successfully", Toasty.LENGTH_SHORT, true).show();
                         alert.dismiss();
                     }
+
                     @Override
                     public void onFailure(Call<CancelOrderResponse> call, Throwable t) {
 
@@ -275,7 +279,7 @@ public class OngoingOrderFragment extends Fragment {
                 totalAmount.setText(grandTotal);
                 totalDueAmount.setText(String.valueOf(Double.valueOf(grandTotal)));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -291,9 +295,9 @@ public class OngoingOrderFragment extends Fragment {
             public void onClick(View v) {
                 size = size + 1;
                 sizeList.add(size, 1);
-                PaymentOptionsAdapters paymentOptionsAdapters = new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat);
-                //paymentOptionsAdapters.notifyItemInserted(size);
-                paymentOptionsRV.setAdapter(paymentOptionsAdapters);
+//                PaymentOptionsAdapters paymentOptionsAdapters = new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat);
+//                //paymentOptionsAdapters.notifyItemInserted(size);
+//                paymentOptionsRV.setAdapter(paymentOptionsAdapters);
                 createnewPaymentPage(sizeList);
             }
         });
@@ -314,6 +318,34 @@ public class OngoingOrderFragment extends Fragment {
 
     }
 
+    public void getSelectedOptions(String selectedPaymentOptions, int adapterPosition) {
+        AdaptersModel adaptersModel = new AdaptersModel(adapterPosition, selectedPaymentOptions);
+        Log.d("aga","I'm Here"+adapterPosition);
+        // Check size list & if it is greater then the loop will run
+//        for (int j = 0; j < sizeList.size(); j++) {
+            if(adaptersDat.size()>0){
+                for (int i = 0; i < adaptersDat.size(); i++) {
+                    if (adaptersDat.get(i).getPosition() == adapterPosition) {
+                        Log.d("getAdapterPosition", "" + new Gson().toJson(adapterPosition));
+                        adaptersDat.get(i).setPosition(adapterPosition);
+                        adaptersDat.get(i).setAdaptersData(selectedPaymentOptions);
+                    } else if (adaptersDat.get(i).getPosition() == adapterPosition && adaptersDat.get(i).getAdaptersData() == selectedPaymentOptions) {
+                        adaptersDat.get(i).setPosition(adapterPosition);
+                        adaptersDat.get(i).setAdaptersData(selectedPaymentOptions);
+                    } else {
+                        adaptersDat.add(sizeList.size()-1,adaptersModel);                    }
+                }
+            }
+            else {
+                adaptersDat.add(sizeList.size()-1,adaptersModel);
+            }
+//        }
+
+        Log.d("adaptersData", "" + new Gson().toJson(adaptersDat));
+        Log.d("sizeofadaptersData", "" + new Gson().toJson(adaptersDat.size()));
+        Toasty.info(getContext(), "" + selectedPaymentOptions + "" + adapterPosition, Toasty.LENGTH_SHORT).show();
+    }
+
     private void createnewPaymentPage(List<Integer> size) {
 //        paymentOptionsRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
 //            @Override
@@ -324,6 +356,7 @@ public class OngoingOrderFragment extends Fragment {
 //        });
         paymentOptionsRV.setAdapter(new PaymentOptionsAdapters(getActivity(), size, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat));
         paymentOptionsRV.getLayoutManager().onRestoreInstanceState(recyclerViewState);
+        Log.d("sizelist", "" + new Gson().toJson(size.size()));
     }
 
     private void getdiscountAmmount() {
@@ -364,29 +397,6 @@ public class OngoingOrderFragment extends Fragment {
         }
     }
 
-    public void getSelectedOptions(String selectedPaymentOptions, int adapterPosition) {
-        AdaptersModel adaptersModel = new AdaptersModel(adapterPosition, selectedPaymentOptions);
-        for (int i = 0; i < adaptersDat.size(); i++) {
-            if (adaptersDat.get(i).getPosition() == adapterPosition) {
-                adaptersDat.get(i).setAdaptersData(selectedPaymentOptions);
-                checkState = true;
-            }
-            else if (adaptersDat.get(i).getPosition() == adapterPosition && adaptersDat.get(i).getAdaptersData() == selectedPaymentOptions) {
-                adaptersDat.get(i).setAdaptersData(selectedPaymentOptions);
-                checkState = true;
-            }
-            else {
-                checkState = false;
-            }
-        }
-        // if check state is false then add data to list
-        if (!checkState) {
-            adaptersDat.add(adaptersModel);
-        }
-
-        Log.d("adaptersData", "" + new Gson().toJson(adaptersDat));
-        Toasty.info(getContext(), "" + selectedPaymentOptions + "" + adapterPosition, Toasty.LENGTH_SHORT).show();
-    }
 
     private void duePOSPrint() {
         AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext());
@@ -403,8 +413,8 @@ public class OngoingOrderFragment extends Fragment {
         //dueposWV.getSettings().setBuiltInZoomControls(true);
         WebSettings webSettings = dueposWV.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        String url = "https://soft14.bdtask.com/bhojon23_latest/appv1/posorderdueinvoice/"+orderid;
-        Log.d("url",""+url);
+        String url = "https://soft14.bdtask.com/bhojon23_latest/appv1/posorderdueinvoice/" + orderid;
+        Log.d("url", "" + url);
         dueposWV.loadUrl(url);
         crossicon.setOnClickListener(v -> {
             alert.dismiss();

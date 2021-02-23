@@ -6,7 +6,7 @@ public class AdaptersModel {
 
     public AdaptersModel(int position, String adaptersData) {
         this.position = position;
-        AdaptersData = adaptersData;
+        this.AdaptersData = adaptersData;
     }
 
     public int getPosition() {

@@ -67,19 +67,20 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Log.d("viewholderdata", "" + new Gson().toJson(adaptersData));
+//        Log.d("viewholderdata", "" + new Gson().toJson(adaptersData));
         holder.spinnerPaymentType.setAdapter(new ArrayAdapter<String>(context, R.layout.support_simple_spinner_dropdown_item, paymentName));
-        Log.d("position", "" + new Gson().toJson(holder.getAdapterPosition()));
-
         holder.spinnerPaymentType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedPaymentOptions = holder.spinnerPaymentType.getSelectedItem().toString();
+                ongoingOrderFragment.getSelectedOptions(selectedPaymentOptions, holder.getAdapterPosition());
+                Log.d("selected",""+new Gson().toJson(selectedPaymentOptions));
                 if (selectedPaymentOptions.contains("Card Payment")) {
                     holder.cardterminalLayout.setVisibility(View.VISIBLE);
                 } else {
                     holder.cardterminalLayout.setVisibility(View.GONE);
                 }
+                // when the card payment is selected
                 if (holder.cardterminalLayout.getVisibility() == View.VISIBLE) {
                     holder.spinnercardterminall.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, terminalName));
                     holder.spinnerselectbankk.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, bankListName));
@@ -92,7 +93,9 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
 
             }
         });
-        ongoingOrderFragment.getSelectedOptions(selectedPaymentOptions, holder.getAdapterPosition());
+        //ongoingOrderFragment.getSelectedOptions(selectedPaymentOptions, holder.getAdapterPosition());
+        Log.d("viewholderdata", "" + new Gson().toJson(selectedPaymentOptions+holder.getAdapterPosition()));
+
     }
 
     @Override
