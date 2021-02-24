@@ -2,11 +2,16 @@ package com.bdtask.bhojonrestaurantpos.modelClass;
 
 public class AdaptersModel {
     private int position;
-    private String AdaptersData;
+    private String paymentName;
+    private String ammount;
 
-    public AdaptersModel(int position, String adaptersData) {
+    public AdaptersModel() {
+    }
+
+    public AdaptersModel(int position, String paymentName, String ammount) {
         this.position = position;
-        this.AdaptersData = adaptersData;
+        this.paymentName = paymentName;
+        this.ammount = ammount;
     }
 
     public int getPosition() {
@@ -17,11 +22,19 @@ public class AdaptersModel {
         this.position = position;
     }
 
-    public String getAdaptersData() {
-        return AdaptersData;
+    public String getPaymentName() {
+        return paymentName;
     }
 
-    public void setAdaptersData(String adaptersData) {
-        AdaptersData = adaptersData;
+    public void setPaymentName(String paymentName) {
+        this.paymentName = paymentName;
+    }
+
+    public String getAmmount() {
+        return ammount;
+    }
+
+    public void setAmmount(String ammount) {
+        this.ammount = ammount;
     }
 }

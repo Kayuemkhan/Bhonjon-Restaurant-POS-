@@ -19,13 +19,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", 'BASE_URL', '"https://soft14.bdtask.com/bhojon23_latest/appv1/"'
+            buildConfigField "String", 'BASE_URL', '"https://soft14.bdtask.com/bhojon26/appv1/"'
         }
         debug {
             debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", 'BASE_URL', '"https://soft14.bdtask.com/bhojon23_latest/appv1/"'
+            buildConfigField "String", 'BASE_URL', '"https://soft14.bdtask.com/bhojon26/appv1/"'
         }
     }
     compileOptions {

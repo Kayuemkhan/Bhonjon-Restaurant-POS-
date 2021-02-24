@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Parcelable;
 import android.text.Editable;
-import android.text.TextPaint;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -25,7 +24,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -63,6 +61,7 @@ import retrofit2.Response;
 
 
 public class OngoingOrderFragment extends Fragment {
+    private String discount, grandtotal, payinfo;
     private List<PaymentData> paymentData;
     private List<String> paymentName;
     int size = 0;
@@ -88,8 +87,8 @@ public class OngoingOrderFragment extends Fragment {
     private Boolean checkState = false;
     private String orderid;
     private String reason;
-    String grandTotal;
-
+    private String grandTotal;
+    private TextView paynowTV;
     public OngoingOrderFragment() {
     }
 
@@ -260,7 +259,14 @@ public class OngoingOrderFragment extends Fragment {
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view2 = inflater.inflate(R.layout.aleartdialog_paymentpage, null);
         builder.setView(view2);
-
+        paynowTV = view2.findViewById(R.id.paynowTV);
+        paynowTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("checkpayda","id "+id+"orderid "+orderid+"grandtotal "+ grandTotal+"discount "+discountETPaymentammount);
+                Toasty.info(getContext(),"Not Implemented",Toasty.LENGTH_SHORT).show();
+            }
+        });
         spinnerdiscounttype = view2.findViewById(R.id.spinnerdiscounttype);
         spinnerdiscounttypedataSelection();
         discountETPayment = view2.findViewById(R.id.discountETPayment);
@@ -318,33 +324,32 @@ public class OngoingOrderFragment extends Fragment {
 
     }
 
-    public void getSelectedOptions(String selectedPaymentOptions, int adapterPosition) {
-        AdaptersModel adaptersModel = new AdaptersModel(adapterPosition, selectedPaymentOptions);
-        Log.d("aga","I'm Here"+adapterPosition);
-        // Check size list & if it is greater then the loop will run
-//        for (int j = 0; j < sizeList.size(); j++) {
-            if(adaptersDat.size()>0){
-                for (int i = 0; i < adaptersDat.size(); i++) {
-                    if (adaptersDat.get(i).getPosition() == adapterPosition) {
-                        Log.d("getAdapterPosition", "" + new Gson().toJson(adapterPosition));
-                        adaptersDat.get(i).setPosition(adapterPosition);
-                        adaptersDat.get(i).setAdaptersData(selectedPaymentOptions);
-                    } else if (adaptersDat.get(i).getPosition() == adapterPosition && adaptersDat.get(i).getAdaptersData() == selectedPaymentOptions) {
-                        adaptersDat.get(i).setPosition(adapterPosition);
-                        adaptersDat.get(i).setAdaptersData(selectedPaymentOptions);
-                    } else {
-                        adaptersDat.add(sizeList.size()-1,adaptersModel);                    }
+    public void getSelectedOptions(String customerpaymentETTExt, String selectedPaymentOptions, int adapterPosition) {
+        AdaptersModel adaptersModel = new AdaptersModel(adapterPosition, selectedPaymentOptions,customerpaymentETTExt);
+        Log.d("aga", "I'm Here" + adapterPosition);
+        if (adaptersDat.size() > 0) {
+            for (int i = 0; i < adaptersDat.size(); i++) {
+                if (adaptersDat.get(i).getPosition() == adapterPosition && adaptersDat.get(i).getPaymentName().isEmpty()) {
+                    Log.d("getAdapterPosition", "" + new Gson().toJson(adapterPosition));
+                    adaptersDat.get(i).setPosition(adapterPosition);
+                    adaptersDat.get(i).setPaymentName(selectedPaymentOptions);
+                } else if (adaptersDat.get(i).getPosition() == adapterPosition && !adaptersDat.get(i).getPaymentName().isEmpty()) {
+                    continue;
+                } else {
+                    adaptersDat.add(sizeList.size() - 1, adaptersModel);
                 }
             }
-            else {
-                adaptersDat.add(sizeList.size()-1,adaptersModel);
-            }
+        } else {
+            adaptersDat.size();
+            adaptersDat.add(sizeList.size() - 1, adaptersModel);
+        }
 //        }
 
         Log.d("adaptersData", "" + new Gson().toJson(adaptersDat));
         Log.d("sizeofadaptersData", "" + new Gson().toJson(adaptersDat.size()));
         Toasty.info(getContext(), "" + selectedPaymentOptions + "" + adapterPosition, Toasty.LENGTH_SHORT).show();
     }
+
 
     private void createnewPaymentPage(List<Integer> size) {
 //        paymentOptionsRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -355,7 +360,7 @@ public class OngoingOrderFragment extends Fragment {
 //            }
 //        });
         paymentOptionsRV.setAdapter(new PaymentOptionsAdapters(getActivity(), size, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat));
-        paymentOptionsRV.getLayoutManager().onRestoreInstanceState(recyclerViewState);
+//        paymentOptionsRV.getLayoutManager().onRestoreInstanceState(recyclerViewState);
         Log.d("sizelist", "" + new Gson().toJson(size.size()));
     }
 

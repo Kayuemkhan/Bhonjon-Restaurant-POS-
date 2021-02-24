@@ -1,6 +1,8 @@
 package com.bdtask.bhojonrestaurantpos.adapters;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +43,8 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
     private List<Integer> sizeList = new ArrayList<>();
     private List<AdaptersModel> adaptersData = new ArrayList<>();
     private Boolean cardPaymentOrNot = false;
-
+    private String payid;
+    private String customerpaymentETTExt;
     public PaymentOptionsAdapters(FragmentActivity activity, List<Integer> size, OngoingOrderFragment fragmentActivityClass, List<String> paymentNames, List<String> terminalName, List<String> bankListName, List<AdaptersModel> adaptersDat) {
         SharedPref.init(context);
         id = SharedPref.read("ID", "");
@@ -73,7 +76,7 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedPaymentOptions = holder.spinnerPaymentType.getSelectedItem().toString();
-                ongoingOrderFragment.getSelectedOptions(selectedPaymentOptions, holder.getAdapterPosition());
+                ongoingOrderFragment.getSelectedOptions(customerpaymentETTExt,selectedPaymentOptions, holder.getAdapterPosition());
                 Log.d("selected",""+new Gson().toJson(selectedPaymentOptions));
                 if (selectedPaymentOptions.contains("Card Payment")) {
                     holder.cardterminalLayout.setVisibility(View.VISIBLE);
@@ -95,7 +98,23 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
         });
         //ongoingOrderFragment.getSelectedOptions(selectedPaymentOptions, holder.getAdapterPosition());
         Log.d("viewholderdata", "" + new Gson().toJson(selectedPaymentOptions+holder.getAdapterPosition()));
+        holder.customerpaymentET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                customerpaymentETTExt = s.toString();
+                ongoingOrderFragment.getSelectedOptions(customerpaymentETTExt,selectedPaymentOptions, holder.getAdapterPosition());
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     @Override
