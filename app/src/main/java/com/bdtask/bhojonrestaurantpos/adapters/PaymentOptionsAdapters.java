@@ -44,7 +44,8 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
     private List<AdaptersModel> adaptersData = new ArrayList<>();
     private Boolean cardPaymentOrNot = false;
     private String payid;
-    private String customerpaymentETTExt;
+    private String customerpaymentETgetText = "";
+
     public PaymentOptionsAdapters(FragmentActivity activity, List<Integer> size, OngoingOrderFragment fragmentActivityClass, List<String> paymentNames, List<String> terminalName, List<String> bankListName, List<AdaptersModel> adaptersDat) {
         SharedPref.init(context);
         id = SharedPref.read("ID", "");
@@ -70,14 +71,14 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-//        Log.d("viewholderdata", "" + new Gson().toJson(adaptersData));
+        Log.d("viewholderdata", "" + new Gson().toJson(adaptersData));
         holder.spinnerPaymentType.setAdapter(new ArrayAdapter<String>(context, R.layout.support_simple_spinner_dropdown_item, paymentName));
         holder.spinnerPaymentType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedPaymentOptions = holder.spinnerPaymentType.getSelectedItem().toString();
-                ongoingOrderFragment.getSelectedOptions(customerpaymentETTExt,selectedPaymentOptions, holder.getAdapterPosition());
-                Log.d("selected",""+new Gson().toJson(selectedPaymentOptions));
+                ongoingOrderFragment.getSelectedOptions(customerpaymentETgetText, selectedPaymentOptions, holder.getAdapterPosition());
+                Log.d("selected", "" + new Gson().toJson(selectedPaymentOptions));
                 if (selectedPaymentOptions.contains("Card Payment")) {
                     holder.cardterminalLayout.setVisibility(View.VISIBLE);
                 } else {
@@ -97,17 +98,17 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
             }
         });
         //ongoingOrderFragment.getSelectedOptions(selectedPaymentOptions, holder.getAdapterPosition());
-        Log.d("viewholderdata", "" + new Gson().toJson(selectedPaymentOptions+holder.getAdapterPosition()));
+        Log.d("viewholderdata", "" + new Gson().toJson(selectedPaymentOptions + holder.getAdapterPosition()));
         holder.customerpaymentET.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                customerpaymentETTExt = s.toString();
-                ongoingOrderFragment.getSelectedOptions(customerpaymentETTExt,selectedPaymentOptions, holder.getAdapterPosition());
+
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                customerpaymentETgetText = s.toString();
+                ongoingOrderFragment.getSelectedOptions(customerpaymentETgetText, selectedPaymentOptions, holder.getAdapterPosition());
             }
 
             @Override

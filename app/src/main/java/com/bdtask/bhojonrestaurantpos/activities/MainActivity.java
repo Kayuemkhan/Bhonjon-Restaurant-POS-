@@ -858,11 +858,6 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     }
 
     private void placeorderdetails() {
-//        SweetAlertDialog pDialog = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-//        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-//        pDialog.setTitleText("Loading");
-//        pDialog.setCancelable(false);
-//        pDialog.show();
         SweetAlertDialog pDialog = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.SUCCESS_TYPE);
         pDialog.setTitleText("Do you want to print Invoice");
         pDialog.setConfirmText("Yes");

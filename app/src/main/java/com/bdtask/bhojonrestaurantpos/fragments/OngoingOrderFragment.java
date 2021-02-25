@@ -89,6 +89,7 @@ public class OngoingOrderFragment extends Fragment {
     private String reason;
     private String grandTotal;
     private TextView paynowTV;
+
     public OngoingOrderFragment() {
     }
 
@@ -263,8 +264,8 @@ public class OngoingOrderFragment extends Fragment {
         paynowTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("checkpayda","id "+id+"orderid "+orderid+"grandtotal "+ grandTotal+"discount "+discountETPaymentammount);
-                Toasty.info(getContext(),"Not Implemented",Toasty.LENGTH_SHORT).show();
+                Log.d("checkpayda", "id " + id + "orderid " + orderid + "grandtotal " + grandTotal + "discount " + discountETPaymentammount);
+                Toasty.info(getContext(), "Not Implemented", Toasty.LENGTH_SHORT).show();
             }
         });
         spinnerdiscounttype = view2.findViewById(R.id.spinnerdiscounttype);
@@ -295,6 +296,7 @@ public class OngoingOrderFragment extends Fragment {
                 sizeList.add(0, 1);
                 createnewPaymentPage(sizeList);
             }
+
         });
         addnewpaymentTV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -325,21 +327,65 @@ public class OngoingOrderFragment extends Fragment {
     }
 
     public void getSelectedOptions(String customerpaymentETTExt, String selectedPaymentOptions, int adapterPosition) {
-        AdaptersModel adaptersModel = new AdaptersModel(adapterPosition, selectedPaymentOptions,customerpaymentETTExt);
+        Log.d("adapterpos",""+adapterPosition);
+        AdaptersModel adaptersModel = new AdaptersModel(sizeList.size()-1, selectedPaymentOptions, customerpaymentETTExt);
         Log.d("aga", "I'm Here" + adapterPosition);
         if (adaptersDat.size() > 0) {
-            for (int i = 0; i < adaptersDat.size(); i++) {
-                if (adaptersDat.get(i).getPosition() == adapterPosition && adaptersDat.get(i).getPaymentName().isEmpty()) {
-                    Log.d("getAdapterPosition", "" + new Gson().toJson(adapterPosition));
-                    adaptersDat.get(i).setPosition(adapterPosition);
-                    adaptersDat.get(i).setPaymentName(selectedPaymentOptions);
-                } else if (adaptersDat.get(i).getPosition() == adapterPosition && !adaptersDat.get(i).getPaymentName().isEmpty()) {
-                    continue;
-                } else {
-                    adaptersDat.add(sizeList.size() - 1, adaptersModel);
-                }
+            if(sizeList.size() > adaptersDat.size()){
+                adaptersDat.add(sizeList.size() - 1, adaptersModel);
             }
-        } else {
+            for (int i = 0; i < sizeList.size(); i++) {
+                Log.d("ipos",""+i);
+                // When the selectedpayment is selected
+//                if (adaptersDat.get(i).getPosition() == adapterPosition && adaptersDat.get(i).getAmmount().isEmpty() && !selectedPaymentOptions.isEmpty()) {
+//                    adaptersDat.get(i).setPosition(adapterPosition);
+//                    adaptersDat.get(i).setAmmount(customerpaymentETTExt);
+//                }
+//                // When the payment method is selected
+//                else if (adaptersDat.get(i).getPosition() == adapterPosition && adaptersDat.get(i).getPaymentName().isEmpty() && !customerpaymentETTExt.isEmpty()) {
+//                    adaptersDat.get(i).setPosition(adapterPosition);
+//                    adaptersDat.get(i).setAmmount(customerpaymentETTExt);
+//                }
+//                // when the paymentname is empty but amount is here
+//                else if (adaptersDat.get(i).getPosition() == adapterPosition && adaptersDat.get(i).getPaymentName().isEmpty()
+//                        && !adaptersDat.get(i).getAmmount().isEmpty() && !customerpaymentETTExt.isEmpty()
+//                )
+//                {
+//                    adaptersDat.get(i).setPosition(adapterPosition);
+//                    adaptersDat.get(i).setAmmount(customerpaymentETTExt);
+//                }
+//                // when the amount is empty but paymentment name is here
+//                else if (adaptersDat.get(i).getPosition() == adapterPosition && !adaptersDat.get(i).getPaymentName().isEmpty() && !selectedPaymentOptions.isEmpty()
+//                        && adaptersDat.get(i).getAmmount().isEmpty()
+//                ) {
+//                    adaptersDat.get(i).setPosition(adapterPosition);
+//                    adaptersDat.get(i).setPaymentName(selectedPaymentOptions);
+//                }
+                if (adaptersDat.get(i).getPosition() == i && adaptersDat.get(i).getPaymentName().isEmpty() && !selectedPaymentOptions.isEmpty()) {
+                    Log.d("getAdapterPosition", "" + new Gson().toJson(adapterPosition));
+                    Log.d("Imhere","1");
+                    adaptersDat.get(i).setPosition(i);
+                    adaptersDat.get(i).setPaymentName(selectedPaymentOptions);
+                    adaptersDat.get(i).setAmmount(customerpaymentETTExt);
+                } else if (adaptersDat.get(i).getPosition() == i && adaptersDat.get(i).getAmmount().isEmpty() && !customerpaymentETTExt.isEmpty()) {
+                    Log.d("Imhere","2");
+                    adaptersDat.get(i).setPosition(i);
+                    adaptersDat.get(i).setAmmount(customerpaymentETTExt);
+
+                }
+//                else if (adaptersDat.get(i).getPosition() == adapterPosition && !adaptersDat.get(i).getPaymentName().isEmpty()) {
+//                    continue;
+//                }
+                else if (adaptersDat.get(i).getPosition() == i && !adaptersDat.get(i).getPaymentName().isEmpty() && !adaptersDat.get(i).getAmmount().isEmpty()) {
+                    Log.d("Imhere","3");
+                    continue;
+                }
+
+
+            }
+        }
+        if(adaptersDat.size() == 0)
+        {
             adaptersDat.size();
             adaptersDat.add(sizeList.size() - 1, adaptersModel);
         }
