@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.nfc.Tag;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -44,6 +45,7 @@ import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderData;
 import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.PaymentList.PaymentData;
 import com.bdtask.bhojonrestaurantpos.modelClass.PaymentList.PaymentResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.Splitorder.SplitResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.TerminalList.TerminalData;
 import com.bdtask.bhojonrestaurantpos.modelClass.TerminalList.TerminalResponse;
 import com.bdtask.bhojonrestaurantpos.retrofit.AppConfig;
@@ -70,7 +72,7 @@ public class OngoingOrderFragment extends Fragment {
     private ImageView closepaymentpageIV;
     private WaiterService waiterService;
     private LinearLayout completeorderTV, spilitTV, mergeTV, editTV, posinvoiceTV, duePOSTV, cancelTV;
-    private String id, selectedDiscountType, discountETPaymentammount;
+    private String id="", selectedDiscountType, discountETPaymentammount;
     private RecyclerView tableListRecylerview;
     private List<OngoingOrderData> ongoingOrderData = new ArrayList<>();
     private LinearLayout lowerpartOfOngoingLayout, lowerpartOfOngoingLayout2, addnewpaymentTV;
@@ -85,7 +87,7 @@ public class OngoingOrderFragment extends Fragment {
     private List<Integer> sizeList;
     private List<AdaptersModel> adaptersDat;
     private Boolean checkState = false;
-    private String orderid;
+    private String orderid="";
     private String reason;
     private String grandTotal;
     private TextView paynowTV;
@@ -181,11 +183,24 @@ public class OngoingOrderFragment extends Fragment {
 
             }
         });
+        if( !id.isEmpty() && !orderid.isEmpty()){
+            waiterService.spilitItemResponse(id,orderid).enqueue(new Callback<SplitResponse>() {
+                @Override
+                public void onResponse(Call<SplitResponse> call, Response<SplitResponse> response) {
+                    Log.d("AGaaaaaaa", "onResponse: "+new Gson().toJson(response.body()));
+                }
+
+                @Override
+                public void onFailure(Call<SplitResponse> call, Throwable t) {
+
+                }
+            });
+        }
         completeorderTV.setOnClickListener(v -> {
             completeorder();
         });
         spilitTV.setOnClickListener(v -> {
-            Toasty.info(getContext(), "No Action", Toasty.LENGTH_SHORT).show();
+            splitOrder();
         });
         mergeTV.setOnClickListener(v -> {
             Toasty.info(getContext(), "No Action", Toasty.LENGTH_SHORT).show();
@@ -203,6 +218,25 @@ public class OngoingOrderFragment extends Fragment {
             cancelOrder();
         });
         return view;
+    }
+
+    private void splitOrder() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater2 = (LayoutInflater) getContext().
+                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view2 = inflater2.inflate(R.layout.aleartspilit, null);
+
+        builder.setView(view2);
+        AlertDialog alert = builder.create();
+        alert.show();
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        Double width = metrics.widthPixels * .7;
+        Double height = metrics.heightPixels * .7;
+        Window win = alert.getWindow();
+        win.setLayout(width.intValue(), height.intValue());
     }
 
     public void cancelOrder() {
