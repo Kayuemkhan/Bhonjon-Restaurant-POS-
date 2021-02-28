@@ -328,6 +328,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
     private void searchableSpinnerdata() {
         waiterService.getallCustomerTypes(id).enqueue(new Callback<CustomerTypeResponse>() {
+            @SuppressLint("ResourceType")
             @Override
             public void onResponse(Call<CustomerTypeResponse> call, Response<CustomerTypeResponse> response) {
                 customerTypeData = new ArrayList<>();
@@ -336,6 +337,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 for (int i = 0; i < customerTypeData.size(); i++) {
                     customerTypeNames.add(customerTypeData.get(i).getTypeName());
                 }
+
                 searchableSpinnerCustomerType.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, customerTypeNames));
             }
 

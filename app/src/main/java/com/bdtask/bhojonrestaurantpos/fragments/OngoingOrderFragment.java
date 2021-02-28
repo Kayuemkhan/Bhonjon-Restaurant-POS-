@@ -1,5 +1,6 @@
 package com.bdtask.bhojonrestaurantpos.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -26,6 +27,7 @@ import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,8 +37,10 @@ import android.widget.TextView;
 import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.SpacingItemDecoration;
 import com.bdtask.bhojonrestaurantpos.Tools;
+import com.bdtask.bhojonrestaurantpos.activities.MainActivity;
 import com.bdtask.bhojonrestaurantpos.adapters.OngoingOrderAdapter;
 import com.bdtask.bhojonrestaurantpos.adapters.PaymentOptionsAdapters;
+import com.bdtask.bhojonrestaurantpos.adapters.SplitOrderItemsAdapters;
 import com.bdtask.bhojonrestaurantpos.modelClass.AdaptersModel;
 import com.bdtask.bhojonrestaurantpos.modelClass.BankList.BankListData;
 import com.bdtask.bhojonrestaurantpos.modelClass.BankList.BankListResponse;
@@ -45,6 +49,7 @@ import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderData;
 import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.PaymentList.PaymentData;
 import com.bdtask.bhojonrestaurantpos.modelClass.PaymentList.PaymentResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.Splitorder.SplitData;
 import com.bdtask.bhojonrestaurantpos.modelClass.Splitorder.SplitResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.TerminalList.TerminalData;
 import com.bdtask.bhojonrestaurantpos.modelClass.TerminalList.TerminalResponse;
@@ -72,7 +77,7 @@ public class OngoingOrderFragment extends Fragment {
     private ImageView closepaymentpageIV;
     private WaiterService waiterService;
     private LinearLayout completeorderTV, spilitTV, mergeTV, editTV, posinvoiceTV, duePOSTV, cancelTV;
-    private String id="", selectedDiscountType, discountETPaymentammount;
+    private String id, selectedDiscountType, discountETPaymentammount;
     private RecyclerView tableListRecylerview;
     private List<OngoingOrderData> ongoingOrderData = new ArrayList<>();
     private LinearLayout lowerpartOfOngoingLayout, lowerpartOfOngoingLayout2, addnewpaymentTV;
@@ -87,10 +92,13 @@ public class OngoingOrderFragment extends Fragment {
     private List<Integer> sizeList;
     private List<AdaptersModel> adaptersDat;
     private Boolean checkState = false;
-    private String orderid="";
+    private String orderid;
     private String reason;
     private String grandTotal;
     private TextView paynowTV;
+    private List<SplitData> splitData;
+    private List<Integer> splititemsizes;
+    Spinner spinerSplitItems;
 
     public OngoingOrderFragment() {
     }
@@ -110,6 +118,9 @@ public class OngoingOrderFragment extends Fragment {
         sizeList = new ArrayList<>();
         adaptersDat = new ArrayList<>();
         setListPlace = new ArrayList<>();
+        splitData = new ArrayList<>();
+        splititemsizes = new ArrayList<>();
+
     }
 
     @Override
@@ -183,19 +194,7 @@ public class OngoingOrderFragment extends Fragment {
 
             }
         });
-        if( !id.isEmpty() && !orderid.isEmpty()){
-            waiterService.spilitItemResponse(id,orderid).enqueue(new Callback<SplitResponse>() {
-                @Override
-                public void onResponse(Call<SplitResponse> call, Response<SplitResponse> response) {
-                    Log.d("AGaaaaaaa", "onResponse: "+new Gson().toJson(response.body()));
-                }
 
-                @Override
-                public void onFailure(Call<SplitResponse> call, Throwable t) {
-
-                }
-            });
-        }
         completeorderTV.setOnClickListener(v -> {
             completeorder();
         });
@@ -225,9 +224,22 @@ public class OngoingOrderFragment extends Fragment {
         LayoutInflater inflater2 = (LayoutInflater) getContext().
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view2 = inflater2.inflate(R.layout.aleartspilit, null);
-
+        ImageView closeAleartSplit = view2.findViewById(R.id.closeAleartSplit);
+        Log.d("id&orderId", "" + id + " " + orderid);
+        RecyclerView splitorderitemsnamelists;
+        splitorderitemsnamelists = view2.findViewById(R.id.splitorderitemsnamelist);
+        spinerSplitItems = view2.findViewById(R.id.spinerSplitItems);
+        getsplitData(splitorderitemsnamelists, spinerSplitItems);
         builder.setView(view2);
         AlertDialog alert = builder.create();
+        splitorderitemsnamelists.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+
+        closeAleartSplit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alert.dismiss();
+            }
+        });
         alert.show();
         WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
@@ -237,6 +249,38 @@ public class OngoingOrderFragment extends Fragment {
         Double height = metrics.heightPixels * .7;
         Window win = alert.getWindow();
         win.setLayout(width.intValue(), height.intValue());
+    }
+
+    private void getsplitData(RecyclerView splitorderitemsnamelists, Spinner spinerSplitItems) {
+        if (!id.isEmpty() && !orderid.isEmpty()) {
+            waiterService.spilitItemResponse(id, orderid).enqueue(new Callback<SplitResponse>() {
+                @Override
+                public void onResponse(Call<SplitResponse> call, Response<SplitResponse> response) {
+                    int splitItemsize = 0;
+                    Log.d("id111111", "" + id + " " + orderid);
+                    Log.d("getdata", "" + new Gson().toJson(splitData));
+                    splitData = response.body().getData().getIteminfo();
+
+                    for (int i = 0; i < splitData.size(); i++) {
+                        splitItemsize += Integer.parseInt(splitData.get(i).getItemqty());
+                    }
+                    for (int j = 0; j < splitItemsize; j++) {
+                        splititemsizes.add(j + 1);
+                    }
+                    Log.d("splitItemsize", "" + new Gson().toJson(splitItemsize));
+
+                    if (splitData.size() > 0) {
+                        splitorderitemsnamelists.setAdapter(new SplitOrderItemsAdapters(getActivity(), splitData));
+                        spinerSplitItems.setAdapter(new ArrayAdapter<>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, splititemsizes));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<SplitResponse> call, Throwable t) {
+
+                }
+            });
+        }
     }
 
     public void cancelOrder() {
@@ -361,15 +405,15 @@ public class OngoingOrderFragment extends Fragment {
     }
 
     public void getSelectedOptions(String customerpaymentETTExt, String selectedPaymentOptions, int adapterPosition) {
-        Log.d("adapterpos",""+adapterPosition);
-        AdaptersModel adaptersModel = new AdaptersModel(sizeList.size()-1, selectedPaymentOptions, customerpaymentETTExt);
+        Log.d("adapterpos", "" + adapterPosition);
+        AdaptersModel adaptersModel = new AdaptersModel(sizeList.size() - 1, selectedPaymentOptions, customerpaymentETTExt);
         Log.d("aga", "I'm Here" + adapterPosition);
         if (adaptersDat.size() > 0) {
-            if(sizeList.size() > adaptersDat.size()){
+            if (sizeList.size() > adaptersDat.size()) {
                 adaptersDat.add(sizeList.size() - 1, adaptersModel);
             }
             for (int i = 0; i < sizeList.size(); i++) {
-                Log.d("ipos",""+i);
+                Log.d("ipos", "" + i);
                 // When the selectedpayment is selected
 //                if (adaptersDat.get(i).getPosition() == adapterPosition && adaptersDat.get(i).getAmmount().isEmpty() && !selectedPaymentOptions.isEmpty()) {
 //                    adaptersDat.get(i).setPosition(adapterPosition);
@@ -397,12 +441,12 @@ public class OngoingOrderFragment extends Fragment {
 //                }
                 if (adaptersDat.get(i).getPosition() == i && adaptersDat.get(i).getPaymentName().isEmpty() && !selectedPaymentOptions.isEmpty()) {
                     Log.d("getAdapterPosition", "" + new Gson().toJson(adapterPosition));
-                    Log.d("Imhere","1");
+                    Log.d("Imhere", "1");
                     adaptersDat.get(i).setPosition(i);
                     adaptersDat.get(i).setPaymentName(selectedPaymentOptions);
                     adaptersDat.get(i).setAmmount(customerpaymentETTExt);
                 } else if (adaptersDat.get(i).getPosition() == i && adaptersDat.get(i).getAmmount().isEmpty() && !customerpaymentETTExt.isEmpty()) {
-                    Log.d("Imhere","2");
+                    Log.d("Imhere", "2");
                     adaptersDat.get(i).setPosition(i);
                     adaptersDat.get(i).setAmmount(customerpaymentETTExt);
 
@@ -411,15 +455,14 @@ public class OngoingOrderFragment extends Fragment {
 //                    continue;
 //                }
                 else if (adaptersDat.get(i).getPosition() == i && !adaptersDat.get(i).getPaymentName().isEmpty() && !adaptersDat.get(i).getAmmount().isEmpty()) {
-                    Log.d("Imhere","3");
+                    Log.d("Imhere", "3");
                     continue;
                 }
 
 
             }
         }
-        if(adaptersDat.size() == 0)
-        {
+        if (adaptersDat.size() == 0) {
             adaptersDat.size();
             adaptersDat.add(sizeList.size() - 1, adaptersModel);
         }
