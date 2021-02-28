@@ -238,6 +238,7 @@ public class OngoingOrderFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 alert.dismiss();
+                splititemsizes.clear();
             }
         });
         alert.show();
