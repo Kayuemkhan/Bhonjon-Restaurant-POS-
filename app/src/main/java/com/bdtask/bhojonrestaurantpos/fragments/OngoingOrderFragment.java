@@ -1,11 +1,9 @@
 package com.bdtask.bhojonrestaurantpos.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.nfc.Tag;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -37,9 +35,9 @@ import android.widget.TextView;
 import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.SpacingItemDecoration;
 import com.bdtask.bhojonrestaurantpos.Tools;
-import com.bdtask.bhojonrestaurantpos.activities.MainActivity;
 import com.bdtask.bhojonrestaurantpos.adapters.OngoingOrderAdapter;
 import com.bdtask.bhojonrestaurantpos.adapters.PaymentOptionsAdapters;
+import com.bdtask.bhojonrestaurantpos.adapters.SplitOrderItemSetupAdapters;
 import com.bdtask.bhojonrestaurantpos.adapters.SplitOrderItemsAdapters;
 import com.bdtask.bhojonrestaurantpos.modelClass.AdaptersModel;
 import com.bdtask.bhojonrestaurantpos.modelClass.BankList.BankListData;
@@ -97,9 +95,10 @@ public class OngoingOrderFragment extends Fragment {
     private String grandTotal;
     private TextView paynowTV;
     private List<SplitData> splitData;
-    private List<Integer> splititemsizes;
+    private List<Integer> itemsOfSplit;
     Spinner spinerSplitItems;
-
+    private RecyclerView splitOrderRV;
+    private int selectedSplitSizes;
     public OngoingOrderFragment() {
     }
 
@@ -119,7 +118,7 @@ public class OngoingOrderFragment extends Fragment {
         adaptersDat = new ArrayList<>();
         setListPlace = new ArrayList<>();
         splitData = new ArrayList<>();
-        splititemsizes = new ArrayList<>();
+        itemsOfSplit = new ArrayList<>();
 
     }
 
@@ -227,6 +226,9 @@ public class OngoingOrderFragment extends Fragment {
         ImageView closeAleartSplit = view2.findViewById(R.id.closeAleartSplit);
         Log.d("id&orderId", "" + id + " " + orderid);
         RecyclerView splitorderitemsnamelists;
+        splitOrderRV = view2.findViewById(R.id.splitOrderRV);
+        splitOrderRV.setLayoutManager(new GridLayoutManager(getActivity(),2));
+
         splitorderitemsnamelists = view2.findViewById(R.id.splitorderitemsnamelist);
         spinerSplitItems = view2.findViewById(R.id.spinerSplitItems);
         getsplitData(splitorderitemsnamelists, spinerSplitItems);
@@ -238,7 +240,7 @@ public class OngoingOrderFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 alert.dismiss();
-                splititemsizes.clear();
+                itemsOfSplit.clear();
             }
         });
         alert.show();
@@ -246,8 +248,8 @@ public class OngoingOrderFragment extends Fragment {
         Display display = wm.getDefaultDisplay();
         DisplayMetrics metrics = new DisplayMetrics();
         display.getMetrics(metrics);
-        Double width = metrics.widthPixels * .7;
-        Double height = metrics.heightPixels * .7;
+        Double width = metrics.widthPixels * .9;
+        Double height = metrics.heightPixels * .8;
         Window win = alert.getWindow();
         win.setLayout(width.intValue(), height.intValue());
     }
@@ -266,13 +268,31 @@ public class OngoingOrderFragment extends Fragment {
                         splitItemsize += Integer.parseInt(splitData.get(i).getItemqty());
                     }
                     for (int j = 0; j < splitItemsize; j++) {
-                        splititemsizes.add(j + 1);
+                        itemsOfSplit.add(j + 1);
                     }
                     Log.d("splitItemsize", "" + new Gson().toJson(splitItemsize));
 
                     if (splitData.size() > 0) {
+//                        if(itemsOfSplit.size()>1){
+//                            splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity(), itemsOfSplit.size()));
+//                        }
                         splitorderitemsnamelists.setAdapter(new SplitOrderItemsAdapters(getActivity(), splitData));
-                        spinerSplitItems.setAdapter(new ArrayAdapter<>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, splititemsizes));
+                        spinerSplitItems.setAdapter(new ArrayAdapter<>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, itemsOfSplit));
+                        spinerSplitItems.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                selectedSplitSizes = Integer.parseInt(spinerSplitItems.getSelectedItem().toString());
+                                if(selectedSplitSizes >1){
+                                    splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity(), selectedSplitSizes));
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+
                     }
                 }
 
