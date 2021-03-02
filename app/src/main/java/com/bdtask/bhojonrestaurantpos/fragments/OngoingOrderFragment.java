@@ -49,6 +49,8 @@ import com.bdtask.bhojonrestaurantpos.modelClass.PaymentList.PaymentData;
 import com.bdtask.bhojonrestaurantpos.modelClass.PaymentList.PaymentResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Splitorder.SplitData;
 import com.bdtask.bhojonrestaurantpos.modelClass.Splitorder.SplitResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.Splitordernum.SplitordernumData;
+import com.bdtask.bhojonrestaurantpos.modelClass.Splitordernum.SplitordernumResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.TerminalList.TerminalData;
 import com.bdtask.bhojonrestaurantpos.modelClass.TerminalList.TerminalResponse;
 import com.bdtask.bhojonrestaurantpos.retrofit.AppConfig;
@@ -100,6 +102,7 @@ public class OngoingOrderFragment extends Fragment {
     private RecyclerView splitOrderRV;
     private int selectedSplitSizes;
     private Boolean checkBoolean = false;
+    private List<SplitordernumData> splitordernumData;
     public OngoingOrderFragment() {
     }
 
@@ -120,7 +123,7 @@ public class OngoingOrderFragment extends Fragment {
         setListPlace = new ArrayList<>();
         splitData = new ArrayList<>();
         itemsOfSplit = new ArrayList<>();
-
+        splitordernumData= new ArrayList<>();
     }
 
     @Override
@@ -281,10 +284,22 @@ public class OngoingOrderFragment extends Fragment {
                         spinerSplitItems.setAdapter(new ArrayAdapter<>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, itemsOfSplit));
                         spinerSplitItems.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
-                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id22) {
                                 selectedSplitSizes = Integer.parseInt(spinerSplitItems.getSelectedItem().toString());
                                 if(selectedSplitSizes >1){
-                                    splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity(), selectedSplitSizes, checkBoolean));
+                                    waiterService.spilitItemNumResponse(id,orderid,spinerSplitItems.getSelectedItem().toString())
+                                            .enqueue(new Callback<SplitordernumResponse>() {
+                                                @Override
+                                                public void onResponse(Call<SplitordernumResponse> call, Response<SplitordernumResponse> response) {
+                                                    splitordernumData.addAll(response.body().getData());
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<SplitordernumResponse> call, Throwable t) {
+
+                                                }
+                                            });
+                                    splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity(), selectedSplitSizes, checkBoolean,splitordernumData));
                                 }
                             }
 
@@ -496,7 +511,7 @@ public class OngoingOrderFragment extends Fragment {
     }
     public void setStatus(Boolean onclickEd) {
         checkBoolean = onclickEd;
-        splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity(), selectedSplitSizes,onclickEd));
+        splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity(), selectedSplitSizes,onclickEd, splitordernumData));
     }
 
 

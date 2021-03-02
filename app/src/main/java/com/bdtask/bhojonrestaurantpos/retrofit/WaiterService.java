@@ -15,6 +15,7 @@ import com.bdtask.bhojonrestaurantpos.modelClass.PlaceOrder.PlaceOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.QROrder.QROrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.SignupNewCustomer.SignupNewCustomerResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Splitorder.SplitResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.Splitordernum.SplitordernumResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.TerminalList.TerminalResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.WaiterList.WaiterlistResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.loginModel.LoginResponse;
@@ -95,4 +96,7 @@ public interface WaiterService {
     @FormUrlEncoded
     @POST("splitorder")
     Call<SplitResponse> spilitItemResponse (@Field("id")String id,@Field("Orderid")String orderId);
+    @FormUrlEncoded
+    @POST("splitordernum")
+    Call<SplitordernumResponse> spilitItemNumResponse (@Field("id")String id, @Field("Orderid")String orderId, @Field("numberofsplit") String numberofsplit);
 }
