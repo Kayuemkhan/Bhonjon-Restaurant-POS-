@@ -91,7 +91,7 @@ public class OngoingOrderFragment extends Fragment {
     private Parcelable recyclerViewState;
     private List<Integer> sizeList;
     private List<AdaptersModel> adaptersDat;
-    private Boolean checkState = false;
+    private Boolean haveToinsert = false;
     private String orderid;
     private String reason;
     private String grandTotal;
@@ -292,6 +292,8 @@ public class OngoingOrderFragment extends Fragment {
                                                 @Override
                                                 public void onResponse(Call<SplitordernumResponse> call, Response<SplitordernumResponse> response) {
                                                     splitordernumData.addAll(response.body().getData());
+                                                    Log.d("splitordernumdata",""+new Gson().toJson(splitordernumData));
+                                                    splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity(), selectedSplitSizes, checkBoolean,splitordernumData));
                                                 }
 
                                                 @Override
@@ -299,7 +301,8 @@ public class OngoingOrderFragment extends Fragment {
 
                                                 }
                                             });
-                                    splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity(), selectedSplitSizes, checkBoolean,splitordernumData));
+
+
                                 }
                             }
 

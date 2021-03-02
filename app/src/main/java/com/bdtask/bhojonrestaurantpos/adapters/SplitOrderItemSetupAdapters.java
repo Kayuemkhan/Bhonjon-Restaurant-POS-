@@ -39,7 +39,7 @@ public class SplitOrderItemSetupAdapters extends RecyclerView.Adapter<SplitOrder
 
     @Override
     public void onBindViewHolder(@NonNull ViewhOlder holder, int position) {
-        holder.orderidSplit.setText(splitordernumData.get(position).getSplitid());
+        holder.orderidSplit.setText(String.valueOf(splitordernumData.get(position).getSplitid()));
         holder.splititemDetailsRV.setLayoutManager(new LinearLayoutManager(context));
 
         if(checkStatus == true){
