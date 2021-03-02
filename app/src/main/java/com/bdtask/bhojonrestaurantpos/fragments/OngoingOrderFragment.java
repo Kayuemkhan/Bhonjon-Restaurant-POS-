@@ -99,6 +99,7 @@ public class OngoingOrderFragment extends Fragment {
     Spinner spinerSplitItems;
     private RecyclerView splitOrderRV;
     private int selectedSplitSizes;
+    private Boolean checkBoolean = false;
     public OngoingOrderFragment() {
     }
 
@@ -276,14 +277,14 @@ public class OngoingOrderFragment extends Fragment {
 //                        if(itemsOfSplit.size()>1){
 //                            splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity(), itemsOfSplit.size()));
 //                        }
-                        splitorderitemsnamelists.setAdapter(new SplitOrderItemsAdapters(getActivity(), splitData));
+                        splitorderitemsnamelists.setAdapter(new SplitOrderItemsAdapters(getActivity(), splitData,OngoingOrderFragment.this));
                         spinerSplitItems.setAdapter(new ArrayAdapter<>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, itemsOfSplit));
                         spinerSplitItems.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 selectedSplitSizes = Integer.parseInt(spinerSplitItems.getSelectedItem().toString());
                                 if(selectedSplitSizes >1){
-                                    splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity(), selectedSplitSizes));
+                                    splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity(), selectedSplitSizes, checkBoolean));
                                 }
                             }
 
@@ -493,6 +494,10 @@ public class OngoingOrderFragment extends Fragment {
         Log.d("sizeofadaptersData", "" + new Gson().toJson(adaptersDat.size()));
         Toasty.info(getContext(), "" + selectedPaymentOptions + "" + adapterPosition, Toasty.LENGTH_SHORT).show();
     }
+    public void setStatus(Boolean onclickEd) {
+        checkBoolean = onclickEd;
+        splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity(), selectedSplitSizes,onclickEd));
+    }
 
 
     private void createnewPaymentPage(List<Integer> size) {
@@ -545,8 +550,6 @@ public class OngoingOrderFragment extends Fragment {
             lowerpartOfOngoingLayout2.setVisibility(View.GONE);
         }
     }
-
-
     private void duePOSPrint() {
         AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = (LayoutInflater) getContext().
@@ -578,12 +581,10 @@ public class OngoingOrderFragment extends Fragment {
         Window win = alert.getWindow();
         win.setLayout(width.intValue(), height.intValue());
     }
-
-    private void createWebPrintJob(WebView view) {
-    }
-
     public void setAllId(String orderids, Integer grandtotal) {
         orderid = orderids;
         grandTotal = grandtotal.toString();
     }
+
+
 }

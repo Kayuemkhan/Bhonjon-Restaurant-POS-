@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bdtask.bhojonrestaurantpos.R;
@@ -14,10 +15,12 @@ import com.bdtask.bhojonrestaurantpos.R;
 public class SplitOrderItemSetupAdapters extends RecyclerView.Adapter<SplitOrderItemSetupAdapters.ViewhOlder> {
     private Context context;
     private int itemsOfSplit;
+    private Boolean checkStatus ;
 
-    public SplitOrderItemSetupAdapters(FragmentActivity activity, int size) {
+    public SplitOrderItemSetupAdapters(FragmentActivity activity, int size, Boolean onclickEd) {
         this.context = activity;
         this.itemsOfSplit = size;
+        this.checkStatus = onclickEd;
     }
 
     @NonNull
@@ -29,7 +32,11 @@ public class SplitOrderItemSetupAdapters extends RecyclerView.Adapter<SplitOrder
 
     @Override
     public void onBindViewHolder(@NonNull ViewhOlder holder, int position) {
+        holder.splititemDetailsRV.setLayoutManager(new LinearLayoutManager(context));
 
+        if(checkStatus == true){
+            holder.splititemDetailsRV.setAdapter(new SplitOrdersDetailsAdapter(context));
+        }
     }
 
     @Override
@@ -38,8 +45,11 @@ public class SplitOrderItemSetupAdapters extends RecyclerView.Adapter<SplitOrder
     }
 
     public class ViewhOlder extends RecyclerView.ViewHolder {
+        private RecyclerView splititemDetailsRV;
         public ViewhOlder(@NonNull View itemView) {
             super(itemView);
+            splititemDetailsRV = itemView.findViewById(R.id.splititemDetailsRV);
+
         }
     }
 }
