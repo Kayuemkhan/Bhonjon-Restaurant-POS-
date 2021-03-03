@@ -36,7 +36,6 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
     private String id;
     private List<PaymentData> paymentData;
     private List<String> paymentName;
-    private int sizes;
     private List<String> terminalName;
     private List<String> bankListName;
     private OngoingOrderFragment ongoingOrderFragment;
@@ -45,7 +44,6 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
     private Boolean cardPaymentOrNot = false;
     private String payid;
     private String customerpaymentETgetText = "";
-
     public PaymentOptionsAdapters(FragmentActivity activity, List<Integer> size, OngoingOrderFragment fragmentActivityClass, List<String> paymentNames, List<String> terminalName, List<String> bankListName, List<AdaptersModel> adaptersDat) {
         SharedPref.init(context);
         id = SharedPref.read("ID", "");
@@ -120,6 +118,7 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
 
     @Override
     public int getItemCount() {
+        Log.d("sizelistsize",""+new Gson().toJson(sizeList.size()));
         return sizeList.size();
     }
 

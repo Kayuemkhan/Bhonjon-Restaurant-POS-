@@ -42,6 +42,8 @@ import com.bdtask.bhojonrestaurantpos.adapters.SplitOrderItemsAdapters;
 import com.bdtask.bhojonrestaurantpos.modelClass.AdaptersModel;
 import com.bdtask.bhojonrestaurantpos.modelClass.BankList.BankListData;
 import com.bdtask.bhojonrestaurantpos.modelClass.BankList.BankListResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.Billadjustment.Cardpinfo;
+import com.bdtask.bhojonrestaurantpos.modelClass.Billadjustment.PaymentInfo;
 import com.bdtask.bhojonrestaurantpos.modelClass.CancelOrder.CancelOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderData;
 import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderResponse;
@@ -103,6 +105,11 @@ public class OngoingOrderFragment extends Fragment {
     private int selectedSplitSizes;
     private Boolean checkBoolean = false;
     private List<SplitordernumData> splitordernumData;
+    private List<PaymentInfo> paymentInfos;
+    private PaymentOptionsAdapters paymentOptionsAdapters;
+   private List<Cardpinfo> cardpinfos;
+
+
     public OngoingOrderFragment() {
     }
 
@@ -123,7 +130,9 @@ public class OngoingOrderFragment extends Fragment {
         setListPlace = new ArrayList<>();
         splitData = new ArrayList<>();
         itemsOfSplit = new ArrayList<>();
-        splitordernumData= new ArrayList<>();
+        splitordernumData = new ArrayList<>();
+        paymentInfos= new ArrayList<>();
+        cardpinfos= new ArrayList<>();
     }
 
     @Override
@@ -205,13 +214,13 @@ public class OngoingOrderFragment extends Fragment {
             splitOrder();
         });
         mergeTV.setOnClickListener(v -> {
-            Toasty.info(getContext(), "No Action", Toasty.LENGTH_SHORT).show();
+            Toasty.info(getContext(), "Single Item Can't be Merged", Toasty.LENGTH_SHORT).show();
         });
         editTV.setOnClickListener(v -> {
             Toasty.info(getContext(), "No Action", Toasty.LENGTH_SHORT).show();
         });
         posinvoiceTV.setOnClickListener(v -> {
-            Toasty.info(getContext(), "No Action", Toasty.LENGTH_SHORT).show();
+            PosInvoice();
         });
         duePOSTV.setOnClickListener(v -> {
             duePOSPrint();
@@ -231,7 +240,7 @@ public class OngoingOrderFragment extends Fragment {
         Log.d("id&orderId", "" + id + " " + orderid);
         RecyclerView splitorderitemsnamelists;
         splitOrderRV = view2.findViewById(R.id.splitOrderRV);
-        splitOrderRV.setLayoutManager(new GridLayoutManager(getActivity(),2));
+        splitOrderRV.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
         splitorderitemsnamelists = view2.findViewById(R.id.splitorderitemsnamelist);
         spinerSplitItems = view2.findViewById(R.id.spinerSplitItems);
@@ -264,8 +273,6 @@ public class OngoingOrderFragment extends Fragment {
                 @Override
                 public void onResponse(Call<SplitResponse> call, Response<SplitResponse> response) {
                     int splitItemsize = 0;
-                    Log.d("id111111", "" + id + " " + orderid);
-                    Log.d("getdata", "" + new Gson().toJson(splitData));
                     splitData = response.body().getData().getIteminfo();
 
                     for (int i = 0; i < splitData.size(); i++) {
@@ -280,20 +287,20 @@ public class OngoingOrderFragment extends Fragment {
 //                        if(itemsOfSplit.size()>1){
 //                            splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity(), itemsOfSplit.size()));
 //                        }
-                        splitorderitemsnamelists.setAdapter(new SplitOrderItemsAdapters(getActivity(), splitData,OngoingOrderFragment.this));
+                        splitorderitemsnamelists.setAdapter(new SplitOrderItemsAdapters(getActivity(), splitData, OngoingOrderFragment.this));
                         spinerSplitItems.setAdapter(new ArrayAdapter<>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, itemsOfSplit));
                         spinerSplitItems.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id22) {
                                 selectedSplitSizes = Integer.parseInt(spinerSplitItems.getSelectedItem().toString());
-                                if(selectedSplitSizes >1){
-                                    waiterService.spilitItemNumResponse(id,orderid,spinerSplitItems.getSelectedItem().toString())
+                                if (selectedSplitSizes > 1) {
+                                    waiterService.spilitItemNumResponse(id, orderid, spinerSplitItems.getSelectedItem().toString())
                                             .enqueue(new Callback<SplitordernumResponse>() {
                                                 @Override
                                                 public void onResponse(Call<SplitordernumResponse> call, Response<SplitordernumResponse> response) {
                                                     splitordernumData.addAll(response.body().getData());
-                                                    Log.d("splitordernumdata",""+new Gson().toJson(splitordernumData));
-                                                    splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity(), selectedSplitSizes, checkBoolean,splitordernumData));
+                                                    Log.d("splitordernumdata", "" + new Gson().toJson(splitordernumData));
+                                                    splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity(), selectedSplitSizes, checkBoolean, splitordernumData));
                                                 }
 
                                                 @Override
@@ -372,6 +379,7 @@ public class OngoingOrderFragment extends Fragment {
 
     }
 
+
     private void completeorder() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = (LayoutInflater) getContext().
@@ -379,11 +387,18 @@ public class OngoingOrderFragment extends Fragment {
         View view2 = inflater.inflate(R.layout.aleartdialog_paymentpage, null);
         builder.setView(view2);
         paynowTV = view2.findViewById(R.id.paynowTV);
+
         paynowTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                for(int i =0;i<adaptersDat.size();i++){
+                    PaymentInfo paymentInfo = new PaymentInfo(adaptersDat.get(i).getAmount(),adaptersDat.get(i).getPayment_type_id(),cardpinfos);
+                    paymentInfos.add(paymentInfo);
+                }
                 Log.d("checkpayda", "id " + id + "orderid " + orderid + "grandtotal " + grandTotal + "discount " + discountETPaymentammount);
-                Toasty.info(getContext(), "Not Implemented", Toasty.LENGTH_SHORT).show();
+                Log.d("paymentInfos", ""+new Gson().toJson(paymentInfos));
+                String payinfo = new Gson().toJson(paymentInfos);
+
             }
         });
         spinnerdiscounttype = view2.findViewById(R.id.spinnerdiscounttype);
@@ -411,20 +426,30 @@ public class OngoingOrderFragment extends Fragment {
         paymentTV.setOnClickListener(v -> {
             addnewpaymentTV.setVisibility(View.VISIBLE);
             if (sizeList.size() == 0) {
-                sizeList.add(0, 1);
-                createnewPaymentPage(sizeList);
+                size++;
+                sizeList.add(0, size);
+                paymentOptionsAdapters = new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat);
+                paymentOptionsRV.setAdapter(paymentOptionsAdapters);
+                //createnewPaymentPage(sizeList);
             }
 
         });
         addnewpaymentTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                size = size + 1;
-                sizeList.add(size, 1);
-//                PaymentOptionsAdapters paymentOptionsAdapters = new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat);
-//                //paymentOptionsAdapters.notifyItemInserted(size);
-//                paymentOptionsRV.setAdapter(paymentOptionsAdapters);
-                createnewPaymentPage(sizeList);
+                if (sizeList.size() == 0) {
+//                    size = size + 1;
+                    size++;
+                    sizeList.add(0, size);
+                    paymentOptionsAdapters = new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat);
+                    paymentOptionsRV.setAdapter(paymentOptionsAdapters);
+                    Log.d("sizelist", "" + new Gson().toJson(sizeList));
+                } else {
+                    sizeList.add(size);
+                    paymentOptionsAdapters = new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat);
+                    paymentOptionsAdapters.notifyItemInserted(sizeList.size() - 1);
+                    paymentOptionsRV.scrollToPosition(sizeList.size() - 1);
+                }
             }
         });
         AlertDialog alert = builder.create();
@@ -444,92 +469,121 @@ public class OngoingOrderFragment extends Fragment {
 
     }
 
-    public void getSelectedOptions(String customerpaymentETTExt, String selectedPaymentOptions, int adapterPosition) {
-        Log.d("adapterpos", "" + adapterPosition);
-        AdaptersModel adaptersModel = new AdaptersModel(sizeList.size() - 1, selectedPaymentOptions, customerpaymentETTExt);
-        Log.d("aga", "I'm Here" + adapterPosition);
-        if (adaptersDat.size() > 0) {
-            if (sizeList.size() > adaptersDat.size()) {
-                adaptersDat.add(sizeList.size() - 1, adaptersModel);
+    private void PosInvoice() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = (LayoutInflater) getContext().
+                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view2 = inflater.inflate(R.layout.aleartdialog_paymentpage, null);
+        builder.setView(view2);
+        paynowTV = view2.findViewById(R.id.paynowTV);
+        paynowTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("checkpayda", "id " + id + "orderid " + orderid + "grandtotal " + grandTotal + "discount " + discountETPaymentammount);
             }
-            for (int i = 0; i < sizeList.size(); i++) {
-                Log.d("ipos", "" + i);
-                // When the selectedpayment is selected
-//                if (adaptersDat.get(i).getPosition() == adapterPosition && adaptersDat.get(i).getAmmount().isEmpty() && !selectedPaymentOptions.isEmpty()) {
-//                    adaptersDat.get(i).setPosition(adapterPosition);
-//                    adaptersDat.get(i).setAmmount(customerpaymentETTExt);
-//                }
-//                // When the payment method is selected
-//                else if (adaptersDat.get(i).getPosition() == adapterPosition && adaptersDat.get(i).getPaymentName().isEmpty() && !customerpaymentETTExt.isEmpty()) {
-//                    adaptersDat.get(i).setPosition(adapterPosition);
-//                    adaptersDat.get(i).setAmmount(customerpaymentETTExt);
-//                }
-//                // when the paymentname is empty but amount is here
-//                else if (adaptersDat.get(i).getPosition() == adapterPosition && adaptersDat.get(i).getPaymentName().isEmpty()
-//                        && !adaptersDat.get(i).getAmmount().isEmpty() && !customerpaymentETTExt.isEmpty()
-//                )
-//                {
-//                    adaptersDat.get(i).setPosition(adapterPosition);
-//                    adaptersDat.get(i).setAmmount(customerpaymentETTExt);
-//                }
-//                // when the amount is empty but paymentment name is here
-//                else if (adaptersDat.get(i).getPosition() == adapterPosition && !adaptersDat.get(i).getPaymentName().isEmpty() && !selectedPaymentOptions.isEmpty()
-//                        && adaptersDat.get(i).getAmmount().isEmpty()
-//                ) {
-//                    adaptersDat.get(i).setPosition(adapterPosition);
-//                    adaptersDat.get(i).setPaymentName(selectedPaymentOptions);
-//                }
-                if (adaptersDat.get(i).getPosition() == i && adaptersDat.get(i).getPaymentName().isEmpty() && !selectedPaymentOptions.isEmpty()) {
-                    Log.d("getAdapterPosition", "" + new Gson().toJson(adapterPosition));
-                    Log.d("Imhere", "1");
-                    adaptersDat.get(i).setPosition(i);
-                    adaptersDat.get(i).setPaymentName(selectedPaymentOptions);
-                    adaptersDat.get(i).setAmmount(customerpaymentETTExt);
-                } else if (adaptersDat.get(i).getPosition() == i && adaptersDat.get(i).getAmmount().isEmpty() && !customerpaymentETTExt.isEmpty()) {
-                    Log.d("Imhere", "2");
-                    adaptersDat.get(i).setPosition(i);
-                    adaptersDat.get(i).setAmmount(customerpaymentETTExt);
-
-                }
-//                else if (adaptersDat.get(i).getPosition() == adapterPosition && !adaptersDat.get(i).getPaymentName().isEmpty()) {
-//                    continue;
-//                }
-                else if (adaptersDat.get(i).getPosition() == i && !adaptersDat.get(i).getPaymentName().isEmpty() && !adaptersDat.get(i).getAmmount().isEmpty()) {
-                    Log.d("Imhere", "3");
-                    continue;
-                }
-
-
+        });
+        spinnerdiscounttype = view2.findViewById(R.id.spinnerdiscounttype);
+        spinnerdiscounttypedataSelection();
+        discountETPayment = view2.findViewById(R.id.discountETPayment);
+        getdiscountAmmount();
+        paymentOptionsRV = view2.findViewById(R.id.paymentOptionsRV);
+        paymentOptionsRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+        closepaymentpageIV = view2.findViewById(R.id.closepaymentpageIV);
+        paymentTV = view2.findViewById(R.id.paymentTV);
+        addnewpaymentTV = view2.findViewById(R.id.addnewpaymentTV);
+        TextView totalAmount = view2.findViewById(R.id.totalAmount);
+        TextView totalDueAmount = view2.findViewById(R.id.totalDueAmount);
+        TextView payableAmount = view2.findViewById(R.id.payableAmount);
+        TextView changeamount = view2.findViewById(R.id.changeamount);
+        try {
+            if (!grandTotal.isEmpty()) {
+                totalAmount.setText(grandTotal);
+                totalDueAmount.setText(String.valueOf(Double.valueOf(grandTotal)));
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        if (adaptersDat.size() == 0) {
-            adaptersDat.size();
-            adaptersDat.add(sizeList.size() - 1, adaptersModel);
-        }
-//        }
 
-        Log.d("adaptersData", "" + new Gson().toJson(adaptersDat));
-        Log.d("sizeofadaptersData", "" + new Gson().toJson(adaptersDat.size()));
-        Toasty.info(getContext(), "" + selectedPaymentOptions + "" + adapterPosition, Toasty.LENGTH_SHORT).show();
+        paymentTV.setOnClickListener(v -> {
+            addnewpaymentTV.setVisibility(View.VISIBLE);
+            if (sizeList.size() == 0) {
+                size++;
+                sizeList.add(0, size);
+                paymentOptionsAdapters = new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat);
+                paymentOptionsRV.setAdapter(paymentOptionsAdapters);
+                //createnewPaymentPage(sizeList);
+            }
+
+        });
+        addnewpaymentTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (sizeList.size() == 0) {
+//                    size = size + 1;
+                    size++;
+                    sizeList.add(0, size);
+                    paymentOptionsAdapters = new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat);
+                    paymentOptionsRV.setAdapter(paymentOptionsAdapters);
+                    Log.d("sizelist", "" + new Gson().toJson(sizeList));
+                } else {
+                    sizeList.add(size);
+                    paymentOptionsAdapters = new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat);
+                    paymentOptionsAdapters.notifyItemInserted(sizeList.size() - 1);
+                    paymentOptionsRV.scrollToPosition(sizeList.size() - 1);
+                }
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        closepaymentpageIV.setOnClickListener(v -> {
+            alert.dismiss();
+        });
+        alert.show();
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        Double width = metrics.widthPixels * .7;
+        Double height = metrics.heightPixels * .7;
+        Window win = alert.getWindow();
+        win.setLayout(width.intValue(), height.intValue());
     }
+
+    public void getSelectedOptions(String customerpaymentETTExt, String selectedPaymentOptions, int adapterPosition) {
+        String paymentTypeId="";
+        for(int j=0;j<paymentData.size();j++){
+            if(selectedPaymentOptions.equals(paymentData.get(j).getPayname())){
+                paymentTypeId = paymentData.get(j).getPayid();
+            }
+        }
+        haveToinsert = false;
+        AdaptersModel adaptersModel = new AdaptersModel(adapterPosition, selectedPaymentOptions, customerpaymentETTExt,paymentTypeId);
+        if(adaptersDat.size() == 0){
+            adaptersDat.add(adaptersModel);
+        }
+        for(int i =0 ;i<adaptersDat.size();i++ ){
+            if(adapterPosition == adaptersDat.get(i).getAdapterPosition() ){
+                adaptersDat.get(i).setPaymentName(customerpaymentETTExt);
+                adaptersDat.get(i).setAmount(selectedPaymentOptions);
+                haveToinsert = false;
+                break;
+            }
+            else {
+                haveToinsert = true;
+            }
+        }
+        if(haveToinsert == true){
+            haveToinsert = false;
+            adaptersDat.add(adaptersModel);
+        }
+
+    }
+
     public void setStatus(Boolean onclickEd) {
         checkBoolean = onclickEd;
-        splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity(), selectedSplitSizes,onclickEd, splitordernumData));
+        splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity(), selectedSplitSizes, onclickEd, splitordernumData));
     }
 
-
-    private void createnewPaymentPage(List<Integer> size) {
-//        paymentOptionsRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//                recyclerViewState = paymentOptionsRV.getLayoutManager().onSaveInstanceState(); // save recycleView state
-//            }
-//        });
-        paymentOptionsRV.setAdapter(new PaymentOptionsAdapters(getActivity(), size, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat));
-//        paymentOptionsRV.getLayoutManager().onRestoreInstanceState(recyclerViewState);
-        Log.d("sizelist", "" + new Gson().toJson(size.size()));
-    }
 
     private void getdiscountAmmount() {
         discountETPayment.addTextChangedListener(new TextWatcher() {
@@ -568,6 +622,7 @@ public class OngoingOrderFragment extends Fragment {
             lowerpartOfOngoingLayout2.setVisibility(View.GONE);
         }
     }
+
     private void duePOSPrint() {
         AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = (LayoutInflater) getContext().
@@ -599,6 +654,7 @@ public class OngoingOrderFragment extends Fragment {
         Window win = alert.getWindow();
         win.setLayout(width.intValue(), height.intValue());
     }
+
     public void setAllId(String orderids, Integer grandtotal) {
         orderid = orderids;
         grandTotal = grandtotal.toString();
