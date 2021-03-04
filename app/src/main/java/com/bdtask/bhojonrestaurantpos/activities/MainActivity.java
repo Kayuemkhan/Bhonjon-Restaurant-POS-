@@ -34,6 +34,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -149,6 +150,8 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     private String productvat = "0";
     double restaurent_vatt;
     private String orderid;
+    private EditText searchviewinmain;
+    FragmentManager fm;
 
     @SuppressLint("WrongConstant")
     @Override
@@ -178,11 +181,13 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         // When User click for ongoing Order
         ongoingOrder.setOnClickListener(v -> {
             view_layout.setVisibility(View.GONE);
-
             framelayout_ongoing_order.setVisibility(View.VISIBLE);
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.framelayout_ongoing_order, new OngoingOrderFragment());
-            ft.commit();
+            fm = getSupportFragmentManager();
+//            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//            ft.replace(R.id.framelayout_ongoing_order, new OngoingOrderFragment(""),"SOMETAG");
+//            ft.commit();
+            getSupportFragmentManager().beginTransaction().
+                    replace(R.id.framelayout_ongoing_order, new OngoingOrderFragment(""), "SOMETAG").commit();
         });
         // when user click for kitchen status
         kitchenStatus.setOnClickListener(new View.OnClickListener() {
@@ -202,15 +207,13 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             ft.replace(R.id.framelayout_ongoing_order, new QROrderFragment());
             ft.commit();
         });
-        onlineOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                view_layout.setVisibility(view_layout.GONE);
-                framelayout_ongoing_order.setVisibility(View.VISIBLE);
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.framelayout_ongoing_order, new OnlineOrderFragment());
-                ft.commit();
-            }
+        onlineOrder.setOnClickListener(v -> {
+
+            view_layout.setVisibility(view_layout.GONE);
+            framelayout_ongoing_order.setVisibility(View.VISIBLE);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.framelayout_ongoing_order, new OnlineOrderFragment());
+            ft.commit();
         });
         // When user click on Quick Orer
         buttonquickorder.setOnClickListener(v -> {
@@ -253,6 +256,24 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         addingCustomer.setOnClickListener(v -> {
             addingnewCustomer();
         });
+        searchviewinmain.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                OngoingOrderFragment fragmentDemo = (OngoingOrderFragment) getSupportFragmentManager().findFragmentByTag("SOMETAG");
+                fragmentDemo.serchingTable(s.toString());
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     // binding all the views with xml
@@ -280,6 +301,8 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         spinnercustomername = findViewById(R.id.spinnercustomername);
         discountET = findViewById(R.id.discountET);
         addingCustomer = findViewById(R.id.addingcustomer);
+        searchviewinmain = findViewById(R.id.searchviewinmain);
+
     }
 
     // when user click the cancel button
@@ -974,8 +997,8 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         //dueposWV.getSettings().setBuiltInZoomControls(true);
         WebSettings webSettings = dueposWV.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        String url = "https://soft14.bdtask.com/bhojon23_latest/appv1/posorderdueinvoice/"+orderid;
-        Log.d("url",""+url);
+        String url = "https://soft14.bdtask.com/bhojon23_latest/appv1/posorderdueinvoice/" + orderid;
+        Log.d("url", "" + url);
         dueposWV.loadUrl(url);
         crossicon.setOnClickListener(v -> {
             alert.dismiss();

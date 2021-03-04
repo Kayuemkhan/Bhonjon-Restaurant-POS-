@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -73,7 +75,7 @@ public class OngoingOrderFragment extends Fragment {
     private String discount, grandtotal, payinfo;
     private List<PaymentData> paymentData;
     private List<String> paymentName;
-    int size = 0;
+    private int size = 0;
     private List<Integer> setListPlace;
     private LinearLayout paymentTV;
     private ImageView closepaymentpageIV;
@@ -100,18 +102,20 @@ public class OngoingOrderFragment extends Fragment {
     private TextView paynowTV;
     private List<SplitData> splitData;
     private List<Integer> itemsOfSplit;
-    Spinner spinerSplitItems;
+    private Spinner spinerSplitItems;
     private RecyclerView splitOrderRV;
     private int selectedSplitSizes;
     private Boolean checkBoolean = false;
     private List<SplitordernumData> splitordernumData;
     private List<PaymentInfo> paymentInfos;
     private PaymentOptionsAdapters paymentOptionsAdapters;
-   private List<Cardpinfo> cardpinfos;
+    private List<Cardpinfo> cardpinfos;
+    String searchValues;
 
-
-    public OngoingOrderFragment() {
+    public OngoingOrderFragment(String searchValues) {
+        this.searchValues = searchValues;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -131,9 +135,34 @@ public class OngoingOrderFragment extends Fragment {
         splitData = new ArrayList<>();
         itemsOfSplit = new ArrayList<>();
         splitordernumData = new ArrayList<>();
-        paymentInfos= new ArrayList<>();
-        cardpinfos= new ArrayList<>();
+        paymentInfos = new ArrayList<>();
+        cardpinfos = new ArrayList<>();
+
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (!searchValues.isEmpty()) {
+            Log.d("valueeeee", "" + searchValues);
+            List<OngoingOrderData> searchingList = new ArrayList<>();
+
+            if (searchValues != null && !searchValues.isEmpty()) {
+                searchingList.clear();
+                for (int i = 0; i < ongoingOrderData.size(); i++) {
+                    if (ongoingOrderData.get(i).getOrderid().toLowerCase().startsWith(searchValues)) {
+                        searchingList.add(ongoingOrderData.get(i));
+                    }
+                }
+                OngoingOrderAdapter ongoingOrderAdapter = new OngoingOrderAdapter(getActivity(), searchingList, OngoingOrderFragment.this);
+                tableListRecylerview.setAdapter(ongoingOrderAdapter);
+            } else {
+                OngoingOrderAdapter ongoingOrderAdapter = new OngoingOrderAdapter(getActivity(), ongoingOrderData, OngoingOrderFragment.this);
+                tableListRecylerview.setAdapter(ongoingOrderAdapter);
+            }
+        }
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -391,12 +420,12 @@ public class OngoingOrderFragment extends Fragment {
         paynowTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(int i =0;i<adaptersDat.size();i++){
-                    PaymentInfo paymentInfo = new PaymentInfo(adaptersDat.get(i).getAmount(),adaptersDat.get(i).getPayment_type_id(),cardpinfos);
+                for (int i = 0; i < adaptersDat.size(); i++) {
+                    PaymentInfo paymentInfo = new PaymentInfo(adaptersDat.get(i).getAmount(), adaptersDat.get(i).getPayment_type_id(), cardpinfos);
                     paymentInfos.add(paymentInfo);
                 }
                 Log.d("checkpayda", "id " + id + "orderid " + orderid + "grandtotal " + grandTotal + "discount " + discountETPaymentammount);
-                Log.d("paymentInfos", ""+new Gson().toJson(paymentInfos));
+                Log.d("paymentInfos", "" + new Gson().toJson(paymentInfos));
                 String payinfo = new Gson().toJson(paymentInfos);
 
             }
@@ -550,29 +579,28 @@ public class OngoingOrderFragment extends Fragment {
     }
 
     public void getSelectedOptions(String customerpaymentETTExt, String selectedPaymentOptions, int adapterPosition) {
-        String paymentTypeId="";
-        for(int j=0;j<paymentData.size();j++){
-            if(selectedPaymentOptions.equals(paymentData.get(j).getPayname())){
+        String paymentTypeId = "";
+        for (int j = 0; j < paymentData.size(); j++) {
+            if (selectedPaymentOptions.equals(paymentData.get(j).getPayname())) {
                 paymentTypeId = paymentData.get(j).getPayid();
             }
         }
         haveToinsert = false;
-        AdaptersModel adaptersModel = new AdaptersModel(adapterPosition, selectedPaymentOptions, customerpaymentETTExt,paymentTypeId);
-        if(adaptersDat.size() == 0){
+        AdaptersModel adaptersModel = new AdaptersModel(adapterPosition, selectedPaymentOptions, customerpaymentETTExt, paymentTypeId);
+        if (adaptersDat.size() == 0) {
             adaptersDat.add(adaptersModel);
         }
-        for(int i =0 ;i<adaptersDat.size();i++ ){
-            if(adapterPosition == adaptersDat.get(i).getAdapterPosition() ){
+        for (int i = 0; i < adaptersDat.size(); i++) {
+            if (adapterPosition == adaptersDat.get(i).getAdapterPosition()) {
                 adaptersDat.get(i).setPaymentName(customerpaymentETTExt);
                 adaptersDat.get(i).setAmount(selectedPaymentOptions);
                 haveToinsert = false;
                 break;
-            }
-            else {
+            } else {
                 haveToinsert = true;
             }
         }
-        if(haveToinsert == true){
+        if (haveToinsert == true) {
             haveToinsert = false;
             adaptersDat.add(adaptersModel);
         }
@@ -658,6 +686,27 @@ public class OngoingOrderFragment extends Fragment {
     public void setAllId(String orderids, Integer grandtotal) {
         orderid = orderids;
         grandTotal = grandtotal.toString();
+    }
+
+    public void serchingTable(String searchingKey) {
+        Log.d("valueeeee", "" + searchingKey);
+        List<OngoingOrderData> searchingList = new ArrayList<>();
+
+        if (searchingKey != null && !searchingKey.isEmpty()) {
+            searchingList.clear();
+            for (int i = 0; i < ongoingOrderData.size(); i++) {
+                if (ongoingOrderData.get(i).getOrderid().toLowerCase().startsWith(searchingKey)) {
+                    searchingList.add(ongoingOrderData.get(i));
+                }
+
+            }
+
+            OngoingOrderAdapter ongoingOrderAdapter = new OngoingOrderAdapter(getActivity(), searchingList, OngoingOrderFragment.this);
+            tableListRecylerview.setAdapter(ongoingOrderAdapter);
+        } else {
+            OngoingOrderAdapter ongoingOrderAdapter = new OngoingOrderAdapter(getActivity(), ongoingOrderData, OngoingOrderFragment.this);
+            tableListRecylerview.setAdapter(ongoingOrderAdapter);
+        }
     }
 
 
