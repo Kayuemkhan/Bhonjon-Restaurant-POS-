@@ -6,8 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -111,6 +109,8 @@ public class OngoingOrderFragment extends Fragment {
     private PaymentOptionsAdapters paymentOptionsAdapters;
     private List<Cardpinfo> cardpinfos;
     String searchValues;
+    private String suborderid;
+    List<SplitData> splitDatas;
 
     public OngoingOrderFragment(String searchValues) {
         this.searchValues = searchValues;
@@ -137,31 +137,31 @@ public class OngoingOrderFragment extends Fragment {
         splitordernumData = new ArrayList<>();
         paymentInfos = new ArrayList<>();
         cardpinfos = new ArrayList<>();
-
+        splitDatas = new ArrayList<>();
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        if (!searchValues.isEmpty()) {
-            Log.d("valueeeee", "" + searchValues);
-            List<OngoingOrderData> searchingList = new ArrayList<>();
-
-            if (searchValues != null && !searchValues.isEmpty()) {
-                searchingList.clear();
-                for (int i = 0; i < ongoingOrderData.size(); i++) {
-                    if (ongoingOrderData.get(i).getOrderid().toLowerCase().startsWith(searchValues)) {
-                        searchingList.add(ongoingOrderData.get(i));
-                    }
-                }
-                OngoingOrderAdapter ongoingOrderAdapter = new OngoingOrderAdapter(getActivity(), searchingList, OngoingOrderFragment.this);
-                tableListRecylerview.setAdapter(ongoingOrderAdapter);
-            } else {
-                OngoingOrderAdapter ongoingOrderAdapter = new OngoingOrderAdapter(getActivity(), ongoingOrderData, OngoingOrderFragment.this);
-                tableListRecylerview.setAdapter(ongoingOrderAdapter);
-            }
-        }
-    }
+//    @Override
+//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//        if (!searchValues.isEmpty()) {
+//            Log.d("valueeeee", "" + searchValues);
+//            List<OngoingOrderData> searchingList = new ArrayList<>();
+//
+//            if (searchValues != null && !searchValues.isEmpty()) {
+//                searchingList.clear();
+//                for (int i = 0; i < ongoingOrderData.size(); i++) {
+//                    if (ongoingOrderData.get(i).getOrderid().toLowerCase().startsWith(searchValues)) {
+//                        searchingList.add(ongoingOrderData.get(i));
+//                    }
+//                }
+//                OngoingOrderAdapter ongoingOrderAdapter = new OngoingOrderAdapter(getActivity(), searchingList, OngoingOrderFragment.this);
+//                tableListRecylerview.setAdapter(ongoingOrderAdapter);
+//            } else {
+//                OngoingOrderAdapter ongoingOrderAdapter = new OngoingOrderAdapter(getActivity(), ongoingOrderData, OngoingOrderFragment.this);
+//                tableListRecylerview.setAdapter(ongoingOrderAdapter);
+//            }
+//        }
+//    }
 
 
     @Override
@@ -313,9 +313,6 @@ public class OngoingOrderFragment extends Fragment {
                     Log.d("splitItemsize", "" + new Gson().toJson(splitItemsize));
 
                     if (splitData.size() > 0) {
-//                        if(itemsOfSplit.size()>1){
-//                            splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity(), itemsOfSplit.size()));
-//                        }
                         splitorderitemsnamelists.setAdapter(new SplitOrderItemsAdapters(getActivity(), splitData, OngoingOrderFragment.this));
                         spinerSplitItems.setAdapter(new ArrayAdapter<>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, itemsOfSplit));
                         spinerSplitItems.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -328,8 +325,8 @@ public class OngoingOrderFragment extends Fragment {
                                                 @Override
                                                 public void onResponse(Call<SplitordernumResponse> call, Response<SplitordernumResponse> response) {
                                                     splitordernumData.addAll(response.body().getData());
-                                                    Log.d("splitordernumdata", "" + new Gson().toJson(splitordernumData));
-                                                    splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity(), selectedSplitSizes, checkBoolean, splitordernumData));
+                                                    splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity().getApplicationContext(), selectedSplitSizes, checkBoolean, splitordernumData,splitDatas ,
+                                                            OngoingOrderFragment.this));
                                                 }
 
                                                 @Override
@@ -607,9 +604,12 @@ public class OngoingOrderFragment extends Fragment {
 
     }
 
-    public void setStatus(Boolean onclickEd) {
+    public void setStatus(Boolean onclickEd, String menuid) {
         checkBoolean = onclickEd;
-        splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity(), selectedSplitSizes, onclickEd, splitordernumData));
+        if(!menuid.isEmpty() && !suborderid.isEmpty()){
+            Log.d("allidcheckk",""+menuid+" "+" "+suborderid+" "+id+" "+orderid);
+        }
+        splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity().getApplicationContext(), selectedSplitSizes, onclickEd, splitordernumData,splitDatas , OngoingOrderFragment.this));
     }
 
 
@@ -710,4 +710,7 @@ public class OngoingOrderFragment extends Fragment {
     }
 
 
+    public void setSubOrderId(Integer splitid) {
+        suborderid = splitid.toString();
+    }
 }

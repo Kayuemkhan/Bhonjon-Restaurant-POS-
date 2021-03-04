@@ -19,44 +19,43 @@ import java.util.List;
 
 public class SplitOrderItemsAdapters extends RecyclerView.Adapter<SplitOrderItemsAdapters.ViewHolder> {
     private Context context;
-    private List<SplitData> splitData = new ArrayList<>();
+    private List<SplitData> splitDatas = new ArrayList<>();
     private OngoingOrderFragment ongoingOrderFragment;
     private Boolean onclickEd = false;
+
     public SplitOrderItemsAdapters(FragmentActivity activity, List<SplitData> splitData, OngoingOrderFragment ongoingOrderFragment) {
         this.context = activity;
-        this.splitData = splitData;
+        this.splitDatas = splitData;
         this.ongoingOrderFragment = ongoingOrderFragment;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.singlesplititemsandnumbers,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.singlesplititemsandnumbers, parent, false);
         return new SplitOrderItemsAdapters.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.splititemnames.setText(splitData.get(position).getProductName());
-        holder.splititemnumber.setText(splitData.get(position).getItemqty());
-        holder.view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onclickEd = true;
-                ongoingOrderFragment.setStatus(onclickEd);
-            }
+        holder.splititemnames.setText(splitDatas.get(position).getProductName());
+        holder.splititemnumber.setText(splitDatas.get(position).getItemqty());
+        holder.view.setOnClickListener(v -> {
+            onclickEd = true;
+            ongoingOrderFragment.setStatus(onclickEd, splitDatas.get(position).getMenuid());
         });
     }
 
     @Override
     public int getItemCount() {
-        return splitData.size();
+        return splitDatas.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView splititemnames;
         private TextView splititemnumber;
         private View view;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             view = itemView;
