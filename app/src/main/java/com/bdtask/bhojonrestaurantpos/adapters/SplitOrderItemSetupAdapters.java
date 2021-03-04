@@ -76,7 +76,7 @@ public class SplitOrderItemSetupAdapters extends RecyclerView.Adapter<SplitOrder
             int posNow = Integer.parseInt(SharedPref.read("CurrentPos",""));
             if(posNow == position){
                 holder.splititemDetailsRV.setVisibility(View.VISIBLE);
-                    holder.splititemDetailsRV.setAdapter(new SplitOrdersDetailsAdapter(context));
+                    holder.splititemDetailsRV.setAdapter(new SplitOrdersDetailsAdapter(context,holder.getAdapterPosition()));
                     Log.d("checksate",""+new Gson().toJson(""+holder.getAdapterPosition()));
             }
             else {

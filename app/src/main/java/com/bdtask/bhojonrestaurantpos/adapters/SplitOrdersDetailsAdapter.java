@@ -4,16 +4,21 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bdtask.bhojonrestaurantpos.R;
+import com.bdtask.bhojonrestaurantpos.utils.SharedPref;
 
 public class SplitOrdersDetailsAdapter extends RecyclerView.Adapter<SplitOrdersDetailsAdapter.ViewHolder> {
     private Context context;
-    public SplitOrdersDetailsAdapter(Context context) {
+    private int position;
+    public SplitOrdersDetailsAdapter(Context context, int adapterPosition) {
         this.context = context;
+        position = adapterPosition;
+        SharedPref.init(context);
     }
 
     @NonNull
@@ -25,6 +30,13 @@ public class SplitOrdersDetailsAdapter extends RecyclerView.Adapter<SplitOrdersD
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        int posNow = Integer.parseInt(SharedPref.read("CurrentPos",""));
+        if(posNow == position){
+            holder.singlespilititemdetails.setVisibility(View.VISIBLE);
+        }
+        else {
+            holder.singlespilititemdetails.setVisibility(View.GONE);
+        }
 
     }
 
@@ -34,8 +46,11 @@ public class SplitOrdersDetailsAdapter extends RecyclerView.Adapter<SplitOrdersD
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        private LinearLayout singlespilititemdetails;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            singlespilititemdetails = itemView.findViewById(R.id.singlespilititemdetails);
+
         }
     }
 }
