@@ -34,7 +34,7 @@ import retrofit2.Response;
 
 public class QROrderFragment extends Fragment {
     private WaiterService waiterService;
-    private String id;
+    private String id,orderID;
     private RecyclerView qrOrderRecylerview;
     List<QROrderData> qrOrderData = new ArrayList<>();
     private LinearLayout layoutId1;
@@ -47,6 +47,7 @@ public class QROrderFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         id = SharedPref.read("ID", "");
+        //orderID = SharedPref.read("")
         waiterService = AppConfig.getRetrofit().create(WaiterService.class);
         SharedPref.init(getActivity());
     }

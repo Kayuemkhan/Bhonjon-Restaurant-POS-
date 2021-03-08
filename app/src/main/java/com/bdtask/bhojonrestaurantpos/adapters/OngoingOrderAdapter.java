@@ -68,6 +68,7 @@ public class OngoingOrderAdapter extends RecyclerView.Adapter<OngoingOrderAdapte
             holder.cusnamelayout.setTextColor(Color.parseColor("#FFFFFF"));
             holder.cusorderlayout.setTextColor(Color.parseColor("#FFFFFF"));
             holder.cuswaiterlayout.setTextColor(Color.parseColor("#FFFFFF"));
+            SharedPref.write("OrderID",ongoingOrderData.get(row_index).getOrderid());
             ongoingOrderFragment.setAllId(ongoingOrderData.get(row_index).getOrderid(),ongoingOrderData.get(i).getGrandtotal());
             //holder.categoryImage.setColorFilter(Color.argb(255, 255, 255, 255));
 
