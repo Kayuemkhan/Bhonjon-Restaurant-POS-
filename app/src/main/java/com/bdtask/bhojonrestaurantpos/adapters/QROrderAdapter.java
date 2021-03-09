@@ -48,6 +48,8 @@ public class QROrderAdapter extends RecyclerView.Adapter<QROrderAdapter.ViewHold
         this.qrOrderDataList = qrOrderData;
         this.context = applicationContext;
         waiterService = AppConfig.getRetrofit().create(WaiterService.class);
+        SharedPref.init(context);
+        id = SharedPref.read("ID", "");
     }
 
     @NonNull
@@ -74,7 +76,6 @@ public class QROrderAdapter extends RecyclerView.Adapter<QROrderAdapter.ViewHold
                 pDialog.setConfirmText("Accpet");
                 pDialog.setCancelText("Reject");
                 orderId = qrOrderDataList.get(position).getOrderid();
-                id = SharedPref.read("ID", "");
                 Log.d("id_orderid", id + " " + orderId);
                 waiterService.acceptOrder(id, orderId).enqueue(new Callback<AcceptOrderResponse>() {
                     @Override
@@ -121,14 +122,15 @@ public class QROrderAdapter extends RecyclerView.Adapter<QROrderAdapter.ViewHold
                 cancelOrderSubmit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         String reason = reasonET3.getText().toString();
                         {
                             Log.d("checaa", "" + new Gson().toJson("OrderId: " + orderId + "id: " + id + "reason: " + reason));
                             waiterService.cancelOderResponse(id, orderId, reason).enqueue(new Callback<CancelOrderResponse>() {
                                 @Override
                                 public void onResponse(Call<CancelOrderResponse> call, Response<CancelOrderResponse> response) {
+                                    Log.d("TAG", "onResponse: "+response.body().getStatus());
                                     Toasty.info(context, "Item removed Successfully", Toasty.LENGTH_SHORT, true).show();
+                                    holder.deleteOrder.setVisibility(View.INVISIBLE);
                                     alert.dismiss();
                                 }
 
@@ -147,6 +149,7 @@ public class QROrderAdapter extends RecyclerView.Adapter<QROrderAdapter.ViewHold
                         alert.dismiss();
                     }
                 });
+
                 alert.show();
                 WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
                 Display display = wm.getDefaultDisplay();
@@ -159,6 +162,12 @@ public class QROrderAdapter extends RecyclerView.Adapter<QROrderAdapter.ViewHold
 
             }
 
+        });
+        holder.viewOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
         });
     }
 
