@@ -13,6 +13,10 @@ public class PaymentInfo {
         this.Cardpinfos = Cardpinfos;
     }
 
+
+    public PaymentInfo() {
+    }
+
     public String getPayment_type_id() {
         return payment_type_id;
     }

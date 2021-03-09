@@ -139,7 +139,7 @@ public class OngoingOrderFragment extends Fragment {
         cardpinfos = new ArrayList<>();
         splitDatas = new ArrayList<>();
     }
-    
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -394,12 +394,18 @@ public class OngoingOrderFragment extends Fragment {
         paynowTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+//                paymentInfos.add(paymentInfo);
                 for (int i = 0; i < adaptersDat.size(); i++) {
-                    PaymentInfo paymentInfo = new PaymentInfo(adaptersDat.get(i).getAmount(), adaptersDat.get(i).getPayment_type_id(), cardpinfos);
-                    paymentInfos.add(paymentInfo);
+                    PaymentInfo paymentInfo = new PaymentInfo();
+                    paymentInfo.setCardpinfos(cardpinfos);
+                    paymentInfo.setPayment_type_id(adaptersDat.get(i).getPayment_type_id());
+                    paymentInfo.setAmount(adaptersDat.get(i).getAmount());
+                    Log.d("paymentInfo",""+new Gson().toJson(paymentInfo));
+                    paymentInfos.add(i,paymentInfo);
                 }
                 Log.d("checkpayda", "id " + id + "orderid " + orderid + "grandtotal " + grandTotal + "discount " + discountETPaymentammount);
-                Log.d("paymentInfos", "" + new Gson().toJson(paymentInfos));
+                Log.d("adaptersDat", "" + new Gson().toJson(adaptersDat));
                 String payinfo = new Gson().toJson(paymentInfos);
 
             }
@@ -566,8 +572,10 @@ public class OngoingOrderFragment extends Fragment {
         }
         for (int i = 0; i < adaptersDat.size(); i++) {
             if (adapterPosition == adaptersDat.get(i).getAdapterPosition()) {
+//                Log.d("TAG", "getSelectedOptions: "+);
                 adaptersDat.get(i).setPaymentName(customerpaymentETTExt);
                 adaptersDat.get(i).setAmount(selectedPaymentOptions);
+                adaptersDat.get(i).setPayment_type_id(paymentTypeId);
                 haveToinsert = false;
                 break;
             } else {
@@ -578,7 +586,7 @@ public class OngoingOrderFragment extends Fragment {
             haveToinsert = false;
             adaptersDat.add(adaptersModel);
         }
-
+        Log.d("adaptersdat",""+new Gson().toJson(adaptersDat));
     }
 
     public void setStatus(Boolean onclickEd, String menuid) {
