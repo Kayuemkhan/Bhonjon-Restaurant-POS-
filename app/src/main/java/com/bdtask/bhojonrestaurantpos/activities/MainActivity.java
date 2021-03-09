@@ -3,6 +3,7 @@ package com.bdtask.bhojonrestaurantpos.activities;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     private EditText discountET;
     private RecyclerView subcategoryName, itemRecylerview;
     private WaiterService waiterService;
-    private String id;
+    private String id ="";
     private String getPosition;
     private String getCategoryId;
     private TextView iteminformation, itemsize, itemprice;
@@ -159,6 +160,14 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SharedPref.init(MainActivity.this);
+        if(SharedPref.read("ID","").isEmpty() ||SharedPref.read("ID","") == null ){
+            SharedPref.write("LOGGEDIN", "");
+            startActivity(new Intent(MainActivity.this,LoginActivity.class));
+            finish();
+        }
+        else {
+            id=  SharedPref.read("ID","");
+        }
         List<Foodinfo> foodinfos = new ArrayList<>();
         init();
         foodinfoFoodLists = new ArrayList<>();
@@ -171,7 +180,8 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         itemRecylerview.setLayoutManager(new GridLayoutManager(MainActivity.this, 5));
         itemRecylerview.addItemDecoration(new SpacingItemDecoration(3, Tools.dpToPx(this, 2), true));
         waiterService = AppConfig.getRetrofit().create(WaiterService.class);
-        id = SharedPref.read("ID", "");
+        //id = SharedPref.read("ID", "");
+
         getSubCategoryName();
         // When User click for new Order
         newOrder.setOnClickListener(v -> {
@@ -318,151 +328,191 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     }
 
     private void spinnercustomernamelist() {
-        waiterService.getallCustomersName(id).enqueue(new Callback<CustomerListResponse>() {
-            @Override
-            public void onResponse(Call<CustomerListResponse> call, Response<CustomerListResponse> response) {
-                customerNames = new ArrayList<>();
-                customerListData = new ArrayList<>();
-                customerListData = response.body().getData();
-                for (int i = 0; i < customerListData.size(); i++) {
-                    customerNames.add(customerListData.get(i).getCustomerName());
+        try {
+            waiterService.getallCustomersName(id).enqueue(new Callback<CustomerListResponse>() {
+                @Override
+                public void onResponse(Call<CustomerListResponse> call, Response<CustomerListResponse> response) {
+                    customerNames = new ArrayList<>();
+                    customerListData = new ArrayList<>();
+                    try {
+                        customerListData = response.body().getData();
+                        for (int i = 0; i < customerListData.size(); i++) {
+                            customerNames.add(customerListData.get(i).getCustomerName());
+                        }
+                        spinnercustomername.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, customerNames));
+                    }catch (Exception e){
+
+                    }
+
                 }
-                spinnercustomername.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, customerNames));
 
-            }
+                @Override
+                public void onFailure(Call<CustomerListResponse> call, Throwable t) {
 
-            @Override
-            public void onFailure(Call<CustomerListResponse> call, Throwable t) {
+                }
+            });
+            spinnercustomername.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    customerNameFromSpinner = spinnercustomername.getSelectedItem().toString();
+                }
 
-            }
-        });
-        spinnercustomername.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                customerNameFromSpinner = spinnercustomername.getSelectedItem().toString();
-            }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        }catch (Exception e){
 
-            }
-        });
+        }
     }
 
     private void searchableSpinnerdata() {
-        waiterService.getallCustomerTypes(id).enqueue(new Callback<CustomerTypeResponse>() {
-            @SuppressLint("ResourceType")
-            @Override
-            public void onResponse(Call<CustomerTypeResponse> call, Response<CustomerTypeResponse> response) {
-                customerTypeData = new ArrayList<>();
-                customerTypeNames = new ArrayList<>();
-                customerTypeData = response.body().getData();
-                for (int i = 0; i < customerTypeData.size(); i++) {
-                    customerTypeNames.add(customerTypeData.get(i).getTypeName());
+        try {
+            waiterService.getallCustomerTypes(id).enqueue(new Callback<CustomerTypeResponse>() {
+                @SuppressLint("ResourceType")
+                @Override
+                public void onResponse(Call<CustomerTypeResponse> call, Response<CustomerTypeResponse> response) {
+                    customerTypeData = new ArrayList<>();
+                    customerTypeNames = new ArrayList<>();
+                    try {
+                        customerTypeData = response.body().getData();
+                        for (int i = 0; i < customerTypeData.size(); i++) {
+                            customerTypeNames.add(customerTypeData.get(i).getTypeName());
+                        }
+
+                        searchableSpinnerCustomerType.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, customerTypeNames));
+                    }catch (Exception e){
+
+                    }
                 }
 
-                searchableSpinnerCustomerType.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, customerTypeNames));
-            }
+                @Override
+                public void onFailure(Call<CustomerTypeResponse> call, Throwable t) {
 
-            @Override
-            public void onFailure(Call<CustomerTypeResponse> call, Throwable t) {
+                }
+            });
+            searchableSpinnerCustomerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    customerTypeFromSpinner = searchableSpinnerCustomerType.getSelectedItem().toString();
+                }
 
-            }
-        });
-        searchableSpinnerCustomerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                customerTypeFromSpinner = searchableSpinnerCustomerType.getSelectedItem().toString();
-            }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        }catch (Exception e){
 
-            }
-        });
+        }
     }
 
     private void tablelist_spinnerdata() {
-        waiterService.getTableList(id).enqueue(new Callback<TableResponse>() {
-            @Override
-            public void onResponse(Call<TableResponse> call, Response<TableResponse> response) {
+       try {
+           waiterService.getTableList(id).enqueue(new Callback<TableResponse>() {
+               @Override
+               public void onResponse(Call<TableResponse> call, Response<TableResponse> response) {
 
-                tableListData = new ArrayList<>();
-                tableName = new ArrayList<>();
-                tableListData = response.body().getData();
-                for (int i = 0; i < tableListData.size(); i++) {
-                    tableName.add(tableListData.get(i).getTableName());
-                }
-                tablelist_spinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, tableName));
+                   tableListData = new ArrayList<>();
+                   tableName = new ArrayList<>();
+                   try {
+                       tableListData = response.body().getData();
+                       for (int i = 0; i < tableListData.size(); i++) {
+                           tableName.add(tableListData.get(i).getTableName());
+                       }
+                       tablelist_spinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, tableName));
+                   }catch (Exception e){
 
-            }
+                   }
 
-            @Override
-            public void onFailure(Call<TableResponse> call, Throwable t) {
+               }
 
-            }
-        });
-        tablelist_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                tableFromSpinner = tablelist_spinner.getSelectedItem().toString();
-            }
+               @Override
+               public void onFailure(Call<TableResponse> call, Throwable t) {
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+               }
+           });
+           tablelist_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+               @Override
+               public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                   tableFromSpinner = tablelist_spinner.getSelectedItem().toString();
+               }
 
-            }
-        });
+               @Override
+               public void onNothingSelected(AdapterView<?> parent) {
+
+               }
+           });
+       }catch (Exception e){
+
+       }
     }
 
     private void waiterslistspinnerdata() {
-        waiterService.getallWaitersList(id).enqueue(new Callback<WaiterlistResponse>() {
-            @Override
-            public void onResponse(Call<WaiterlistResponse> call, Response<WaiterlistResponse> response) {
-                waiterslist = new ArrayList<>();
-                waiterlistnames = new ArrayList<>();
-                waiterslist = response.body().getData();
-                for (int i = 0; i < waiterslist.size(); i++) {
-                    waiterlistnames.add(waiterslist.get(i).getWaitername());
+        try {
+            waiterService.getallWaitersList(id).enqueue(new Callback<WaiterlistResponse>() {
+                @Override
+                public void onResponse(Call<WaiterlistResponse> call, Response<WaiterlistResponse> response) {
+                    waiterslist = new ArrayList<>();
+                    waiterlistnames = new ArrayList<>();
+                    try {
+                        waiterslist = response.body().getData();
+                        for (int i = 0; i < waiterslist.size(); i++) {
+                            waiterlistnames.add(waiterslist.get(i).getWaitername());
+                        }
+                        spinnerwaiter.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, waiterlistnames));
+                    }catch (Exception e){
+
+                    }
                 }
-                spinnerwaiter.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, waiterlistnames));
-            }
 
-            @Override
-            public void onFailure(Call<WaiterlistResponse> call, Throwable t) {
+                @Override
+                public void onFailure(Call<WaiterlistResponse> call, Throwable t) {
 
-            }
-        });
-        spinnerwaiter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                waiterFromSpinner = spinnerwaiter.getSelectedItem().toString();
-            }
+                }
+            });
+            spinnerwaiter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    waiterFromSpinner = spinnerwaiter.getSelectedItem().toString();
+                }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
+                }
+            });
+        }catch (Exception e){
+
+        }
     }
 
 
     // All the categories name will be shown here
     public void getSubCategoryName() {
-        waiterService.getAllCategories(id).enqueue(new Callback<CategoryResponse>() {
-            @Override
-            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
-                Log.d("Response", "Onresponse" + new Gson().toJson(response.body()));
-                categorieslist = new ArrayList<>();
-                categorieslist.add(new CategoryData("0", "All Categories"));
-                categorieslist.addAll(response.body().getData());
-                subcategoryName.setAdapter(new CateroiesListNameAdapter(getApplicationContext(), categorieslist, MainActivity.this));
-            }
+        try {
+            waiterService.getAllCategories(id).enqueue(new Callback<CategoryResponse>() {
+                @Override
+                public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
+                    Log.d("Response", "Onresponse" + new Gson().toJson(response.body()));
+                    categorieslist = new ArrayList<>();
+                    categorieslist.add(new CategoryData("0", "All Categories"));
+                   try {
+                       categorieslist.addAll(response.body().getData());
+                   }catch (Exception e){
 
-            @Override
-            public void onFailure(Call<CategoryResponse> call, Throwable t) {
-            }
-        });
+                   }
+                    subcategoryName.setAdapter(new CateroiesListNameAdapter(getApplicationContext(), categorieslist, MainActivity.this));
+                }
+
+                @Override
+                public void onFailure(Call<CategoryResponse> call, Throwable t) {
+                }
+            });
+        }catch (Exception e){
+
+        }
     }
 
     // All the categories item will be shown here
@@ -471,20 +521,28 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         // All Categories List
         if (getPosition.contains("0")) {
             itemRecylerview.setVisibility(View.VISIBLE);
-            waiterService.allcategoryItemResponse(id).enqueue(new Callback<AllCategoryResponse>() {
-                @Override
-                public void onResponse(Call<AllCategoryResponse> call, Response<AllCategoryResponse> response) {
-                    Log.d("Response", "Onresponse" + new Gson().toJson(response.body()));
-                    restaurent_Vat = response.body().getData().getRestaurantvat();
-                    categoriesData = response.body().getData().getFoodinfo();
-                    restaurent_Vat = response.body().getData().getRestaurantvat();
-                    itemRecylerview.setAdapter(new AllCategoriesInfo(getApplicationContext(), categoriesData, MainActivity.this));
-                }
+            try {
+                waiterService.allcategoryItemResponse(id).enqueue(new Callback<AllCategoryResponse>() {
+                    @Override
+                    public void onResponse(Call<AllCategoryResponse> call, Response<AllCategoryResponse> response) {
+                        Log.d("Response", "Onresponse" + new Gson().toJson(response.body()));
+                        try{
+                            restaurent_Vat = response.body().getData().getRestaurantvat();
+                            categoriesData = response.body().getData().getFoodinfo();
+                            restaurent_Vat = response.body().getData().getRestaurantvat();
+                            itemRecylerview.setAdapter(new AllCategoriesInfo(getApplicationContext(), categoriesData, MainActivity.this));
+                        }catch (Exception e){
 
-                @Override
-                public void onFailure(Call<AllCategoryResponse> call, Throwable t) {
-                }
-            });
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<AllCategoryResponse> call, Throwable t) {
+                    }
+                });
+            }catch (Exception e){
+
+            }
         }
         // The other List
         else {

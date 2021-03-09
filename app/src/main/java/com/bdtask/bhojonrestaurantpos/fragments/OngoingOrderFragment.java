@@ -325,7 +325,7 @@ public class OngoingOrderFragment extends Fragment {
                                                 @Override
                                                 public void onResponse(Call<SplitordernumResponse> call, Response<SplitordernumResponse> response) {
                                                     splitordernumData.addAll(response.body().getData());
-                                                    splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity().getApplicationContext(), selectedSplitSizes, checkBoolean, splitordernumData,splitDatas ,
+                                                    splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity().getApplicationContext(), selectedSplitSizes, checkBoolean, splitordernumData, splitDatas,
                                                             OngoingOrderFragment.this));
                                                 }
 
@@ -606,10 +606,10 @@ public class OngoingOrderFragment extends Fragment {
 
     public void setStatus(Boolean onclickEd, String menuid) {
         checkBoolean = onclickEd;
-        if(!menuid.isEmpty() && !suborderid.isEmpty()){
-            Log.d("allidcheckk",""+menuid+" "+" "+suborderid+" "+id+" "+orderid);
+        if (!menuid.isEmpty() && !suborderid.isEmpty()) {
+            Log.d("allidcheckk", "" + menuid + " " + " " + suborderid + " " + id + " " + orderid);
         }
-        splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity().getApplicationContext(), selectedSplitSizes, onclickEd, splitordernumData,splitDatas , OngoingOrderFragment.this));
+        splitOrderRV.setAdapter(new SplitOrderItemSetupAdapters(getActivity().getApplicationContext(), selectedSplitSizes, onclickEd, splitordernumData, splitDatas, OngoingOrderFragment.this));
     }
 
 

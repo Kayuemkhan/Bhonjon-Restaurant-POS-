@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,8 @@ public class QROrderFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         id = SharedPref.read("ID", "");
+        orderID =  SharedPref.read("OrderID","");
+        Log.d("id&orderid",id+" "+orderID);
         //orderID = SharedPref.read("")
         waiterService = AppConfig.getRetrofit().create(WaiterService.class);
         SharedPref.init(getActivity());

@@ -1,6 +1,7 @@
 package com.bdtask.bhojonrestaurantpos.retrofit;
 
 import com.bdtask.bhojonrestaurantpos.BillAdjustment.BillAdjustmentResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.AcceptOrder.AcceptOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.AllCategoryResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.BankList.BankListResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.CancelOrder.CancelOrderResponse;
@@ -99,4 +100,8 @@ public interface WaiterService {
     @FormUrlEncoded
     @POST("splitordernum")
     Call<SplitordernumResponse> spilitItemNumResponse (@Field("id")String id, @Field("Orderid")String orderId, @Field("numberofsplit") String numberofsplit);
+    @FormUrlEncoded
+    @POST("acceptorder")
+    Call<AcceptOrderResponse> acceptOrder (@Field("id")String id, @Field("order_id")String orderId);
+
 }
