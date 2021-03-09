@@ -139,30 +139,7 @@ public class OngoingOrderFragment extends Fragment {
         cardpinfos = new ArrayList<>();
         splitDatas = new ArrayList<>();
     }
-
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//        if (!searchValues.isEmpty()) {
-//            Log.d("valueeeee", "" + searchValues);
-//            List<OngoingOrderData> searchingList = new ArrayList<>();
-//
-//            if (searchValues != null && !searchValues.isEmpty()) {
-//                searchingList.clear();
-//                for (int i = 0; i < ongoingOrderData.size(); i++) {
-//                    if (ongoingOrderData.get(i).getOrderid().toLowerCase().startsWith(searchValues)) {
-//                        searchingList.add(ongoingOrderData.get(i));
-//                    }
-//                }
-//                OngoingOrderAdapter ongoingOrderAdapter = new OngoingOrderAdapter(getActivity(), searchingList, OngoingOrderFragment.this);
-//                tableListRecylerview.setAdapter(ongoingOrderAdapter);
-//            } else {
-//                OngoingOrderAdapter ongoingOrderAdapter = new OngoingOrderAdapter(getActivity(), ongoingOrderData, OngoingOrderFragment.this);
-//                tableListRecylerview.setAdapter(ongoingOrderAdapter);
-//            }
-//        }
-//    }
-
+    
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

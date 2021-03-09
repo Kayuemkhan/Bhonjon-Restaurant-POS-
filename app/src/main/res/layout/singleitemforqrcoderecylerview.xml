@@ -23,7 +23,7 @@
             android:fontFamily="sans-serif"
             android:padding="8dp"
             android:text="4941"
-            android:textAlignment="textStart"
+            android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -35,7 +35,7 @@
             android:fontFamily="sans-serif"
             android:padding="8dp"
             android:text="Abid Muhammad"
-            android:textAlignment="textStart"
+            android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -48,7 +48,7 @@
             android:fontFamily="sans-serif"
             android:padding="8dp"
             android:text="Sakib Khan"
-            android:textAlignment="textStart"
+            android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -60,7 +60,7 @@
             android:fontFamily="sans-serif"
             android:padding="8dp"
             android:text="Table-1"
-            android:textAlignment="textStart"
+            android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -73,7 +73,7 @@
             android:fontFamily="sans-serif"
             android:padding="8dp"
             android:text="Paid"
-            android:textAlignment="textStart"
+            android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -86,7 +86,7 @@
             android:fontFamily="sans-serif"
             android:padding="8dp"
             android:text="2020-11-12"
-            android:textAlignment="textStart"
+            android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -98,7 +98,7 @@
             android:fontFamily="sans-serif"
             android:padding="8dp"
             android:text="5000.00"
-            android:textAlignment="textStart"
+            android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="20sp" />
 

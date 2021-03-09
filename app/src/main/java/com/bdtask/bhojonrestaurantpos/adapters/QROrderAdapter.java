@@ -169,6 +169,12 @@ public class QROrderAdapter extends RecyclerView.Adapter<QROrderAdapter.ViewHold
 
             }
         });
+        holder.printOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
