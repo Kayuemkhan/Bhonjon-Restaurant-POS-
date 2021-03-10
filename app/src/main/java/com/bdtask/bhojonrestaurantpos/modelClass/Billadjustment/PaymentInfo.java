@@ -5,12 +5,12 @@ import java.util.List;
 public class PaymentInfo {
     private String payment_type_id;
     private String amount;
-    private List<Cardpinfo> Cardpinfos;
+    private List<Cardpinfo> cardpinfo;
 
-    public PaymentInfo(String payment_type_id, String amount, List<Cardpinfo> Cardpinfos) {
+    public PaymentInfo(String payment_type_id, String amount, List<Cardpinfo> Cardpinfo) {
         this.payment_type_id = payment_type_id;
         this.amount = amount;
-        this.Cardpinfos = Cardpinfos;
+        this.cardpinfo = Cardpinfo;
     }
 
 
@@ -33,11 +33,11 @@ public class PaymentInfo {
         this.amount = amount;
     }
 
-    public List<Cardpinfo> getCardpinfos() {
-        return Cardpinfos;
+    public List<Cardpinfo> getCardpinfo() {
+        return cardpinfo;
     }
 
-    public void setCardpinfos(List<Cardpinfo> Cardpinfos) {
-        this.Cardpinfos = Cardpinfos;
+    public void setCardpinfo(List<Cardpinfo> Cardpinfos) {
+        this.cardpinfo = Cardpinfos;
     }
 }

@@ -46,85 +46,101 @@
                 android:weightSum="8">
 
                 <TextView
+
+                    android:fontFamily="@font/helvatica_light"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:padding="10dp"
+                    android:padding="8dp"
                     android:text="Invoice"
-                    android:textAlignment="textStart"
+                    android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
                 <TextView
+                    android:fontFamily="@font/helvatica_light"
+
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.1"
-                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:padding="8dp"
                     android:text="Customer Name"
-                    android:textAlignment="textStart"
+                    android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
                 <TextView
+                    android:fontFamily="@font/helvatica_light"
+
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:padding="10dp"
+                    android:padding="8dp"
                     android:text="Waiter"
-                    android:textAlignment="textStart"
+                    android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
                 <TextView
+                    android:fontFamily="@font/helvatica_light"
+
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:padding="10dp"
+                    android:padding="8dp"
                     android:text="Table No"
-                    android:textAlignment="textStart"
+                    android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".7"
-                    android:padding="10dp"
-                    android:text="Payment"
-                    android:textAlignment="textStart"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:fontFamily="@font/helvatica_light"
 
-                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:padding="10dp"
+                    android:padding="8dp"
+                    android:text="Payment"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:fontFamily="@font/helvatica_light"
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="8dp"
                     android:text="Date"
-                    android:textAlignment="textStart"
+                    android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
                 <TextView
+                    android:fontFamily="@font/helvatica_light"
+
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".7"
-                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:padding="8dp"
                     android:text="Ammount"
-                    android:textAlignment="textStart"
+                    android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
                 <TextView
+                    android:fontFamily="@font/helvatica_light"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.8"
-                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:padding="8dp"
                     android:text="Action"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
             </LinearLayout>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/onlineOrderRecylerview"
