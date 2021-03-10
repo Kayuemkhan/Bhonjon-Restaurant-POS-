@@ -79,6 +79,12 @@ import com.bdtask.bhojonrestaurantpos.utils.SharedPref;
 import com.google.gson.Gson;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
+import org.imaginativeworld.oopsnointernet.callbacks.ConnectionCallback;
+import org.imaginativeworld.oopsnointernet.dialogs.pendulum.DialogPropertiesPendulum;
+import org.imaginativeworld.oopsnointernet.dialogs.pendulum.NoInternetDialogPendulum;
+import org.imaginativeworld.oopsnointernet.dialogs.signal.DialogPropertiesSignal;
+import org.imaginativeworld.oopsnointernet.dialogs.signal.NoInternetDialogSignal;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -160,6 +166,73 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SharedPref.init(MainActivity.this);
+        // No Internet Dialog: Pendulam
+        NoInternetDialogPendulum.Builder builder = new NoInternetDialogPendulum.Builder(
+                this,
+                getLifecycle()
+        );
+
+        DialogPropertiesPendulum properties = builder.getDialogProperties();
+
+        properties.setConnectionCallback(new ConnectionCallback() { // Optional
+            @Override
+            public void hasActiveConnection(boolean hasActiveConnection) {
+                // ...
+            }
+        });
+
+        properties.setCancelable(false); // Optional
+        properties.setNoInternetConnectionTitle("No Internet"); // Optional
+        properties.setNoInternetConnectionMessage("Check your Internet connection and try again"); // Optional
+        properties.setShowInternetOnButtons(true); // Optional
+        properties.setPleaseTurnOnText("Please turn on"); // Optional
+        properties.setWifiOnButtonText("Wifi"); // Optional
+        properties.setMobileDataOnButtonText("Mobile data"); // Optional
+
+        properties.setOnAirplaneModeTitle("No Internet"); // Optional
+        properties.setOnAirplaneModeMessage("You have turned on the airplane mode."); // Optional
+        properties.setPleaseTurnOffText("Please turn off"); // Optional
+        properties.setAirplaneModeOffButtonText("Airplane mode"); // Optional
+        properties.setShowAirplaneModeOffButtons(true); // Optional
+
+        builder.build();
+        // No Internet Dialog: signal
+//        NoInternetDialogSignal.Builder builder = new NoInternetDialogSignal.Builder(
+//                this,
+//                getLifecycle()
+//        );
+//
+//        DialogPropertiesSignal properties = builder.getDialogProperties();
+//
+//        properties.setConnectionCallback(new ConnectionCallback() { // Optional
+//            @Override
+//            public void hasActiveConnection(boolean hasActiveConnection) {
+//                // ...
+//            }
+//        });
+//
+//        properties.setCancelable(false); // Optional
+//        properties.setNoInternetConnectionTitle("No Internet"); // Optional
+//        properties.setNoInternetConnectionMessage("Check your Internet connection and try again"); // Optional
+//        properties.setShowInternetOnButtons(true); // Optional
+//        properties.setPleaseTurnOnText("Please turn on"); // Optional
+//        properties.setWifiOnButtonText("Wifi"); // Optional
+//        properties.setMobileDataOnButtonText("Mobile data"); // Optional
+//
+//        properties.setOnAirplaneModeTitle("No Internet"); // Optional
+//        properties.setOnAirplaneModeMessage("You have turned on the airplane mode."); // Optional
+//        properties.setPleaseTurnOffText("Please turn off"); // Optional
+//        properties.setAirplaneModeOffButtonText("Airplane mode"); // Optional
+//        properties.setShowAirplaneModeOffButtons(true); // Optional
+//
+//        builder.build();
+//
+//        builder.build();
+
+
+
+
+
         if(SharedPref.read("ID","").isEmpty() ||SharedPref.read("ID","") == null ){
             SharedPref.write("LOGGEDIN", "");
             startActivity(new Intent(MainActivity.this,LoginActivity.class));

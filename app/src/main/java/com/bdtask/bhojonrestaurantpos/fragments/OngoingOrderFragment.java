@@ -392,28 +392,7 @@ public class OngoingOrderFragment extends Fragment {
         View view2 = inflater.inflate(R.layout.aleartdialog_paymentpage, null);
         builder.setView(view2);
         paynowTV = view2.findViewById(R.id.paynowTV);
-        paynowTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-//                paymentInfos.add(paymentInfo);
-                for (int i = 0; i < adaptersDat.size(); i++) {
-                    PaymentInfo paymentInfo = new PaymentInfo();
-                    paymentInfo.setCardpinfo(cardpinfos);
-                    paymentInfo.setPayment_type_id(adaptersDat.get(i).getPayment_type_id());
-                    paymentInfo.setAmount(adaptersDat.get(i).getAmount());
-                    Log.d("paymentInfo",""+new Gson().toJson(paymentInfo));
-                    paymentInfos.add(i,paymentInfo);
-                }
-                Log.d("checkpayda", "id " + id + "orderid " + orderid + "grandtotal " + grandTotal + "discount " + discountETPaymentammount);
-                Log.d("paymentInfo", "" + new Gson().toJson(paymentInfos));
-                String payinfo = new Gson().toJson(paymentInfos).toLowerCase();
-                Log.d("paymentInfo",""+new Gson().toJson(payinfo));
-//                Log.d("checkallPay","id"+id+" "+"Discount"+)
-
-
-            }
-        });
         spinnerdiscounttype = view2.findViewById(R.id.spinnerdiscounttype);
         spinnerdiscounttypedataSelection();
         discountETPayment = view2.findViewById(R.id.discountETPayment);
@@ -468,21 +447,42 @@ public class OngoingOrderFragment extends Fragment {
         });
         AlertDialog alert = builder.create();
         alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        paynowTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i = 0; i < adaptersDat.size(); i++) {
+                    PaymentInfo paymentInfo = new PaymentInfo();
+                    paymentInfo.setCardpinfo(cardpinfos);
+                    paymentInfo.setPayment_type_id(adaptersDat.get(i).getPayment_type_id());
+                    paymentInfo.setAmount(adaptersDat.get(i).getAmount());
+                    Log.d("paymentInfo",""+new Gson().toJson(paymentInfo));
+                    paymentInfos.add(i,paymentInfo);
+
+                }
+                Log.d("checkpayda", "id " + id + "orderid " + orderid + "grandtotal " + grandTotal + "discount " + discountETPaymentammount);
+                Log.d("paymentInfo", "" + new Gson().toJson(paymentInfos));
+                String payinfo = new Gson().toJson(paymentInfos).toLowerCase();
+                Log.d("paymentInfo",""+new Gson().toJson(payinfo));
+//                Log.d("checkallPay","id"+id+" "+"Discount"+)
+                waiterService.billAdjustmentResponse(id,discountETPaymentammount,grandTotal,orderid,payinfo).enqueue(new Callback<BillAdjustmentResponse>() {
+                    @Override
+                    public void onResponse(Call<BillAdjustmentResponse> call, Response<BillAdjustmentResponse> response) {
+                        Log.d("billadjustmentResponse",""+new Gson().toJson(response.body()));
+                        alert.dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(Call<BillAdjustmentResponse> call, Throwable t) {
+
+                    }
+                });
+
+            }
+        });
         closepaymentpageIV.setOnClickListener(v -> {
             alert.dismiss();
         });
-        waiterService.billAdjustmentResponse(id,discountETPaymentammount,grandTotal,orderid,payinfo).enqueue(new Callback<BillAdjustmentResponse>() {
-            @Override
-            public void onResponse(Call<BillAdjustmentResponse> call, Response<BillAdjustmentResponse> response) {
-                Log.d("billadjustmentResponse",""+new Gson().toJson(response.body()));
-                    alert.dismiss();
-            }
 
-            @Override
-            public void onFailure(Call<BillAdjustmentResponse> call, Throwable t) {
-
-            }
-        });
         alert.show();
         WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();

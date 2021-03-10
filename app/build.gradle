@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.bdtask.bhojonrestaurantpos"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -69,4 +69,7 @@ dependencies {
     //Room Database
     implementation 'androidx.room:room-runtime:2.2.6'
     annotationProcessor 'androidx.room:room-compiler:2.2.6'
+    // No Internet Dialog
+    implementation 'org.imaginativeworld.oopsnointernet:oopsnointernet:2.0.0'
+
 }

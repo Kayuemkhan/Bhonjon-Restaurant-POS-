@@ -17,11 +17,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bdtask.bhojonrestaurantpos.BillAdjustment.BillAdjustmentResponse;
 import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.activities.MainActivity;
+import com.bdtask.bhojonrestaurantpos.fragments.OngoingOrderFragment;
 import com.bdtask.bhojonrestaurantpos.modelClass.AcceptOrder.AcceptOrderResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.Billadjustment.PaymentInfo;
 import com.bdtask.bhojonrestaurantpos.modelClass.CancelOrder.CancelOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.QROrder.QROrderData;
 import com.bdtask.bhojonrestaurantpos.retrofit.AppConfig;
@@ -43,6 +47,7 @@ public class QROrderAdapter extends RecyclerView.Adapter<QROrderAdapter.ViewHold
     private String id;
     private String orderId;
     WaiterService waiterService;
+    private TextView paynowTV;
 
     public QROrderAdapter(Context applicationContext, List<QROrderData> qrOrderData) {
         this.qrOrderDataList = qrOrderData;
@@ -204,4 +209,113 @@ public class QROrderAdapter extends RecyclerView.Adapter<QROrderAdapter.ViewHold
 
         }
     }
+//    private void completeorder() {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//        LayoutInflater inflater = (LayoutInflater) context.
+//                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View view2 = inflater.inflate(R.layout.aleartdialog_paymentpage, null);
+//        builder.setView(view2);
+//        paynowTV = view2.findViewById(R.id.paynowTV);
+//        paynowTV.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+////                paymentInfos.add(paymentInfo);
+//                for (int i = 0; i < adaptersDat.size(); i++) {
+//                    PaymentInfo paymentInfo = new PaymentInfo();
+//                    paymentInfo.setCardpinfo(cardpinfos);
+//                    paymentInfo.setPayment_type_id(adaptersDat.get(i).getPayment_type_id());
+//                    paymentInfo.setAmount(adaptersDat.get(i).getAmount());
+//                    Log.d("paymentInfo",""+new Gson().toJson(paymentInfo));
+//                    paymentInfos.add(i,paymentInfo);
+//                }
+//                Log.d("checkpayda", "id " + id + "orderid " + orderid + "grandtotal " + grandTotal + "discount " + discountETPaymentammount);
+//                Log.d("paymentInfo", "" + new Gson().toJson(paymentInfos));
+//                String payinfo = new Gson().toJson(paymentInfos).toLowerCase();
+//                Log.d("paymentInfo",""+new Gson().toJson(payinfo));
+////                Log.d("checkallPay","id"+id+" "+"Discount"+)
+//
+//
+//            }
+//        });
+//        spinnerdiscounttype = view2.findViewById(R.id.spinnerdiscounttype);
+//        spinnerdiscounttypedataSelection();
+//        discountETPayment = view2.findViewById(R.id.discountETPayment);
+//        discountETPayment.setText("");
+//        getdiscountAmmount();
+//        paymentOptionsRV = view2.findViewById(R.id.paymentOptionsRV);
+//        paymentOptionsRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        closepaymentpageIV = view2.findViewById(R.id.closepaymentpageIV);
+//        paymentTV = view2.findViewById(R.id.paymentTV);
+//        addnewpaymentTV = view2.findViewById(R.id.addnewpaymentTV);
+//        TextView totalAmount = view2.findViewById(R.id.totalAmount);
+//        TextView totalDueAmount = view2.findViewById(R.id.totalDueAmount);
+//        TextView payableAmount = view2.findViewById(R.id.payableAmount);
+//        TextView changeamount = view2.findViewById(R.id.changeamount);
+//        try {
+//            if (!grandTotal.isEmpty()) {
+//                totalAmount.setText(grandTotal);
+//                totalDueAmount.setText(String.valueOf(Double.valueOf(grandTotal)));
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        paymentTV.setOnClickListener(v -> {
+//            addnewpaymentTV.setVisibility(View.VISIBLE);
+//            if (sizeList.size() == 0) {
+//                size++;
+//                sizeList.add(0, size);
+//                paymentOptionsAdapters = new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat);
+//                paymentOptionsRV.setAdapter(paymentOptionsAdapters);
+//                //createnewPaymentPage(sizeList);
+//            }
+//
+//        });
+//        addnewpaymentTV.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (sizeList.size() == 0) {
+////                    size = size + 1;
+//                    size++;
+//                    sizeList.add(0, size);
+//                    paymentOptionsAdapters = new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat);
+//                    paymentOptionsRV.setAdapter(paymentOptionsAdapters);
+//                    Log.d("sizelist", "" + new Gson().toJson(sizeList));
+//                } else {
+//                    sizeList.add(size);
+//                    paymentOptionsAdapters = new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat);
+//                    paymentOptionsAdapters.notifyItemInserted(sizeList.size() - 1);
+//                    paymentOptionsRV.scrollToPosition(sizeList.size() - 1);
+//                }
+//            }
+//        });
+//        AlertDialog alert = builder.create();
+//        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        closepaymentpageIV.setOnClickListener(v -> {
+//            alert.dismiss();
+//        });
+//        waiterService.billAdjustmentResponse(id,discountETPaymentammount,grandTotal,orderid,payinfo).enqueue(new Callback<BillAdjustmentResponse>() {
+//            @Override
+//            public void onResponse(Call<BillAdjustmentResponse> call, Response<BillAdjustmentResponse> response) {
+//                Log.d("billadjustmentResponse",""+new Gson().toJson(response.body()));
+//                alert.dismiss();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<BillAdjustmentResponse> call, Throwable t) {
+//
+//            }
+//        });
+//        alert.show();
+//        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+//        Display display = wm.getDefaultDisplay();
+//        DisplayMetrics metrics = new DisplayMetrics();
+//        display.getMetrics(metrics);
+//        Double width = metrics.widthPixels * .7;
+//        Double height = metrics.heightPixels * .7;
+//        Window win = alert.getWindow();
+//        win.setLayout(width.intValue(), height.intValue());
+//
+//    }
 }
