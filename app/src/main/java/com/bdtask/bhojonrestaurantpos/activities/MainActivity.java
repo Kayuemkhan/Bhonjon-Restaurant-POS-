@@ -321,9 +321,12 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             view_layout.setVisibility(view_layout.GONE);
             searchviewinmain.setHint("Search Food by OrderID ");
             framelayout_ongoing_order.setVisibility(View.VISIBLE);
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.framelayout_ongoing_order, new OnlineOrderFragment());
-            ft.commit();
+//            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//            ft.replace(R.id.framelayout_ongoing_order, new OnlineOrderFragment());
+//            ft.commit();
+            fm = getSupportFragmentManager();
+            getSupportFragmentManager().beginTransaction().
+                    replace(R.id.framelayout_ongoing_order, new OnlineOrderFragment(), "OnlineOderTag").commit();
         });
 
         // When user click on Quick order in new order page
@@ -390,6 +393,8 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                     fragmentDemo.serchingTableInQroder(s.toString());
 
                 } else if (SharedPref.read("State", "").contains("Onlineorder")) {
+                    OnlineOrderFragment fragmentDemo = (OnlineOrderFragment) getSupportFragmentManager().findFragmentByTag("OnlineOderTag");
+                    fragmentDemo.serchingTableInOnlineOrder(s.toString());
 
                 }
 

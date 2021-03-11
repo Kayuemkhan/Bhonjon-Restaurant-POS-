@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.bdtask.bhojonrestaurantpos.R;
+import com.bdtask.bhojonrestaurantpos.adapters.KitchenStatuAdapter;
 import com.bdtask.bhojonrestaurantpos.adapters.QROrderAdapter;
+import com.bdtask.bhojonrestaurantpos.modelClass.KithcenStatus.KitchenStatusData;
 import com.bdtask.bhojonrestaurantpos.modelClass.QROrder.QROrderData;
 import com.bdtask.bhojonrestaurantpos.modelClass.QROrder.QROrderResponse;
 import com.bdtask.bhojonrestaurantpos.retrofit.AppConfig;
@@ -77,5 +79,24 @@ public class OnlineOrderFragment extends Fragment {
 
             }
         });
+    }
+    public void serchingTableInOnlineOrder(String searchingKey){
+        List<QROrderData> searchingList = new ArrayList<>();
+
+        if (searchingKey != null && !searchingKey.isEmpty()) {
+            searchingList.clear();
+            for (int i = 0; i < qrOrderData.size(); i++) {
+                if (qrOrderData.get(i).getOrderid().toLowerCase().startsWith(searchingKey)||qrOrderData.get(i).getOrderid().toLowerCase().startsWith(searchingKey)) {
+                    searchingList.add(qrOrderData.get(i));
+                }
+
+            }
+
+            QROrderAdapter ongoingOrderAdapter = new QROrderAdapter(getActivity(), searchingList);
+            qrOrderRecylerview.setAdapter(ongoingOrderAdapter);
+        } else {
+            QROrderAdapter ongoingOrderAdapter = new QROrderAdapter(getActivity(), qrOrderData);
+            qrOrderRecylerview.setAdapter(ongoingOrderAdapter);
+        }
     }
 }
