@@ -386,7 +386,8 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                     fragmentDemo.serchingTableInKitchen(s.toString());
 
                 } else if (SharedPref.read("State", "").contains("Qrorder")) {
-
+                    QROrderFragment fragmentDemo = (QROrderFragment) getSupportFragmentManager().findFragmentByTag("QrOderTag");
+                    fragmentDemo.serchingTableInQroder(s.toString());
 
                 } else if (SharedPref.read("State", "").contains("Onlineorder")) {
 
