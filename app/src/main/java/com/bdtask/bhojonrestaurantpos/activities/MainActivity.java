@@ -50,6 +50,7 @@ import com.bdtask.bhojonrestaurantpos.adapters.AllCategoriesInfo;
 import com.bdtask.bhojonrestaurantpos.adapters.CateroiesListNameAdapter;
 import com.bdtask.bhojonrestaurantpos.adapters.FoodListAdapater;
 import com.bdtask.bhojonrestaurantpos.adapters.ItemDetailsAdapter;
+import com.bdtask.bhojonrestaurantpos.adapters.OngoingOrderAdapter;
 import com.bdtask.bhojonrestaurantpos.fragments.KitchenStatusFragment;
 import com.bdtask.bhojonrestaurantpos.fragments.OngoingOrderFragment;
 import com.bdtask.bhojonrestaurantpos.fragments.OnlineOrderFragment;
@@ -66,6 +67,7 @@ import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeData;
 import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodinfoFoodList;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodlistResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderData;
 import com.bdtask.bhojonrestaurantpos.modelClass.PlaceOrder.PlaceOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.SignupNewCustomer.SignupNewCustomerResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.WaiterList.WaiterlistData;
@@ -98,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     private EditText discountET;
     private RecyclerView subcategoryName, itemRecylerview;
     private WaiterService waiterService;
-    private String id ="";
+    private String id = "";
     private String getPosition;
     private String getCategoryId;
     private TextView iteminformation, itemsize, itemprice;
@@ -166,6 +168,10 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SharedPref.init(MainActivity.this);
+
+        SharedPref.write("State", "Neworder");
+
+
         // No Internet Dialog: Pendulam
         NoInternetDialogPendulum.Builder builder = new NoInternetDialogPendulum.Builder(
                 this,
@@ -230,16 +236,12 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 //        builder.build();
 
 
-
-
-
-        if(SharedPref.read("ID","").isEmpty() ||SharedPref.read("ID","") == null ){
+        if (SharedPref.read("ID", "").isEmpty() || SharedPref.read("ID", "") == null) {
             SharedPref.write("LOGGEDIN", "");
-            startActivity(new Intent(MainActivity.this,LoginActivity.class));
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
-        }
-        else {
-            id=  SharedPref.read("ID","");
+        } else {
+            id = SharedPref.read("ID", "");
         }
         List<Foodinfo> foodinfos = new ArrayList<>();
         init();
@@ -256,14 +258,22 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         //id = SharedPref.read("ID", "");
 
         getSubCategoryName();
+
+
         // When User click for new Order
         newOrder.setOnClickListener(v -> {
             view_layout.setVisibility(View.VISIBLE);
             framelayout_ongoing_order.setVisibility(View.GONE);
+            SharedPref.write("State", "Neworder");
+            searchviewinmain.setHint("Enter Food by Name");
         });
+
+
         // When User click for ongoing Order
         ongoingOrder.setOnClickListener(v -> {
             view_layout.setVisibility(View.GONE);
+            SharedPref.write("State", "Ongoing");
+            searchviewinmain.setHint("Search Food by OrderID or Table Name");
             framelayout_ongoing_order.setVisibility(View.VISIBLE);
             fm = getSupportFragmentManager();
 //            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -272,10 +282,14 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             getSupportFragmentManager().beginTransaction().
                     replace(R.id.framelayout_ongoing_order, new OngoingOrderFragment(""), "SOMETAG").commit();
         });
+
+
         // when user click for kitchen status
         kitchenStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPref.write("State", "Kitchen");
+                searchviewinmain.setHint("Search Food by OrderID ");
                 view_layout.setVisibility(view_layout.GONE);
                 framelayout_ongoing_order.setVisibility(View.VISIBLE);
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -283,22 +297,30 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 ft.commit();
             }
         });
+
+        // when user click for QR Order status
         qrOrder.setOnClickListener(v -> {
             view_layout.setVisibility(view_layout.GONE);
+            SharedPref.write("State", "Qrorder");
+            searchviewinmain.setHint("Search Food by OrderID ");
             framelayout_ongoing_order.setVisibility(View.VISIBLE);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.framelayout_ongoing_order, new QROrderFragment());
             ft.commit();
         });
-        onlineOrder.setOnClickListener(v -> {
 
+        // when user click for Online status
+        onlineOrder.setOnClickListener(v -> {
+            SharedPref.write("State", "Onlineorder");
             view_layout.setVisibility(view_layout.GONE);
+            searchviewinmain.setHint("Search Food by OrderID ");
             framelayout_ongoing_order.setVisibility(View.VISIBLE);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.framelayout_ongoing_order, new OnlineOrderFragment());
             ft.commit();
         });
-        // When user click on Quick Orer
+
+        // When user click on Quick order in new order page
         buttonquickorder.setOnClickListener(v -> {
             placeorderdetails();
         });
@@ -342,13 +364,26 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         searchviewinmain.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                OngoingOrderFragment fragmentDemo = (OngoingOrderFragment) getSupportFragmentManager().findFragmentByTag("SOMETAG");
-                fragmentDemo.serchingTable(s.toString());
+                if (SharedPref.read("State", "").contains("Neworder")) {
+                    serchingTableInNewOrder(s.toString());
+
+                } else if (SharedPref.read("State", "").contains("Ongoing")) {
+
+                    OngoingOrderFragment fragmentDemo = (OngoingOrderFragment) getSupportFragmentManager().findFragmentByTag("SOMETAG");
+                    fragmentDemo.serchingTable(s.toString());
+
+                } else if (SharedPref.read("State", "").contains("Kitchen")) {
+
+                } else if (SharedPref.read("State", "").contains("Qrorder")) {
+
+                } else if (SharedPref.read("State", "").contains("Onlineorder")) {
+
+                }
+
 
             }
 
@@ -413,7 +448,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                             customerNames.add(customerListData.get(i).getCustomerName());
                         }
                         spinnercustomername.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, customerNames));
-                    }catch (Exception e){
+                    } catch (Exception e) {
 
                     }
 
@@ -435,7 +470,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
@@ -455,7 +490,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                         }
 
                         searchableSpinnerCustomerType.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, customerTypeNames));
-                    }catch (Exception e){
+                    } catch (Exception e) {
 
                     }
                 }
@@ -476,50 +511,50 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
 
     private void tablelist_spinnerdata() {
-       try {
-           waiterService.getTableList(id).enqueue(new Callback<TableResponse>() {
-               @Override
-               public void onResponse(Call<TableResponse> call, Response<TableResponse> response) {
+        try {
+            waiterService.getTableList(id).enqueue(new Callback<TableResponse>() {
+                @Override
+                public void onResponse(Call<TableResponse> call, Response<TableResponse> response) {
 
-                   tableListData = new ArrayList<>();
-                   tableName = new ArrayList<>();
-                   try {
-                       tableListData = response.body().getData();
-                       for (int i = 0; i < tableListData.size(); i++) {
-                           tableName.add(tableListData.get(i).getTableName());
-                       }
-                       tablelist_spinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, tableName));
-                   }catch (Exception e){
+                    tableListData = new ArrayList<>();
+                    tableName = new ArrayList<>();
+                    try {
+                        tableListData = response.body().getData();
+                        for (int i = 0; i < tableListData.size(); i++) {
+                            tableName.add(tableListData.get(i).getTableName());
+                        }
+                        tablelist_spinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, tableName));
+                    } catch (Exception e) {
 
-                   }
+                    }
 
-               }
+                }
 
-               @Override
-               public void onFailure(Call<TableResponse> call, Throwable t) {
+                @Override
+                public void onFailure(Call<TableResponse> call, Throwable t) {
 
-               }
-           });
-           tablelist_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-               @Override
-               public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                   tableFromSpinner = tablelist_spinner.getSelectedItem().toString();
-               }
+                }
+            });
+            tablelist_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    tableFromSpinner = tablelist_spinner.getSelectedItem().toString();
+                }
 
-               @Override
-               public void onNothingSelected(AdapterView<?> parent) {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-               }
-           });
-       }catch (Exception e){
+                }
+            });
+        } catch (Exception e) {
 
-       }
+        }
     }
 
     private void waiterslistspinnerdata() {
@@ -535,7 +570,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                             waiterlistnames.add(waiterslist.get(i).getWaitername());
                         }
                         spinnerwaiter.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, waiterlistnames));
-                    }catch (Exception e){
+                    } catch (Exception e) {
 
                     }
                 }
@@ -556,7 +591,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
@@ -571,11 +606,11 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                     Log.d("Response", "Onresponse" + new Gson().toJson(response.body()));
                     categorieslist = new ArrayList<>();
                     categorieslist.add(new CategoryData("0", "All Categories"));
-                   try {
-                       categorieslist.addAll(response.body().getData());
-                   }catch (Exception e){
+                    try {
+                        categorieslist.addAll(response.body().getData());
+                    } catch (Exception e) {
 
-                   }
+                    }
                     subcategoryName.setAdapter(new CateroiesListNameAdapter(getApplicationContext(), categorieslist, MainActivity.this));
                 }
 
@@ -583,7 +618,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 public void onFailure(Call<CategoryResponse> call, Throwable t) {
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
@@ -599,12 +634,12 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                     @Override
                     public void onResponse(Call<AllCategoryResponse> call, Response<AllCategoryResponse> response) {
                         Log.d("Response", "Onresponse" + new Gson().toJson(response.body()));
-                        try{
+                        try {
                             restaurent_Vat = response.body().getData().getRestaurantvat();
                             categoriesData = response.body().getData().getFoodinfo();
                             restaurent_Vat = response.body().getData().getRestaurantvat();
                             itemRecylerview.setAdapter(new AllCategoriesInfo(getApplicationContext(), categoriesData, MainActivity.this));
-                        }catch (Exception e){
+                        } catch (Exception e) {
 
                         }
                     }
@@ -613,7 +648,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                     public void onFailure(Call<AllCategoryResponse> call, Throwable t) {
                     }
                 });
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
         }
@@ -1244,5 +1279,26 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 Toasty.info(MainActivity.this, "Onfailure: " + t, Toasty.LENGTH_SHORT, true).show();
             }
         });
+    }
+
+    public void serchingTableInNewOrder(String searchingKey) {
+        Log.d("valueeeee", "" + searchingKey);
+        List<Foodinfo> searchingList = new ArrayList<>();
+
+        if (searchingKey != null && !searchingKey.isEmpty()) {
+            searchingList.clear();
+            for (int i = 0; i < categoriesData.size(); i++) {
+                if (categoriesData.get(i).getProductName().toLowerCase().startsWith(searchingKey)) {
+                    searchingList.add(categoriesData.get(i));
+                }
+
+            }
+
+            AllCategoriesInfo ongoingOrderAdapter = new AllCategoriesInfo(getApplicationContext(), searchingList, MainActivity.this);
+            itemRecylerview.setAdapter(ongoingOrderAdapter);
+        } else {
+            AllCategoriesInfo ongoingOrderAdapter = new AllCategoriesInfo(getApplicationContext(), categoriesData, MainActivity.this);
+            itemRecylerview.setAdapter(ongoingOrderAdapter);
+        }
     }
 }
