@@ -42,7 +42,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="@dimen/_5sdp"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white" />
+                android:textColorHint="@color/overlay_light_40" />
 
         </LinearLayout>
 

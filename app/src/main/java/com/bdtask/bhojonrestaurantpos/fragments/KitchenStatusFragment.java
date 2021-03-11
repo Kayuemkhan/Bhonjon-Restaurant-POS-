@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 
 import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.adapters.KitchenStatuAdapter;
+import com.bdtask.bhojonrestaurantpos.adapters.OngoingOrderAdapter;
 import com.bdtask.bhojonrestaurantpos.modelClass.KithcenStatus.Iteminfo;
 import com.bdtask.bhojonrestaurantpos.modelClass.KithcenStatus.KitchenStatusData;
 import com.bdtask.bhojonrestaurantpos.modelClass.KithcenStatus.KitchenStatusResponse;
@@ -113,6 +114,24 @@ public class KitchenStatusFragment extends Fragment {
 
         return view;
     }
+    public void serchingTableInKitchen(String searchingKey){
+        List<KitchenStatusData> searchingList = new ArrayList<>();
 
+        if (searchingKey != null && !searchingKey.isEmpty()) {
+            searchingList.clear();
+            for (int i = 0; i < kitchenStatusData.size(); i++) {
+                if (kitchenStatusData.get(i).getOrderid().toLowerCase().startsWith(searchingKey)||kitchenStatusData.get(i).getOrderid().toLowerCase().startsWith(searchingKey)) {
+                    searchingList.add(kitchenStatusData.get(i));
+                }
+
+            }
+
+            KitchenStatuAdapter ongoingOrderAdapter = new KitchenStatuAdapter(getActivity(), searchingList);
+            kitchenStatusrecylerview.setAdapter(ongoingOrderAdapter);
+        } else {
+            KitchenStatuAdapter ongoingOrderAdapter = new KitchenStatuAdapter(getActivity(), kitchenStatusData);
+            kitchenStatusrecylerview.setAdapter(ongoingOrderAdapter);
+        }
+    }
 
 }

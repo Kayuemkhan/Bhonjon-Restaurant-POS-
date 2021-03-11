@@ -113,8 +113,8 @@ public class OngoingOrderFragment extends Fragment {
     private String suborderid;
     List<SplitData> splitDatas;
 
-    public OngoingOrderFragment(String searchValues) {
-        this.searchValues = searchValues;
+    public OngoingOrderFragment() {
+
     }
 
 
@@ -699,7 +699,7 @@ public class OngoingOrderFragment extends Fragment {
         if (searchingKey != null && !searchingKey.isEmpty()) {
             searchingList.clear();
             for (int i = 0; i < ongoingOrderData.size(); i++) {
-                if (ongoingOrderData.get(i).getOrderid().toLowerCase().startsWith(searchingKey)) {
+                if (ongoingOrderData.get(i).getOrderid().toLowerCase().startsWith(searchingKey)||ongoingOrderData.get(i).getTablename().toLowerCase().startsWith(searchingKey)) {
                     searchingList.add(ongoingOrderData.get(i));
                 }
 

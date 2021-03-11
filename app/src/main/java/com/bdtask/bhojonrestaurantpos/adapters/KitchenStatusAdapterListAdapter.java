@@ -38,7 +38,9 @@ public class KitchenStatusAdapterListAdapter extends RecyclerView.Adapter<Kitche
 
     @Override
     public int getItemCount() {
-        return iteminfos.size();
+
+            return iteminfos.size();
+
     }
 
     public class Viewholder extends RecyclerView.ViewHolder {

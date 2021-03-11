@@ -170,8 +170,6 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         SharedPref.init(MainActivity.this);
 
         SharedPref.write("State", "Neworder");
-
-
         // No Internet Dialog: Pendulam
         NoInternetDialogPendulum.Builder builder = new NoInternetDialogPendulum.Builder(
                 this,
@@ -245,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         }
         List<Foodinfo> foodinfos = new ArrayList<>();
         init();
+        searchviewinmain.setHint("Search Food by Name");
         foodinfoFoodLists = new ArrayList<>();
         list = new ArrayList<>();
         itemshowRecylerview.setLayoutManager(new LinearLayoutManager(MainActivity.this));
@@ -280,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 //            ft.replace(R.id.framelayout_ongoing_order, new OngoingOrderFragment(""),"SOMETAG");
 //            ft.commit();
             getSupportFragmentManager().beginTransaction().
-                    replace(R.id.framelayout_ongoing_order, new OngoingOrderFragment(""), "SOMETAG").commit();
+                    replace(R.id.framelayout_ongoing_order, new OngoingOrderFragment(), "SOMETAG").commit();
         });
 
 
@@ -292,9 +291,12 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 searchviewinmain.setHint("Search Food by OrderID ");
                 view_layout.setVisibility(view_layout.GONE);
                 framelayout_ongoing_order.setVisibility(View.VISIBLE);
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.framelayout_ongoing_order, new KitchenStatusFragment());
-                ft.commit();
+//                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//                ft.replace(R.id.framelayout_ongoing_order, new KitchenStatusFragment());
+//                ft.commit();
+                fm = getSupportFragmentManager();
+                getSupportFragmentManager().beginTransaction().
+                        replace(R.id.framelayout_ongoing_order, new KitchenStatusFragment(), "KitchenTag").commit();
             }
         });
 
@@ -304,10 +306,14 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             SharedPref.write("State", "Qrorder");
             searchviewinmain.setHint("Search Food by OrderID ");
             framelayout_ongoing_order.setVisibility(View.VISIBLE);
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.framelayout_ongoing_order, new QROrderFragment());
-            ft.commit();
+//            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//            ft.replace(R.id.framelayout_ongoing_order, new QROrderFragment());
+//            ft.commit();
+            fm = getSupportFragmentManager();
+            getSupportFragmentManager().beginTransaction().
+                    replace(R.id.framelayout_ongoing_order, new QROrderFragment(), "QrOderTag").commit();
         });
+
 
         // when user click for Online status
         onlineOrder.setOnClickListener(v -> {
@@ -372,13 +378,15 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                     serchingTableInNewOrder(s.toString());
 
                 } else if (SharedPref.read("State", "").contains("Ongoing")) {
-
                     OngoingOrderFragment fragmentDemo = (OngoingOrderFragment) getSupportFragmentManager().findFragmentByTag("SOMETAG");
                     fragmentDemo.serchingTable(s.toString());
 
                 } else if (SharedPref.read("State", "").contains("Kitchen")) {
+                    KitchenStatusFragment fragmentDemo = (KitchenStatusFragment) getSupportFragmentManager().findFragmentByTag("KitchenTag");
+                    fragmentDemo.serchingTableInKitchen(s.toString());
 
                 } else if (SharedPref.read("State", "").contains("Qrorder")) {
+
 
                 } else if (SharedPref.read("State", "").contains("Onlineorder")) {
 
