@@ -36,6 +36,7 @@ import com.bdtask.bhojonrestaurantpos.BillAdjustment.BillAdjustmentResponse;
 import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.SpacingItemDecoration;
 import com.bdtask.bhojonrestaurantpos.Tools;
+import com.bdtask.bhojonrestaurantpos.adapters.MergeOrderAdapter;
 import com.bdtask.bhojonrestaurantpos.adapters.OngoingOrderAdapter;
 import com.bdtask.bhojonrestaurantpos.adapters.PaymentOptionsAdapters;
 import com.bdtask.bhojonrestaurantpos.adapters.SplitOrderItemSetupAdapters;
@@ -46,6 +47,7 @@ import com.bdtask.bhojonrestaurantpos.modelClass.BankList.BankListResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Billadjustment.Cardpinfo;
 import com.bdtask.bhojonrestaurantpos.modelClass.Billadjustment.PaymentInfo;
 import com.bdtask.bhojonrestaurantpos.modelClass.CancelOrder.CancelOrderResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.MergeOrder.MergeOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderData;
 import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.PaymentList.PaymentData;
@@ -54,6 +56,7 @@ import com.bdtask.bhojonrestaurantpos.modelClass.Splitorder.SplitData;
 import com.bdtask.bhojonrestaurantpos.modelClass.Splitorder.SplitResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Splitordernum.SplitordernumData;
 import com.bdtask.bhojonrestaurantpos.modelClass.Splitordernum.SplitordernumResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.TableListUpdate.TableDetails;
 import com.bdtask.bhojonrestaurantpos.modelClass.TerminalList.TerminalData;
 import com.bdtask.bhojonrestaurantpos.modelClass.TerminalList.TerminalResponse;
 import com.bdtask.bhojonrestaurantpos.retrofit.AppConfig;
@@ -71,6 +74,7 @@ import retrofit2.Response;
 
 
 public class OngoingOrderFragment extends Fragment {
+    private RecyclerView mergeLists;
     private String discount, grandtotal, payinfo;
     private List<PaymentData> paymentData;
     private List<String> paymentName;
@@ -80,7 +84,7 @@ public class OngoingOrderFragment extends Fragment {
     private ImageView closepaymentpageIV;
     private WaiterService waiterService;
     private LinearLayout completeorderTV, spilitTV, mergeTV, editTV, posinvoiceTV, duePOSTV, cancelTV;
-    private String id, selectedDiscountType, discountETPaymentammount ="";
+    private String id, selectedDiscountType, discountETPaymentammount = "";
     private RecyclerView tableListRecylerview;
     private List<OngoingOrderData> ongoingOrderData = new ArrayList<>();
     private LinearLayout lowerpartOfOngoingLayout, lowerpartOfOngoingLayout2, addnewpaymentTV;
@@ -112,16 +116,20 @@ public class OngoingOrderFragment extends Fragment {
     String searchValues;
     private String suborderid;
     List<SplitData> splitDatas;
+    private List<TableDetails> tableDetails;
+    private List<String> orderIdLists;
 
     public OngoingOrderFragment() {
 
     }
 
+    private float totalAmount;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         id = SharedPref.read("ID", "");
+        Log.d("idcheckinongoingorder", "" + id);
         waiterService = AppConfig.getRetrofit().create(WaiterService.class);
         SharedPref.init(getActivity());
         paymentData = new ArrayList<>();
@@ -139,6 +147,8 @@ public class OngoingOrderFragment extends Fragment {
         paymentInfos = new ArrayList<>();
         cardpinfos = new ArrayList<>();
         splitDatas = new ArrayList<>();
+        tableDetails = new ArrayList<>();
+        orderIdLists = new ArrayList<>();
     }
 
 
@@ -222,7 +232,7 @@ public class OngoingOrderFragment extends Fragment {
             splitOrder();
         });
         mergeTV.setOnClickListener(v -> {
-            Toasty.info(getContext(), "Single Item Can't be Merged", Toasty.LENGTH_SHORT).show();
+            mergeOderOpeartions();
         });
         editTV.setOnClickListener(v -> {
             Toasty.info(getContext(), "No Action", Toasty.LENGTH_SHORT).show();
@@ -237,6 +247,134 @@ public class OngoingOrderFragment extends Fragment {
             cancelOrder();
         });
         return view;
+    }
+
+    private void mergeOderOpeartions() {
+        grandTotal = "";
+        if (tableDetails.size() < 2) {
+            Toasty.info(getContext(), "Please Select 2 items", Toasty.LENGTH_SHORT).show();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            LayoutInflater inflater = (LayoutInflater) getContext().
+                    getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view2 = inflater.inflate(R.layout.aleartdialog_paymentpage, null);
+            builder.setView(view2);
+            paynowTV = view2.findViewById(R.id.paynowTV);
+            mergeLists = view2.findViewById(R.id.mergeLists);
+            spinnerdiscounttype = view2.findViewById(R.id.spinnerdiscounttype);
+            spinnerdiscounttypedataSelection();
+            discountETPayment = view2.findViewById(R.id.discountETPayment);
+            discountETPayment.setText("");
+            getdiscountAmmount();
+            paymentOptionsRV = view2.findViewById(R.id.paymentOptionsRV);
+            paymentOptionsRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+            closepaymentpageIV = view2.findViewById(R.id.closepaymentpageIV);
+            paymentTV = view2.findViewById(R.id.paymentTV);
+            addnewpaymentTV = view2.findViewById(R.id.addnewpaymentTV);
+            TextView totalAmount = view2.findViewById(R.id.totalAmount);
+            TextView totalDueAmount = view2.findViewById(R.id.totalDueAmount);
+            TextView payableAmount = view2.findViewById(R.id.payableAmount);
+            TextView changeamount = view2.findViewById(R.id.changeamount);
+            int total = 0;
+            mergeLists.setLayoutManager(new LinearLayoutManager(getActivity()));
+            mergeLists.setAdapter(new MergeOrderAdapter(getActivity(),tableDetails)));
+            for (int i = 0; i < tableDetails.size(); i++) {
+                orderIdLists.add(tableDetails.get(i).getOrderid());
+                total += Integer.valueOf(tableDetails.get(i).getGrandTotal());
+            }
+            grandTotal = String.valueOf(total);
+            try {
+                if (!grandTotal.isEmpty()) {
+                    totalAmount.setText(grandTotal);
+                    totalDueAmount.setText(String.valueOf(Double.valueOf(grandTotal)));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            paymentTV.setOnClickListener(v -> {
+                addnewpaymentTV.setVisibility(View.VISIBLE);
+                if (sizeList.size() == 0) {
+                    size++;
+                    sizeList.add(0, size);
+                    paymentOptionsAdapters = new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat);
+                    paymentOptionsRV.setAdapter(paymentOptionsAdapters);
+                    //createnewPaymentPage(sizeList);
+                }
+
+            });
+            addnewpaymentTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (sizeList.size() == 0) {
+//                    size = size + 1;
+                        size++;
+                        sizeList.add(0, size);
+                        paymentOptionsAdapters = new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat);
+                        paymentOptionsRV.setAdapter(paymentOptionsAdapters);
+                        Log.d("sizelist", "" + new Gson().toJson(sizeList));
+                    } else {
+                        sizeList.add(size);
+                        paymentOptionsAdapters = new PaymentOptionsAdapters(getActivity(), sizeList, OngoingOrderFragment.this, paymentName, terminalName, bankListName, adaptersDat);
+                        paymentOptionsAdapters.notifyItemInserted(sizeList.size() - 1);
+                        paymentOptionsRV.scrollToPosition(sizeList.size() - 1);
+                    }
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            paynowTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (int i = 0; i < adaptersDat.size(); i++) {
+                        PaymentInfo paymentInfo = new PaymentInfo();
+                        paymentInfo.setCardpinfo(cardpinfos);
+                        paymentInfo.setPayment_type_id(adaptersDat.get(i).getPayment_type_id());
+                        paymentInfo.setAmount(adaptersDat.get(i).getAmount());
+                        Log.d("paymentInfo", "" + new Gson().toJson(paymentInfo));
+                        paymentInfos.add(i, paymentInfo);
+
+                    }
+                    Log.d("checkpayda", "id " + id + "orderid " + orderid + "grandtotal " + grandTotal + "discount " + discountETPaymentammount);
+                    Log.d("paymentInfo", "" + new Gson().toJson(paymentInfos));
+                    String payinfo = new Gson().toJson(paymentInfos).toLowerCase();
+                    Log.d("paymentInfo", "" + new Gson().toJson(payinfo));
+                    Log.d("checkallPay", "id" + id + " " + "Discount" + discountETPaymentammount + "grandTotal" + grandTotal + "orderid" + new Gson().toJson(orderIdLists) +
+                            "payinfo" + payinfo);
+
+                    Log.d("orderLists", new Gson().toJson(orderIdLists));
+                    waiterService.mergeOrderResponse(id, discountETPaymentammount, grandTotal, String.valueOf(orderIdLists), payinfo).enqueue(new Callback<MergeOrderResponse>() {
+                        @Override
+                        public void onResponse(Call<MergeOrderResponse> call, Response<MergeOrderResponse> response) {
+                            String res = response.body().getData().getMargeOrderid();
+                            Log.d("resssssss",res);
+                        }
+
+                        @Override
+                        public void onFailure(Call<MergeOrderResponse> call, Throwable t) {
+
+                        }
+                    });
+
+                }
+            });
+            closepaymentpageIV.setOnClickListener(v -> {
+                alert.dismiss();
+            });
+
+            alert.show();
+            WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+            Display display = wm.getDefaultDisplay();
+            DisplayMetrics metrics = new DisplayMetrics();
+            display.getMetrics(metrics);
+            Double width = metrics.widthPixels * .7;
+            Double height = metrics.heightPixels * .7;
+            Window win = alert.getWindow();
+            win.setLayout(width.intValue(), height.intValue());
+
+
+        }
+
     }
 
     private void splitOrder() {
@@ -455,19 +593,19 @@ public class OngoingOrderFragment extends Fragment {
                     paymentInfo.setCardpinfo(cardpinfos);
                     paymentInfo.setPayment_type_id(adaptersDat.get(i).getPayment_type_id());
                     paymentInfo.setAmount(adaptersDat.get(i).getAmount());
-                    Log.d("paymentInfo",""+new Gson().toJson(paymentInfo));
-                    paymentInfos.add(i,paymentInfo);
+                    Log.d("paymentInfo", "" + new Gson().toJson(paymentInfo));
+                    paymentInfos.add(i, paymentInfo);
 
                 }
                 Log.d("checkpayda", "id " + id + "orderid " + orderid + "grandtotal " + grandTotal + "discount " + discountETPaymentammount);
                 Log.d("paymentInfo", "" + new Gson().toJson(paymentInfos));
                 String payinfo = new Gson().toJson(paymentInfos).toLowerCase();
-                Log.d("paymentInfo",""+new Gson().toJson(payinfo));
+                Log.d("paymentInfo", "" + new Gson().toJson(payinfo));
 //                Log.d("checkallPay","id"+id+" "+"Discount"+)
-                waiterService.billAdjustmentResponse(id,discountETPaymentammount,grandTotal,orderid,payinfo).enqueue(new Callback<BillAdjustmentResponse>() {
+                waiterService.billAdjustmentResponse(id, discountETPaymentammount, grandTotal, orderid, payinfo).enqueue(new Callback<BillAdjustmentResponse>() {
                     @Override
                     public void onResponse(Call<BillAdjustmentResponse> call, Response<BillAdjustmentResponse> response) {
-                        Log.d("billadjustmentResponse",""+new Gson().toJson(response.body()));
+                        Log.d("billadjustmentResponse", "" + new Gson().toJson(response.body()));
                         alert.dismiss();
                     }
 
@@ -604,7 +742,7 @@ public class OngoingOrderFragment extends Fragment {
             haveToinsert = false;
             adaptersDat.add(adaptersModel);
         }
-        Log.d("adaptersdat",""+new Gson().toJson(adaptersDat));
+        Log.d("adaptersdat", "" + new Gson().toJson(adaptersDat));
     }
 
     public void setStatus(Boolean onclickEd, String menuid) {
@@ -649,13 +787,14 @@ public class OngoingOrderFragment extends Fragment {
         });
     }
 
-    public void postworkForTable(Boolean aBoolean) {
+    public void showingLowerpartOfLayout(Boolean aBoolean) {
         if (aBoolean == true) {
             lowerpartOfOngoingLayout2.setVisibility(View.GONE);
         }
     }
 
     private void duePOSPrint() {
+
         AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = (LayoutInflater) getContext().
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -690,6 +829,8 @@ public class OngoingOrderFragment extends Fragment {
     public void setAllId(String orderids, Integer grandtotal) {
         orderid = orderids;
         grandTotal = grandtotal.toString();
+        SharedPref.write("OrderID", orderids);
+        Log.d("chekOrderid", "" + orderid + " " + grandTotal);
     }
 
     public void serchingTable(String searchingKey) {
@@ -699,10 +840,9 @@ public class OngoingOrderFragment extends Fragment {
         if (searchingKey != null && !searchingKey.isEmpty()) {
             searchingList.clear();
             for (int i = 0; i < ongoingOrderData.size(); i++) {
-                if (ongoingOrderData.get(i).getOrderid().toLowerCase().startsWith(searchingKey)||ongoingOrderData.get(i).getTablename().toLowerCase().startsWith(searchingKey)) {
+                if (ongoingOrderData.get(i).getOrderid().toLowerCase().startsWith(searchingKey) || ongoingOrderData.get(i).getTablename().toLowerCase().startsWith(searchingKey)) {
                     searchingList.add(ongoingOrderData.get(i));
                 }
-
             }
 
             OngoingOrderAdapter ongoingOrderAdapter = new OngoingOrderAdapter(getActivity(), searchingList, OngoingOrderFragment.this);
@@ -717,4 +857,37 @@ public class OngoingOrderFragment extends Fragment {
     public void setSubOrderId(Integer splitid) {
         suborderid = splitid.toString();
     }
+
+    public boolean checkChoiceTable() {
+
+        if (tableDetails.size() == 0) {
+            return true;
+        }
+
+        if (tableDetails.size() < 3) {
+            return true;
+        }
+        return false;
+    }
+
+    public void setTableData(String orderid, Integer grandTotalData) {
+        TableDetails tableDetails1 = new TableDetails(orderid, String.valueOf(grandTotalData));
+        tableDetails.add(tableDetails1);
+        if (tableDetails.size() == 1) {
+            setAllId(orderid, grandTotalData);
+        }
+    }
+
+    public int checktableExistence(String orderid) {
+        Log.d("table_details", "" + new Gson().toJson(tableDetails));
+        for (int i = 0; i < tableDetails.size(); i++) {
+            if (tableDetails.get(i).getOrderid().contains(orderid)) {
+                Log.d("get_table_num", "" + new Gson().toJson(tableDetails.get(i).getOrderid()));
+                tableDetails.remove(i);
+                return 1;
+            }
+        }
+        return 0;
+    }
+
 }

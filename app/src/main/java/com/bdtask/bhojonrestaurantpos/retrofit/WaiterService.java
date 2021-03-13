@@ -10,6 +10,7 @@ import com.bdtask.bhojonrestaurantpos.modelClass.CustomerList.CustomerListRespon
 import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodlistResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.KithcenStatus.KitchenStatusResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.MergeOrder.MergeOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.PaymentList.PaymentResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.PlaceOrder.PlaceOrderResponse;
@@ -94,6 +95,10 @@ public interface WaiterService {
     @POST("billadjustment")
     Call<BillAdjustmentResponse> billAdjustmentResponse(@Field("id") String id,@Field("discount") String discount,@Field("grandtotal") String grandtotal,
                                                         @Field("orderid") String orderid,@Field("payinfo") String payinfo);
+    @FormUrlEncoded
+    @POST("billadjustmentmarge")
+    Call<MergeOrderResponse> mergeOrderResponse(@Field("id") String id, @Field("discount") String discount, @Field("grandtotal") String grandtotal,
+                                                    @Field("orderid") String orderid, @Field("payinfo") String payinfo);
     @FormUrlEncoded
     @POST("splitorder")
     Call<SplitResponse> spilitItemResponse (@Field("id")String id,@Field("Orderid")String orderId);
