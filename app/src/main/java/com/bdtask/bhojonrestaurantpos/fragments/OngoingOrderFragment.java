@@ -259,6 +259,8 @@ public class OngoingOrderFragment extends Fragment {
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view2 = inflater.inflate(R.layout.aleartdialog_paymentpage, null);
             builder.setView(view2);
+            LinearLayout mergeOrderLayout = view2.findViewById(R.id.mergeOrderLayout);
+            mergeOrderLayout.setVisibility(View.VISIBLE);
             paynowTV = view2.findViewById(R.id.paynowTV);
             mergeLists = view2.findViewById(R.id.mergeLists);
             spinnerdiscounttype = view2.findViewById(R.id.spinnerdiscounttype);
@@ -277,7 +279,7 @@ public class OngoingOrderFragment extends Fragment {
             TextView changeamount = view2.findViewById(R.id.changeamount);
             int total = 0;
             mergeLists.setLayoutManager(new LinearLayoutManager(getActivity()));
-            mergeLists.setAdapter(new MergeOrderAdapter(getActivity(),tableDetails)));
+            mergeLists.setAdapter(new MergeOrderAdapter(getActivity(),tableDetails));
             for (int i = 0; i < tableDetails.size(); i++) {
                 orderIdLists.add(tableDetails.get(i).getOrderid());
                 total += Integer.valueOf(tableDetails.get(i).getGrandTotal());
@@ -348,6 +350,7 @@ public class OngoingOrderFragment extends Fragment {
                         public void onResponse(Call<MergeOrderResponse> call, Response<MergeOrderResponse> response) {
                             String res = response.body().getData().getMargeOrderid();
                             Log.d("resssssss",res);
+                            alert.dismiss();
                         }
 
                         @Override
@@ -530,7 +533,8 @@ public class OngoingOrderFragment extends Fragment {
         View view2 = inflater.inflate(R.layout.aleartdialog_paymentpage, null);
         builder.setView(view2);
         paynowTV = view2.findViewById(R.id.paynowTV);
-
+        LinearLayout mergeOrderLayout = view2.findViewById(R.id.mergeOrderLayout);
+        mergeOrderLayout.setVisibility(View.GONE);
         spinnerdiscounttype = view2.findViewById(R.id.spinnerdiscounttype);
         spinnerdiscounttypedataSelection();
         discountETPayment = view2.findViewById(R.id.discountETPayment);
@@ -640,6 +644,8 @@ public class OngoingOrderFragment extends Fragment {
         View view2 = inflater.inflate(R.layout.aleartdialog_paymentpage, null);
         builder.setView(view2);
         paynowTV = view2.findViewById(R.id.paynowTV);
+        LinearLayout mergeOrderLayout = view2.findViewById(R.id.mergeOrderLayout);
+        mergeOrderLayout.setVisibility(View.GONE);
         paynowTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

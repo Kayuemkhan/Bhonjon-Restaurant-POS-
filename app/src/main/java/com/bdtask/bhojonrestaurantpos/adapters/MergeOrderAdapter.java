@@ -33,12 +33,15 @@ public class MergeOrderAdapter extends RecyclerView.Adapter<MergeOrderAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull MergeOrderAdapter.Viewholder holder, int position) {
-
+        holder.orderNumberMergeOrder.setText(tableDetails.get(position).getOrderid());
+        holder.totalAmountMergeOrder.setText(tableDetails.get(position).getGrandTotal());
+        holder.dueAmountMergerOrder.setText("0");
+        holder.paidAmountMergeOrder.setText(tableDetails.get(position).getGrandTotal());
     }
 
     @Override
     public int getItemCount() {
-        return 2;
+        return tableDetails.size();
     }
 
     public class Viewholder extends RecyclerView.ViewHolder {
