@@ -21,4 +21,10 @@
     <string name="select_your_payment_methods">Select your payment methods</string>
     <string name="discount_type">Discount Type</string>
     <string name="discount">Discount</string>
+    <string name="address"
+        >
+        Mannan Plaza, Khilkhet, Dhaka-1215.
+\nMobile: 0123456789
+\nEmail Address: bdtask@gmail.com
+    </string>
 </resources>

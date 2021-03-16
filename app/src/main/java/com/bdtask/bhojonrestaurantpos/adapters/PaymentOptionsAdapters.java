@@ -59,6 +59,7 @@ public class PaymentOptionsAdapters extends RecyclerView.Adapter<PaymentOptionsA
         this.adaptersData = adaptersDat;
 
     }
+//    public PaymentOptionsAdapters(Context context,List<Integer> size,Ongo)
 
     @NonNull
     @Override

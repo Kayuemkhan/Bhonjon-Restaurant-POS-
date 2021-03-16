@@ -485,7 +485,6 @@ public class OngoingOrderFragment extends Fragment {
         final TextView orderIdCO = view2.findViewById(R.id.orderIdCO);
         orderIdCO.setText(orderid);
         TextView cancelOrderSubmit = view2.findViewById(R.id.cancelOrderSubmit);
-
         builder.setView(view2);
         AlertDialog alert = builder.create();
         alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -518,8 +517,8 @@ public class OngoingOrderFragment extends Fragment {
         Display display = wm.getDefaultDisplay();
         DisplayMetrics metrics = new DisplayMetrics();
         display.getMetrics(metrics);
-        Double width = metrics.widthPixels * .7;
-        Double height = metrics.heightPixels * .7;
+        Double width = metrics.widthPixels * .9;
+        Double height = metrics.heightPixels * .9;
         Window win = alert.getWindow();
         win.setLayout(width.intValue(), height.intValue());
 
