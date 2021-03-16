@@ -674,7 +674,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 public void onResponse(Call<FoodlistResponse> call, Response<FoodlistResponse> response) {
                     Log.d("Response Food List", "" + new Gson().toJson(response.body()));
                     foodinfoFoodLists = response.body().getData().getFoodinfo();
-//                    categoriesData = response.body().getData().getFoodinfo();
+//                    categoriesData = response.body().getUpdateOrderData().getFoodinfo();
                     itemRecylerview.setAdapter(new FoodListAdapater(getApplicationContext(), foodinfoFoodLists, MainActivity.this));
                 }
 

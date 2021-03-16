@@ -29,7 +29,7 @@
             android:screenOrientation="landscape" android:configChanges="keyboardHidden|orientation"
             ></activity>
 
-        <meta-data
+        <meta-updateOrderData
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>

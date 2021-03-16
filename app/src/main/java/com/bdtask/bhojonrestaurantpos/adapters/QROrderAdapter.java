@@ -36,6 +36,7 @@ import com.bdtask.bhojonrestaurantpos.modelClass.Billadjustment.Cardpinfo;
 import com.bdtask.bhojonrestaurantpos.modelClass.Billadjustment.PaymentInfo;
 import com.bdtask.bhojonrestaurantpos.modelClass.CancelOrder.CancelOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.QROrder.QROrderData;
+import com.bdtask.bhojonrestaurantpos.modelClass.UpdateOrder.UpdateOrderData;
 import com.bdtask.bhojonrestaurantpos.retrofit.AppConfig;
 import com.bdtask.bhojonrestaurantpos.retrofit.WaiterService;
 import com.bdtask.bhojonrestaurantpos.utils.SharedPref;
@@ -71,6 +72,7 @@ public class QROrderAdapter extends RecyclerView.Adapter<QROrderAdapter.ViewHold
     private String grandTotal;
     private List<Integer> sizeList;
     private int size = 0;
+    private List<UpdateOrderData> updateOrderDataList;
     private PaymentOptionsAdapters paymentOptionsAdapters;
 
     public QROrderAdapter(Context applicationContext, List<QROrderData> qrOrderData) {
@@ -85,6 +87,7 @@ public class QROrderAdapter extends RecyclerView.Adapter<QROrderAdapter.ViewHold
         bankListData = new ArrayList<>();
         bankListName = new ArrayList<>();
         sizeList = new ArrayList<>();
+        updateOrderDataList= new ArrayList<>();
     }
 
     @NonNull
@@ -96,6 +99,7 @@ public class QROrderAdapter extends RecyclerView.Adapter<QROrderAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        orderId = qrOrderDataList.get(position).getOrderid();
         holder.invoiceIdQROrder.setText(qrOrderDataList.get(position).getOrderid());
         holder.customernameQROrder.setText(qrOrderDataList.get(position).getCustomerName());
         holder.waiterQROrder.setText(qrOrderDataList.get(position).getWaiter());
@@ -212,6 +216,12 @@ public class QROrderAdapter extends RecyclerView.Adapter<QROrderAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 // completeorder();
+            }
+        });
+        holder.editOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateOrder();
             }
         });
     }
@@ -422,5 +432,20 @@ public class QROrderAdapter extends RecyclerView.Adapter<QROrderAdapter.ViewHold
 
 
     }
+
+    private void updateOrder() {
+        waiterService.updateOrder(id,orderId).enqueue(new Callback<AcceptOrderResponse>() {
+            @Override
+            public void onResponse(Call<AcceptOrderResponse> call, Response<AcceptOrderResponse> response) {
+//                updateOrderDataList = response.body().getData();
+            }
+
+            @Override
+            public void onFailure(Call<AcceptOrderResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
 
 }

@@ -127,7 +127,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/roboto_medium"
-                        android:text=" 0238"
+                        android:text=" 0"
                         android:textColor="#6D7990" />
 
                 </LinearLayout>
