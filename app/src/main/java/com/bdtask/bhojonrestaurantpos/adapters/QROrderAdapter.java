@@ -201,7 +201,11 @@ public class QROrderAdapter extends RecyclerView.Adapter<QROrderAdapter.ViewHold
         holder.viewOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewOrder();
+                String getCustomerName = qrOrderDataList.get(position).getCustomerName();
+                String getDate = qrOrderDataList.get(position).getOrderDate();
+                String getTotal = qrOrderDataList.get(position).getTotalamount();
+                String getOrderId = qrOrderDataList.get(position).getOrderid();
+                viewOrder(getCustomerName,getDate,getTotal,getOrderId);
             }
         });
         holder.printOrder.setOnClickListener(new View.OnClickListener() {
@@ -383,7 +387,7 @@ public class QROrderAdapter extends RecyclerView.Adapter<QROrderAdapter.ViewHold
 //            }
 //        });
 //    }
-    private void viewOrder() {
+    private void viewOrder(String getCustomerName, String getDate, String getTotal, String getOrderId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater2 = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -391,6 +395,13 @@ public class QROrderAdapter extends RecyclerView.Adapter<QROrderAdapter.ViewHold
         builder.setView(view2);
         ImageView cancelorderclose = view2.findViewById(R.id.cancelorderclose);
         TextView invoice_numInViewOrder = view2.findViewById(R.id.invoice_numInViewOrder);
+        TextView grandTotalInViewOrder = view2.findViewById(R.id.grandTotalInViewOrder);
+        TextView customerInViewOrder = view2.findViewById(R.id.customerInViewOrder);
+        TextView billingDate = view2.findViewById(R.id.billingDate);
+        billingDate.setText(getDate);
+        invoice_numInViewOrder.setText(getOrderId);
+        grandTotalInViewOrder.setText(getTotal);
+        customerInViewOrder.setText(getCustomerName);
         AlertDialog alert = builder.create();
         alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         cancelorderclose.setOnClickListener(new View.OnClickListener() {
