@@ -2,6 +2,7 @@ package com.bdtask.bhojonrestaurantpos.fragments;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ import com.bdtask.bhojonrestaurantpos.BillAdjustment.BillAdjustmentResponse;
 import com.bdtask.bhojonrestaurantpos.R;
 import com.bdtask.bhojonrestaurantpos.SpacingItemDecoration;
 import com.bdtask.bhojonrestaurantpos.Tools;
+import com.bdtask.bhojonrestaurantpos.activities.MainActivity;
 import com.bdtask.bhojonrestaurantpos.adapters.MergeOrderAdapter;
 import com.bdtask.bhojonrestaurantpos.adapters.OngoingOrderAdapter;
 import com.bdtask.bhojonrestaurantpos.adapters.PaymentOptionsAdapters;
@@ -235,7 +237,7 @@ public class OngoingOrderFragment extends Fragment {
             mergeOderOpeartions();
         });
         editTV.setOnClickListener(v -> {
-            Toasty.info(getContext(), "No Action", Toasty.LENGTH_SHORT).show();
+            updateOrder();
         });
         posinvoiceTV.setOnClickListener(v -> {
             PosInvoice();
@@ -248,6 +250,8 @@ public class OngoingOrderFragment extends Fragment {
         });
         return view;
     }
+
+
 
     private void mergeOderOpeartions() {
         grandTotal = "";
@@ -893,6 +897,14 @@ public class OngoingOrderFragment extends Fragment {
             }
         }
         return 0;
+    }
+    private void updateOrder() {
+        if(orderid.isEmpty() || orderid!=null){
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            String strName = null;
+            intent.putExtra("STRING_I_NEED", orderid);
+            startActivity(intent);
+        }
     }
 
 }

@@ -13,9 +13,9 @@ public class UpdateDataResponse {
     @SerializedName("message")
     @Expose
     private String message;
-    @SerializedName("updateOrderData")
+    @SerializedName("data")
     @Expose
-    private UpdateOrderData updateOrderData;
+    private UpdateOrderData data;
 
     public String getStatus() {
         return status;
@@ -41,12 +41,12 @@ public class UpdateDataResponse {
         this.message = message;
     }
 
-    public UpdateOrderData getUpdateOrderData() {
-        return updateOrderData;
+    public UpdateOrderData getData() {
+        return data;
     }
 
-    public void setUpdateOrderData(UpdateOrderData updateOrderData) {
-        this.updateOrderData = updateOrderData;
+    public void setData(UpdateOrderData data) {
+        this.data = data;
     }
 
 }

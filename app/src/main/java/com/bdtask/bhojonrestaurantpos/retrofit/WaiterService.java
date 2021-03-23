@@ -111,6 +111,6 @@ public interface WaiterService {
     Call<AcceptOrderResponse> acceptOrder (@Field("id")String id, @Field("order_id")String orderId);
     @FormUrlEncoded
     @POST("updateorder")
-    Call<AcceptOrderResponse> updateOrder (@Field("id")String id, @Field("order_id")String orderId);
+    Call<UpdateDataResponse> updateOrder (@Field("id")String id, @Field("Orderid")String orderId);
 
 }

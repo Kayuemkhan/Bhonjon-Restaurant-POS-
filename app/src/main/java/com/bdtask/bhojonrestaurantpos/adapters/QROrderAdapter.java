@@ -221,7 +221,7 @@ public class QROrderAdapter extends RecyclerView.Adapter<QROrderAdapter.ViewHold
         holder.editOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateOrder();
+                //updateOrder();
             }
         });
     }
@@ -433,19 +433,19 @@ public class QROrderAdapter extends RecyclerView.Adapter<QROrderAdapter.ViewHold
 
     }
 
-    private void updateOrder() {
-        waiterService.updateOrder(id,orderId).enqueue(new Callback<AcceptOrderResponse>() {
-            @Override
-            public void onResponse(Call<AcceptOrderResponse> call, Response<AcceptOrderResponse> response) {
-//                updateOrderDataList = response.body().getData();
-            }
-
-            @Override
-            public void onFailure(Call<AcceptOrderResponse> call, Throwable t) {
-
-            }
-        });
-    }
+//    private void updateOrder() {
+//        waiterService.updateOrder(id,orderId).enqueue(new Callback<AcceptOrderResponse>() {
+//            @Override
+//            public void onResponse(Call<AcceptOrderResponse> call, Response<AcceptOrderResponse> response) {
+////                updateOrderDataList = response.body().getData();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<AcceptOrderResponse> call, Throwable t) {
+//
+//            }
+//        });
+//    }
 
 
 }

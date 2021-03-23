@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -36,7 +35,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,11 +48,11 @@ import com.bdtask.bhojonrestaurantpos.adapters.AllCategoriesInfo;
 import com.bdtask.bhojonrestaurantpos.adapters.CateroiesListNameAdapter;
 import com.bdtask.bhojonrestaurantpos.adapters.FoodListAdapater;
 import com.bdtask.bhojonrestaurantpos.adapters.ItemDetailsAdapter;
-import com.bdtask.bhojonrestaurantpos.adapters.OngoingOrderAdapter;
 import com.bdtask.bhojonrestaurantpos.fragments.KitchenStatusFragment;
 import com.bdtask.bhojonrestaurantpos.fragments.OngoingOrderFragment;
 import com.bdtask.bhojonrestaurantpos.fragments.OnlineOrderFragment;
 import com.bdtask.bhojonrestaurantpos.fragments.QROrderFragment;
+import com.bdtask.bhojonrestaurantpos.modelClass.AcceptOrder.AcceptOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.Addonsinfo;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.AllCategoriesData;
 import com.bdtask.bhojonrestaurantpos.modelClass.Allcategory.AllCategoryResponse;
@@ -67,9 +65,11 @@ import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeData;
 import com.bdtask.bhojonrestaurantpos.modelClass.CustomerType.CustomerTypeResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodinfoFoodList;
 import com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.FoodlistResponse;
-import com.bdtask.bhojonrestaurantpos.modelClass.OngoingOrder.OngoingOrderData;
 import com.bdtask.bhojonrestaurantpos.modelClass.PlaceOrder.PlaceOrderResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.SignupNewCustomer.SignupNewCustomerResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.UpdateOrder.Iteminfo;
+import com.bdtask.bhojonrestaurantpos.modelClass.UpdateOrder.UpdateDataResponse;
+import com.bdtask.bhojonrestaurantpos.modelClass.UpdateOrder.UpdateOrderData;
 import com.bdtask.bhojonrestaurantpos.modelClass.WaiterList.WaiterlistData;
 import com.bdtask.bhojonrestaurantpos.modelClass.WaiterList.WaiterlistResponse;
 import com.bdtask.bhojonrestaurantpos.modelClass.datamodel.ListClassData;
@@ -84,8 +84,6 @@ import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 import org.imaginativeworld.oopsnointernet.callbacks.ConnectionCallback;
 import org.imaginativeworld.oopsnointernet.dialogs.pendulum.DialogPropertiesPendulum;
 import org.imaginativeworld.oopsnointernet.dialogs.pendulum.NoInternetDialogPendulum;
-import org.imaginativeworld.oopsnointernet.dialogs.signal.DialogPropertiesSignal;
-import org.imaginativeworld.oopsnointernet.dialogs.signal.NoInternetDialogSignal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     private Button buttoncancel, buttonquickorder, placeorder;
     private double in1 = 0, i2 = 0;
     private TextView edittext1;
-
+    private String getOrderid = "";
     private boolean Add, Sub, Multiply, Divide, Remainder, deci;
     private Button button_0, button_1, button_2, button_3, button_4, button_5, button_6, button_7,
             button_8, button_9, button_Add, button_Sub,
@@ -158,8 +156,9 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     private EditText addcustomername, addcustomeremail, addcustomermobile, addcustomeraddress, addcustomerfavouriteaddress;
     private String productvat = "0";
     double restaurent_vatt;
-    private String orderid;
+    private String orderid="";
     private EditText searchviewinmain;
+    private List<Iteminfo> iteminfoList;
     FragmentManager fm;
 
     @SuppressLint("WrongConstant")
@@ -168,8 +167,18 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SharedPref.init(MainActivity.this);
-
         SharedPref.write("State", "Neworder");
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                orderid= null;
+            } else {
+                orderid= extras.getString("STRING_I_NEED");
+            }
+        } else {
+            orderid= (String) savedInstanceState.getSerializable("STRING_I_NEED");
+        }
+
         // No Internet Dialog: Pendulam
         NoInternetDialogPendulum.Builder builder = new NoInternetDialogPendulum.Builder(
                 this,
@@ -254,8 +263,10 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         itemRecylerview.setLayoutManager(new GridLayoutManager(MainActivity.this, 5));
         itemRecylerview.addItemDecoration(new SpacingItemDecoration(3, Tools.dpToPx(this, 2), true));
         waiterService = AppConfig.getRetrofit().create(WaiterService.class);
-        //id = SharedPref.read("ID", "");
-
+        id = SharedPref.read("ID", "");
+        if( orderid != null){
+            updateOrder(id, orderid);
+        }
         getSubCategoryName();
 
 
@@ -434,7 +445,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         discountET = findViewById(R.id.discountET);
         addingCustomer = findViewById(R.id.addingcustomer);
         searchviewinmain = findViewById(R.id.searchviewinmain);
-
+        iteminfoList = new ArrayList<>();
     }
 
     // when user click the cancel button
@@ -1315,4 +1326,42 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             itemRecylerview.setAdapter(ongoingOrderAdapter);
         }
     }
+    public void updateOrder(String id, String orderid){
+        String grandTotal;
+        Log.d("idandordersi",""+id+" "+orderid);
+
+        waiterService.updateOrder(id,orderid).enqueue(new Callback<UpdateDataResponse>() {
+            @Override
+            public void onResponse(Call<UpdateDataResponse> call, Response<UpdateDataResponse> response) {
+                UpdateOrderData updateOrderData = new UpdateOrderData();
+                updateOrderData = response.body().getData();
+                ListClassData listClassData2 = new ListClassData();
+                grandtotalTV.setText(response.body().getData().getGrandtotal());
+                taxTV.setText(response.body().getData().getVat());
+                taxTV.setText(response.body().getData().getVat());
+                iteminfoList = response.body().getData().getIteminfo();
+                Log.d("responseupdate",""+new Gson().toJson(iteminfoList));
+                for(int i =0;i<iteminfoList.size();i++){
+                    listClassData2.setProductName(iteminfoList.get(i).getProductName());
+                    listClassData2.setPrice(iteminfoList.get(i).getPrice());
+                    listClassData2.setSize(iteminfoList.get(i).getVarientname());
+//                    listClassData2.setpr(iteminfoList.get(i).getProductName());
+//                    listClassData2.setProductName(iteminfoList.get(i).getProductName());
+//                    listClassData2.setProductName(iteminfoList.get(i).getProductName());
+                    listClassData2.setQuantity(Integer.parseInt(iteminfoList.get(i).getItemqty()));
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<UpdateDataResponse> call, Throwable t) {
+                Log.d("responseUpdate",""+t);
+
+            }
+        });
+        placeorder.setText("Update Order");
+
+    }
+
 }

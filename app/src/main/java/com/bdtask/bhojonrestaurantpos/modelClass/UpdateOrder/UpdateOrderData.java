@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class UpdateOrderData {
-
     @SerializedName("orderid")
     @Expose
     private String orderid;

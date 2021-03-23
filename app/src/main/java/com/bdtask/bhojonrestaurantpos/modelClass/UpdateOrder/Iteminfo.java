@@ -3,6 +3,8 @@ package com.bdtask.bhojonrestaurantpos.modelClass.UpdateOrder;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Iteminfo {
     @SerializedName("ProductsID")
     @Expose
@@ -52,6 +54,9 @@ public class Iteminfo {
     @SerializedName("addons")
     @Expose
     private Integer addons;
+    @SerializedName("addonsinfo")
+    @Expose
+    private List<Addonsinfo> addonsinfo = null;
 
     public String getProductsID() {
         return productsID;
@@ -181,4 +186,11 @@ public class Iteminfo {
         this.addons = addons;
     }
 
+    public List<Addonsinfo> getAddonsinfo() {
+        return addonsinfo;
+    }
+
+    public void setAddonsinfo(List<Addonsinfo> addonsinfo) {
+        this.addonsinfo = addonsinfo;
+    }
 }
