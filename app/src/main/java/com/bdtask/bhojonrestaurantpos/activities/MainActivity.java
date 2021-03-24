@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         } else {
             orderid= (String) savedInstanceState.getSerializable("STRING_I_NEED");
         }
-
+        Log.d("orderisd",""+orderid);
         // No Internet Dialog: Pendulam
         NoInternetDialogPendulum.Builder builder = new NoInternetDialogPendulum.Builder(
                 this,
@@ -264,9 +264,8 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         itemRecylerview.addItemDecoration(new SpacingItemDecoration(3, Tools.dpToPx(this, 2), true));
         waiterService = AppConfig.getRetrofit().create(WaiterService.class);
         id = SharedPref.read("ID", "");
-        if( orderid != null){
-            updateOrder(id, orderid);
-        }
+
+
         getSubCategoryName();
 
 
@@ -417,6 +416,10 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
             }
         });
+
+        if( orderid !=null){
+            updateOrder(id, orderid);
+        }
     }
 
     // binding all the views with xml
@@ -1066,11 +1069,39 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
     public void getalltaxes(String s) {
         subtotal = Double.parseDouble(s);
+        Log.d("subtotal",""+subtotal);
         double restaurent_vatt = Double.parseDouble(restaurent_Vat);
+        Log.d("restarabt",""+restaurent_vatt);
+
         restaurent_vatt = (restaurent_vatt * subtotal) / 100;
         taxTV.setText(String.valueOf(restaurent_vatt));
         grand_total = subtotal + restaurent_vatt;
         grandtotalTV.setText(String.valueOf(grand_total));
+        // When update order will work
+//        if (orderid !=null ){
+//            subtotal = Double.parseDouble(s);
+//
+//        }
+//        // when normal order will work
+//        else if(orderid == null){
+//            subtotal = Double.parseDouble(s);
+//            Log.d("vattttt",""+subtotal);
+//            double restaurent_vatt = Double.parseDouble(restaurent_Vat);
+//            restaurent_vatt = (restaurent_vatt * subtotal) / 100;
+//            taxTV.setText(String.valueOf(restaurent_vatt));
+//            grand_total = subtotal + restaurent_vatt;
+//            grandtotalTV.setText(String.valueOf(grand_total));
+//        }
+//        else  {
+//            subtotal = Double.parseDouble(s);
+//            Log.d("vattttt",""+subtotal);
+//            double restaurent_vatt = Double.parseDouble(restaurent_Vat);
+//            restaurent_vatt = (restaurent_vatt * subtotal) / 100;
+//            taxTV.setText(String.valueOf(restaurent_vatt));
+//            grand_total = subtotal + restaurent_vatt;
+//            grandtotalTV.setText(String.valueOf(grand_total));
+//        }
+
     }
 
     private void placeorderdetails() {
@@ -1335,22 +1366,37 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             public void onResponse(Call<UpdateDataResponse> call, Response<UpdateDataResponse> response) {
                 UpdateOrderData updateOrderData = new UpdateOrderData();
                 updateOrderData = response.body().getData();
-                ListClassData listClassData2 = new ListClassData();
+
                 grandtotalTV.setText(response.body().getData().getGrandtotal());
-                taxTV.setText(response.body().getData().getVat());
                 taxTV.setText(response.body().getData().getVat());
                 iteminfoList = response.body().getData().getIteminfo();
                 Log.d("responseupdate",""+new Gson().toJson(iteminfoList));
+                restaurent_Vat = response.body().getData().getServicecharge();
                 for(int i =0;i<iteminfoList.size();i++){
+                    ListClassData listClassData2 = new ListClassData();
                     listClassData2.setProductName(iteminfoList.get(i).getProductName());
-                    listClassData2.setPrice(iteminfoList.get(i).getPrice());
+                    listClassData2.setBaseprice(iteminfoList.get(i).getPrice());
                     listClassData2.setSize(iteminfoList.get(i).getVarientname());
-//                    listClassData2.setpr(iteminfoList.get(i).getProductName());
-//                    listClassData2.setProductName(iteminfoList.get(i).getProductName());
-//                    listClassData2.setProductName(iteminfoList.get(i).getProductName());
                     listClassData2.setQuantity(Integer.parseInt(iteminfoList.get(i).getItemqty()));
-
+                    listClassData2.setProductsID(iteminfoList.get(i).getProductsID());
+                    listClassData2.setQuantity(Integer.parseInt(iteminfoList.get(i).getItemqty()));
+                    listClassData2.setQuantity(Integer.parseInt(iteminfoList.get(i).getItemqty()));
+                    listClassData2.setAddons(iteminfoList.get(i).getAddons());
+                    listClassData2.setPrice(iteminfoList.get(i).getPrice());
+                    if(listClassData.size() !=0 && listClassData.size()<i){
+                        for(int j=0;j<=listClassData.size();j++){
+                            if(iteminfoList.get(i).getVarientid() == listClassData.get(j).getSize()){
+                                listClassData.get(j).setQuantity(listClassData.get(j).getQuantity()+1);
+                            }
+                        }
+                    }
+                    else {
+                        listClassData.add(listClassData2);
+                    }
                 }
+
+                itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData));
+                Log.d("listdataaaaa",""+new Gson().toJson(listClassData));
 
             }
 

@@ -127,6 +127,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
         for (int i = 0; i < listClassData.size(); i++) {
             subtotal += Double.parseDouble(listClassData.get(i).getPrice());
         }
+
         mainActivity.getalltaxes(String.valueOf(subtotal));
     }
 

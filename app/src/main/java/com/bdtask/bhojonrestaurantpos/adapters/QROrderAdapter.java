@@ -2,6 +2,7 @@ package com.bdtask.bhojonrestaurantpos.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.Editable;
@@ -221,9 +222,18 @@ public class QROrderAdapter extends RecyclerView.Adapter<QROrderAdapter.ViewHold
         holder.editOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //updateOrder();
+                updateOrder();
             }
         });
+    }
+
+    private void updateOrder() {
+        if(orderId.isEmpty() || orderId!=null){
+            Intent intent = new Intent(context, MainActivity.class);
+            String strName = null;
+            intent.putExtra("STRING_I_NEED", orderId);
+            context.startActivity(intent);
+        }
     }
 
 

@@ -252,7 +252,6 @@ public class OngoingOrderFragment extends Fragment {
     }
 
 
-
     private void mergeOderOpeartions() {
         grandTotal = "";
         if (tableDetails.size() < 2) {
@@ -283,7 +282,7 @@ public class OngoingOrderFragment extends Fragment {
             TextView changeamount = view2.findViewById(R.id.changeamount);
             int total = 0;
             mergeLists.setLayoutManager(new LinearLayoutManager(getActivity()));
-            mergeLists.setAdapter(new MergeOrderAdapter(getActivity(),tableDetails));
+            mergeLists.setAdapter(new MergeOrderAdapter(getActivity(), tableDetails));
             for (int i = 0; i < tableDetails.size(); i++) {
                 orderIdLists.add(tableDetails.get(i).getOrderid());
                 total += Integer.valueOf(tableDetails.get(i).getGrandTotal());
@@ -353,7 +352,7 @@ public class OngoingOrderFragment extends Fragment {
                         @Override
                         public void onResponse(Call<MergeOrderResponse> call, Response<MergeOrderResponse> response) {
                             String res = response.body().getData().getMargeOrderid();
-                            Log.d("resssssss",res);
+                            Log.d("resssssss", res);
                             alert.dismiss();
                         }
 
@@ -612,7 +611,7 @@ public class OngoingOrderFragment extends Fragment {
                 waiterService.billAdjustmentResponse(id, discountETPaymentammount, grandTotal, orderid, payinfo).enqueue(new Callback<BillAdjustmentResponse>() {
                     @Override
                     public void onResponse(Call<BillAdjustmentResponse> call, Response<BillAdjustmentResponse> response) {
-                        Log.d("billadjustmentResponse", "" + new Gson().toJson(response.body()));
+                        Log.d("billadjustmentResponse", "" + new Gson().toJson(response.isSuccessful()));
                         alert.dismiss();
                     }
 
@@ -898,10 +897,11 @@ public class OngoingOrderFragment extends Fragment {
         }
         return 0;
     }
+
     private void updateOrder() {
-        if(orderid.isEmpty() || orderid!=null){
+        if (orderid.isEmpty() || orderid != null) {
+            Log.d("orderisdfrom", orderid);
             Intent intent = new Intent(getActivity(), MainActivity.class);
-            String strName = null;
             intent.putExtra("STRING_I_NEED", orderid);
             startActivity(intent);
         }
