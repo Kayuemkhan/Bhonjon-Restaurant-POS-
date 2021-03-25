@@ -61,7 +61,8 @@ public class FoodListAdapater extends RecyclerView.Adapter<FoodListAdapater.View
                 Log.d("Addons Info", "" + new Gson().toJson(addonsinfoList));
                 addonsStatus = lists.get(position).getAddons().toString();
                 baseprice = lists.get(position).getPrice();
-                mainActivity.AddonsCheckingForAllCategories(productVat,baseprice,addonsStatus, String.valueOf(lists.get(position).getProductName()), lists.get(position).getPrice(), lists.get(position).getVariantName(), lists.get(position).getProductsID(), addonsinfoList);
+                mainActivity.AddonsCheckingForAllCategories(productVat,baseprice,addonsStatus, String.valueOf(lists.get(position).getProductName()), lists.get(position).getPrice(), lists.get(position).getVariantName(), lists.get(position).getProductsID(), addonsinfoList,
+                        lists.get(position).getVariantid());
 
             }
         });

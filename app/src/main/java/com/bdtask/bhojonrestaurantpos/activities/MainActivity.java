@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     private EditText searchviewinmain;
     private List<Iteminfo> iteminfoList;
     FragmentManager fm;
-
+    private String customerid, waiterid,customertypeid;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -491,6 +491,11 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     customerNameFromSpinner = spinnercustomername.getSelectedItem().toString();
+                    for(int i =0;i<customerListData.size();i++){
+                        if(customerListData.get(i).getCustomerName().contains(customerNameFromSpinner)){
+                            customerid = customerListData.get(i).getCustomerId();
+                        }
+                    }
                 }
 
                 @Override
@@ -505,18 +510,17 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
     private void searchableSpinnerdata() {
         try {
+            customerTypeData = new ArrayList<>();
             waiterService.getallCustomerTypes(id).enqueue(new Callback<CustomerTypeResponse>() {
                 @SuppressLint("ResourceType")
                 @Override
                 public void onResponse(Call<CustomerTypeResponse> call, Response<CustomerTypeResponse> response) {
-                    customerTypeData = new ArrayList<>();
                     customerTypeNames = new ArrayList<>();
                     try {
                         customerTypeData = response.body().getData();
                         for (int i = 0; i < customerTypeData.size(); i++) {
                             customerTypeNames.add(customerTypeData.get(i).getTypeName());
                         }
-
                         searchableSpinnerCustomerType.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, customerTypeNames));
                     } catch (Exception e) {
 
@@ -532,6 +536,13 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     customerTypeFromSpinner = searchableSpinnerCustomerType.getSelectedItem().toString();
+                        for(int j =0;j<customerTypeData.size();j++){
+                            if(customerTypeData.get(j).getTypeName().contains(customerTypeFromSpinner)){
+                                customertypeid = customerTypeData.get(j).getTypeID();
+                                Log.d("customertypeid",customertypeid);
+                            }
+                        }
+
                 }
 
                 @Override
@@ -701,7 +712,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
     // If the list contains any addons
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void AddonsChecking(String productVats, String baseprice, String addonsStatus, String productname, String price, String size, String productsID, List<Addonsinfo> addonsinfoList1) {
+    public void AddonsChecking(String productVats, String baseprice, String addonsStatus, String productname, String price, String size, String productsID, List<Addonsinfo> addonsinfoList1, String variantid) {
         productvat = productVats;
         // When Addons are available...
         if (addonsStatus.contains("1")) {
@@ -748,7 +759,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 String priceOfAddons = SharedPref.read("priceaddons", "");
                 now = Integer.parseInt(editextquantity.getText().toString());
 
-                ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, priceOfAddons, productsID, now, addonprice, 0, productvat, now, productsID);
+                ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, priceOfAddons, productsID, now, addonprice, 0, productvat, now,variantid );
                 if (listClassData.size() == 0) {
                     listClassData.add(listClassData1);
                 } else {
@@ -781,7 +792,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             SharedPref.write("booleanstat", "false");
             String priceOfAddons = SharedPref.read("priceaddons", "");
             now = 1;
-            ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, priceOfAddons, productsID, now, addonprice, 0, productvat, now, productsID);
+            ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, priceOfAddons, productsID, now, addonprice, 0, productvat, now, variantid);
             if (listClassData.size() == 0) {
                 listClassData.add(listClassData1);
             } else {
@@ -809,7 +820,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
     }
 
 
-    public void AddonsCheckingForAllCategories(String productVat, String baseprice, String addonsStatus, String productname, String price, String size, String productsID, List<com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.Addonsinfo> addonsinfoList) {
+    public void AddonsCheckingForAllCategories(String productVat, String baseprice, String addonsStatus, String productname, String price, String size, String productsID, List<com.bdtask.bhojonrestaurantpos.modelClass.Foodlist.Addonsinfo> addonsinfoList, String variantid) {
         productvat = productVat;
         String bprice = baseprice;
         // When Addons are available
@@ -857,7 +868,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
             addcartfromaddons.setOnClickListener(v -> {
                 String t = SharedPref.read("priceaddons", "");
                 now = Integer.parseInt(editextquantity.getText().toString());
-                ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now, addonprice, 0, productvat, now, productsID);
+                ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now, addonprice, 0, productvat, now, variantid);
                 if (listClassData.size() == 0) {
                     listClassData.add(listClassData1);
                 } else {
@@ -892,7 +903,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
         // When Addons are not available
         else {
             String t = SharedPref.read("priceaddons", "");
-            ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now, addonprice, 0, productvat, now, productsID);
+            ListClassData listClassData1 = new ListClassData(baseprice, productname, price, size, t, productsID, now, addonprice, 0, productvat, now, variantid);
             if (listClassData.size() == 0) {
                 listClassData.add(listClassData1);
             } else {
@@ -1146,7 +1157,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 
             Log.d("checkaa", "" + datas);
             Log.d("laraman", id + "\t vatid " + String.valueOf(taxTV.getText().toString()) + "\t tableid " + tableFromSpinner + "\t customerid " +
-                    customerNameFromSpinner + "\t typeid " + customerTypeFromSpinner + "\t servicecharge " + service_charge + "\t discount " + discountET.getText().toString()
+                    customerid + "\t typeid " + customertypeid + "\t servicecharge " + service_charge + "\t discount " + discountET.getText().toString()
                     + "\t sumD " + String.valueOf(subtotal) + "\t grandTotal " + String.valueOf(grandtotalTV.getText().toString()) + "\t datas " + datas + "\t Notes " + " ");
 //            waiterService.postFoodCart(id, taxTV.getText().toString(), tableFromSpinner, customerNameFromSpinner,
 //                    customerTypeFromSpinner, service_charge, discountET.getText().toString(), String.valueOf(subtotal),
@@ -1168,7 +1179,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 //                }
 //            });
             waiterService.postFoodCart(id, String.valueOf(taxTV.getText().toString()), String.valueOf(tableFromSpinner),
-                    String.valueOf(customerNameFromSpinner), String.valueOf(customerTypeFromSpinner), String.valueOf(service_charge), String.valueOf(discountET.getText().toString())
+                    String.valueOf(customerid), String.valueOf(customertypeid), String.valueOf(service_charge), String.valueOf(discountET.getText().toString())
                     , String.valueOf(subtotal), String.valueOf(grandtotalTV.getText().toString()), datas, "").enqueue(new Callback<PlaceOrderResponse>() {
                 @Override
                 public void onResponse(Call<PlaceOrderResponse> call, Response<PlaceOrderResponse> response) {

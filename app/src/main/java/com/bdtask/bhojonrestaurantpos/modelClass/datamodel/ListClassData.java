@@ -23,7 +23,7 @@ public class ListClassData {
         this.quantitys = quantitys;
         this.productvat = productvat;
         this.quantity = quantitys;
-        this.variantid = productsID;
+        this.variantid = variantid;
     }
 
     public int getAddons() {

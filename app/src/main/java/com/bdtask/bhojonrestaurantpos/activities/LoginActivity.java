@@ -106,6 +106,8 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         } catch (Exception e) {
                             Log.d("poi", "onResponse: " + e.getLocalizedMessage());
+                            Toast.makeText(LoginActivity.this, "Wrong email or Password", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
                         }
                     }
 
