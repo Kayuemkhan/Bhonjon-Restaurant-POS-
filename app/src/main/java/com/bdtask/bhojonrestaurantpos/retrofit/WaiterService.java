@@ -107,17 +107,19 @@ public interface WaiterService {
     @POST("billadjustmentmarge")
     Call<MergeOrderResponse> mergeOrderResponse(@Field("id") String id, @Field("discount") String discount, @Field("grandtotal") String grandtotal,
                                                     @Field("orderid") String orderid, @Field("payinfo") String payinfo);
-    @FormUrlEncoded
-    @POST("splitorder")
-    Call<SplitResponse> spilitItemResponse (@Field("id")String id,@Field("Orderid")String orderId);
-    @FormUrlEncoded
-    @POST("splitordernum")
-    Call<SplitordernumResponse> spilitItemNumResponse (@Field("id")String id, @Field("Orderid")String orderId, @Field("numberofsplit") String numberofsplit);
+
     @FormUrlEncoded
     @POST("acceptorder")
     Call<AcceptOrderResponse> acceptOrder (@Field("id")String id, @Field("order_id")String orderId);
     @FormUrlEncoded
     @POST("updateorder")
     Call<UpdateDataResponse> updateOrder (@Field("id")String id, @Field("Orderid")String orderId);
+    @FormUrlEncoded
+    @POST("splitorder")
+    Call<SplitResponse> spilitItemResponse (@Field("id")String id,@Field("Orderid")String orderId);
+    @FormUrlEncoded
+    @POST("splitordernum")
+    Call<SplitordernumResponse> spilitItemNumResponse (@Field("id")String id, @Field("Orderid")String orderId, @Field("numberofsplit") String numberofsplit);
+
 
 }
