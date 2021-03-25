@@ -70,6 +70,13 @@ public interface WaiterService {
                                           @Field("Discount") String Discount, @Field("Total") String Total,
                                           @Field("Grandtotal") String Grandtotal, @Field("foodinfo") String foodinfo, @Field("CustomerNote") String CustomerNote);
     @FormUrlEncoded
+    @POST("modifyfoodcart")
+    Call<PlaceOrderResponse> modifyFoodCart(@Field("id") String id, @Field("VatAmount") String VAT, @Field("TableId") String TableId,
+                                            @Field("Orderid") String Orderid, @Field("ServiceCharge") String ServiceCharge,
+                                            @Field("Discount") String Discount, @Field("Total") String Total,
+                                            @Field("Grandtotal") String Grandtotal, @Field("foodinfo") String foodinfo,@Field("CustomerNote") String  customerNote);
+
+    @FormUrlEncoded
     @POST("kitchenstatus")
     Call<KitchenStatusResponse> kithcenStatus(@Field("id") String id);
 

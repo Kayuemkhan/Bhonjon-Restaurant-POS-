@@ -12,7 +12,8 @@ public class ListClassData {
     public ListClassData() {
     }
 
-    public ListClassData(String baseprice, String productName, String price, String size, String priceOfAddons, String productsID, int quantitys, int addons, int addOnsTotal,String productvat, int quantity, String variantid) {
+
+    public ListClassData(String baseprice, String productName, String price, String size, String priceOfAddons, String productsID, int quantitys, int addons, int addOnsTotal, String productvat, int quantity, String variantid) {
         this.ProductName = productName;
         this.baseprice = baseprice;
         this.price = price;
@@ -106,4 +107,12 @@ public class ListClassData {
     public void setVariantid(String variantid) {
         this.variantid = variantid;
     }
+    public String getPriceOfAddons() {
+        return priceOfAddons;
+    }
+
+    public void setPriceOfAddons(String priceOfAddons) {
+        this.priceOfAddons = priceOfAddons;
+    }
+
 }

@@ -1129,6 +1129,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 //                " customer_type\t" + customerTypeFromSpinner + " service_charge\t" + service_charge + " discount\t" + discount + " subtotal\t" + subtotal + " grand_total"
 //                + grandtotalTV.getText().toString());
 
+        // Inserting data to orderlist
         for (int i = 0; i < categoriesData.size(); i++) {
             for (int j = 0; j < listClassData.size(); j++) {
                 if (!categoriesData.isEmpty()) {
@@ -1178,40 +1179,84 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
 //
 //                }
 //            });
-            waiterService.postFoodCart(id, String.valueOf(taxTV.getText().toString()), String.valueOf(tableFromSpinner),
-                    String.valueOf(customerid), String.valueOf(customertypeid), String.valueOf(service_charge), String.valueOf(discountET.getText().toString())
-                    , String.valueOf(subtotal), String.valueOf(grandtotalTV.getText().toString()), datas, "").enqueue(new Callback<PlaceOrderResponse>() {
-                @Override
-                public void onResponse(Call<PlaceOrderResponse> call, Response<PlaceOrderResponse> response) {
-                    String ress = response.body().getMessage();
-                    orderid = response.body().getData().getOrderid().toString();
-                    pDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            pDialog.dismissWithAnimation();
+            if(orderid !=null){
+                Log.d("statecheck","I'm Update");
+                placeorder.setText("Place Order");
+                orderid = null;
+                Log.d("modifyOrder","id: "+id+" tax "+taxTV.getText().toString()+" table "+tableFromSpinner+" orderId "+orderid+" service_charge "+service_charge+
+                " discount "+discountET.getText().toString()+" subtotal "+subtotal+" grandtotal "+grand_total+" data"+datas +" Customer Notes"+" ");
+                waiterService.modifyFoodCart(id, String.valueOf(taxTV.getText().toString()), String.valueOf(tableFromSpinner),
+                        String.valueOf(orderid), String.valueOf(service_charge), String.valueOf(discountET.getText().toString())
+                        , String.valueOf(subtotal), String.valueOf(grandtotalTV.getText().toString()), datas, "").enqueue(new Callback<PlaceOrderResponse>() {
+                    @Override
+                    public void onResponse(Call<PlaceOrderResponse> call, Response<PlaceOrderResponse> response) {
+                        String ress = response.body().getMessage();
+                        orderid = response.body().getData().getOrderid().toString();
+                        pDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                pDialog.dismissWithAnimation();
+                                placeorder.setText("Place Order");
+                                orderid = null;
 
-                        }
-                    }).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            }
+                        }).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                pDialog.dismissWithAnimation();
+                                placeorder.setText("Place Order");
+                                orderid = null;
+                                printInvoice(orderid);
+                            }
+                        }).show();
+                        //pDialog.show();
+
+                        Toasty.info(MainActivity.this, "" + ress, Toast.LENGTH_SHORT, true).show();
+                        taxTV.setText("0");
+                        grandtotalTV.setText("0");
+                        listClassData.clear();
+                        itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData));
+                    }
+
+                    @Override
+                    public void onFailure(Call<PlaceOrderResponse> call, Throwable t) {
+
+                    }
+                });
+            }
+            else {
+                waiterService.postFoodCart(id, String.valueOf(taxTV.getText().toString()), String.valueOf(tableFromSpinner),
+                        String.valueOf(customerid), String.valueOf(customertypeid), String.valueOf(service_charge), String.valueOf(discountET.getText().toString())
+                        , String.valueOf(subtotal), String.valueOf(grandtotalTV.getText().toString()), datas, "").enqueue(new Callback<PlaceOrderResponse>() {
+                    @Override
+                    public void onResponse(Call<PlaceOrderResponse> call, Response<PlaceOrderResponse> response) {
+                        String ress = response.body().getMessage();
+                        orderid = response.body().getData().getOrderid().toString();
+                        pDialog.setCancelClickListener(sweetAlertDialog -> {
+                            pDialog.dismissWithAnimation();
+                            //placeorder.setText("Place Order");
+
+                        }).setConfirmClickListener(sweetAlertDialog -> {
                             pDialog.dismissWithAnimation();
                             printInvoice(orderid);
-                        }
-                    }).show();
-                    //pDialog.show();
+                            //placeorder.setText("Place Order");
 
-                    Toasty.info(MainActivity.this, "" + ress, Toast.LENGTH_SHORT, true).show();
-                    taxTV.setText("0");
-                    grandtotalTV.setText("0");
-                    listClassData.clear();
-                    itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData));
-                }
+                        }).show();
+                        //pDialog.show();
 
-                @Override
-                public void onFailure(Call<PlaceOrderResponse> call, Throwable t) {
+                        Toasty.info(MainActivity.this, "" + ress, Toast.LENGTH_SHORT, true).show();
+                        taxTV.setText("0");
+                        grandtotalTV.setText("0");
+                        listClassData.clear();
+                        itemshowRecylerview.setAdapter(new ItemDetailsAdapter(MainActivity.this, listClassData));
+                    }
 
-                }
-            });
+                    @Override
+                    public void onFailure(Call<PlaceOrderResponse> call, Throwable t) {
+
+                    }
+                });
+            }
         }
     }
 
@@ -1394,6 +1439,14 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                     listClassData2.setQuantity(Integer.parseInt(iteminfoList.get(i).getItemqty()));
                     listClassData2.setAddons(iteminfoList.get(i).getAddons());
                     listClassData2.setPrice(iteminfoList.get(i).getPrice());
+                    listClassData2.setVariantid(iteminfoList.get(i).getVarientid());
+                    if(iteminfoList.get(i).getAddons().equals(1)){
+                        listClassData2.setPriceOfAddons(iteminfoList.get(i).getAddonsinfo().get(i).getAddonsprice());
+                    }
+                    else {
+                        listClassData2.setPriceOfAddons("");
+                    }
+                    listClassData2.setProductvat(iteminfoList.get(i).getProductvat());
                     if(listClassData.size() !=0 && listClassData.size()<i){
                         for(int j=0;j<=listClassData.size();j++){
                             if(iteminfoList.get(i).getVarientid() == listClassData.get(j).getSize()){
